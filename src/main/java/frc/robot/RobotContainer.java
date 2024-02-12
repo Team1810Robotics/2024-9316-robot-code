@@ -5,8 +5,8 @@
 package frc.robot;
 
 
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.TankDrive;
 import frc.robot.Constants.OperatorConstants;
@@ -33,7 +33,7 @@ public class RobotContainer {
 
 
     public Command getAutonomousCommand() {
-      return new PathPlannerAuto("9316_Autonomous");
+      return Commands.print("No Auto");
     }
 
 

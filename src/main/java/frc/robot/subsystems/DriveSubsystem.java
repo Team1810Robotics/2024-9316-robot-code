@@ -1,33 +1,36 @@
 package frc.robot.subsystems;
 
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
+
 public class DriveSubsystem extends SubsystemBase {
     
-    private PWMSparkMax backLeftMotor;
-    private PWMSparkMax frontLeftMotor;
+    private CANSparkMax backLeftMotor;
+    private CANSparkMax frontLeftMotor;
 
-    private PWMSparkMax backRightMotor;
-    private PWMSparkMax frontRightMotor;
+    private CANSparkMax backRightMotor;
+    private CANSparkMax frontRightMotor;
 
 
 
 
     public DriveSubsystem() {
-        backLeftMotor = new PWMSparkMax(DriveConstants.BACK_LEFT_MOTOR);
-        frontLeftMotor = new PWMSparkMax(DriveConstants.FRONT_LEFT_MOTOR);
+        backLeftMotor = new CANSparkMax(DriveConstants.BACK_LEFT_MOTOR, MotorType.kBrushless);
+        frontLeftMotor = new CANSparkMax(DriveConstants.FRONT_LEFT_MOTOR, MotorType.kBrushless);
 
 
-        backRightMotor = new PWMSparkMax(DriveConstants.BACK_RIGHT_MOTOR);
-        frontRightMotor = new PWMSparkMax(DriveConstants.FRONT_RIGHT_MOTOR);
+        backRightMotor = new CANSparkMax(DriveConstants.BACK_RIGHT_MOTOR, MotorType.kBrushless);
+        frontRightMotor = new CANSparkMax(DriveConstants.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
 
-        backLeftMotor.addFollower(frontLeftMotor);
-        backRightMotor.addFollower(frontRightMotor);
+        backLeftMotor.follow(frontLeftMotor);
+        backRightMotor.follow(frontRightMotor);
 
         backLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
         backRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
