@@ -20,11 +20,13 @@ public class Intake extends Command {
 
     @Override
     public void execute() {
-        if (isReversed) {
+        if (isReversed && ignoreNote) {
             intakeSubsystem.reverseIntake();
-        } else {
+        } else if (!ignoreNote && !isReversed){
             intakeSubsystem.horizontalIntakeOperator();
             intakeSubsystem.verticalIntakeOperator();
+        } else if (!isReversed && ignoreNote){
+            intakeSubsystem.runHorizontalIntake();
         }
     }
 
