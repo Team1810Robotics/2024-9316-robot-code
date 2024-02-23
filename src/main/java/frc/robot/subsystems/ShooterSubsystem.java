@@ -12,8 +12,8 @@ public class ShooterSubsystem  extends SubsystemBase {
 
 
 public ShooterSubsystem(){
-    leftShooter = new Victor(ShooterConstants.left);
-    rightShooter = new Victor(ShooterConstants.right);
+    leftShooter = new Victor(ShooterConstants.LEFT_SHOOTER_MOTOR);
+    rightShooter = new Victor(ShooterConstants.RIGHT_SHOOTER_MOTOR);
 
 }
 

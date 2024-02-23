@@ -8,14 +8,17 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.TankDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
   private DriveSubsystem driveSubsystem = new DriveSubsystem();
   private ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 
 
   private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
@@ -30,9 +33,16 @@ public class RobotContainer {
         driveSubsystem)
     );
     configureBindings();
+    setShuffleboard();
   }
 
   private void configureBindings() {}
+
+  public void setShuffleboard() {
+    Shuffleboard.getTab("Teleoperated").addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
+    Shuffleboard.getTab("Teleoperated").addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
+
+  }
 
 
     public Command getAutonomousCommand() {
