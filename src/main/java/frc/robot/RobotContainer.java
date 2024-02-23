@@ -38,7 +38,7 @@ public class RobotContainer {
         driveSubsystem)
     );
 
-    intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
+    // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
 
     configureBindings();
     setShuffleboard();
@@ -47,7 +47,8 @@ public class RobotContainer {
   private void configureBindings() {
     xboxController.rightBumper().onTrue(new Shoot(intakeSubsystem, shooterSubsystem).withTimeout(5));
     
-    xboxController.b().whileTrue(new Intake(intakeSubsystem, true, true));
+    xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
+    xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
   }
 
   public void setShuffleboard() {
