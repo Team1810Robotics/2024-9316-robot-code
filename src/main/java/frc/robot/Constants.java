@@ -19,4 +19,9 @@ public class Constants {
 
         
     }
+
+    public class ShooterConstants {
+       public static final int left = 8;
+       public static final int right = 7;
+    }
 }
