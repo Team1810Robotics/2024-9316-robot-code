@@ -9,19 +9,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.TankDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.GearShiftSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.GearShift;
+import frc.robot.subsystems.GearShiftSubsystem;
+
 
 public class RobotContainer {
 
@@ -30,6 +31,8 @@ public class RobotContainer {
   private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
+
+  
   private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
   private Joystick rightJoystick = new Joystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
 
@@ -49,6 +52,8 @@ public class RobotContainer {
         driveSubsystem)
     );
     configureBindings();
+
+    // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
     setShuffleboard();
   }
 
@@ -78,6 +83,4 @@ public class RobotContainer {
       return Commands.print("No Auto");
     }
 
-
-  
 }
