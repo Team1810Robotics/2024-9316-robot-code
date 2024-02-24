@@ -7,20 +7,32 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.commands.GearShift;
+import frc.robot.commands.Intake;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.TankDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.GearShift;
 import frc.robot.subsystems.GearShiftSubsystem;
 
+
 public class RobotContainer {
+
   private DriveSubsystem driveSubsystem = new DriveSubsystem();
+
+  private ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
   
   private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
@@ -32,6 +44,10 @@ public class RobotContainer {
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 
+  private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+
+
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(
       new TankDrive(
@@ -40,9 +56,8 @@ public class RobotContainer {
         driveSubsystem)
     );
     // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
-
+  configureBindings();
     setShuffleboard();
-    configureBindings();
   }
 
   private void configureBindings() {
@@ -57,8 +72,7 @@ public class RobotContainer {
     Shuffleboard.getTab("Teleoperated").addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     Shuffleboard.getTab("Teleoperated").addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
 
-   autoChooser.setDefaultOption("No Auto", new InstantCommand());
-
+     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
   }
  
@@ -69,5 +83,22 @@ public class RobotContainer {
     }
 
 
+
+  private void configureBindings() {}
+   
+  public void setShuffleboard() {
+   // Shuffleboard.getTab("Gen").addBoolean("Note Detector", () -> intakeSubsystem.getNoteDetector());
+    
+    autoChooser.setDefaultOption("No Auto", new InstantCommand());
+   // autoChooser.addOption("offline", new Offline(driveSubsystem));
+   // autoChooser.addOption("scoreOffline", new ScoreOffline(driveSubsystem, intakeSubsystem, shooterSubsystem));
+   // autoChooser.addOption("scoreOfflineScore", new ScoreOfflineScore(shooterSubsystem, intakeSubsystem, driveSubsystem));
+  //  autoChooser.addOption("score", new Score(shooterSubsystem, intakeSubsystem));
+    Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
+    
+  }
+  public Command getAutonomousCommand() {
+    return Commands.print("No autonomous command configured");
+  }
 
 }
