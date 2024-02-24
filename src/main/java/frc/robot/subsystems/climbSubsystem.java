@@ -8,9 +8,9 @@ import frc.robot.Constants.ClimbConstants;
 public class ClimbSubsystem extends SubsystemBase{
 
     private Relay climbMotor;
-
+    
     public ClimbSubsystem() {
-        climbMotor = new Relay(3);
+        climbMotor = new Relay(CLIMB_MOTOR_PORT);
 
     }
 

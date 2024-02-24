@@ -9,7 +9,7 @@ public class Constants {
     
     }
     public class ClimbConstants {
-        public static final int CLIMB_MOTOR = 4;
+        public static final int CLIMB_MOTOR_PORT = 9;
         
     }
     
