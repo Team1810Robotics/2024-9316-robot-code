@@ -7,16 +7,22 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.commands.GearShift;
 import frc.robot.commands.TankDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.GearShiftSubsystem;
 
 public class RobotContainer {
   private DriveSubsystem driveSubsystem = new DriveSubsystem();
-
+  private GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
+  
   private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
   private Joystick rightJoystick = new Joystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
+
+  private JoystickButton leftJoystickButton_11 = new JoystickButton(leftJoystick, 11);
 
 
   public RobotContainer() {
@@ -29,7 +35,10 @@ public class RobotContainer {
     configureBindings();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    leftJoystickButton_11.whileTrue(new GearShift(gearShiftSubsystem, true))
+                          .whileFalse(new GearShift(gearShiftSubsystem, false));
+  }
 
 
     public Command getAutonomousCommand() {

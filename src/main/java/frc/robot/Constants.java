@@ -15,6 +15,9 @@ public class Constants {
         public static final int FRONT_RIGHT_MOTOR = 3;
         public static final boolean RIGHT_INVERTED = false;
 
+        public static final int LEFT_SHIFT_SERVO = 0;
+        public static final int RIGHT_SHIFT_SERVO = 1;
+
         public static final double DEADBAND = .05;
 
         
