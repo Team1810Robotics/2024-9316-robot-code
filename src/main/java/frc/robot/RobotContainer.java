@@ -18,7 +18,15 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
+
+
 public class RobotContainer {
+
   private DriveSubsystem driveSubsystem = new DriveSubsystem();
   private ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -40,6 +48,10 @@ public class RobotContainer {
 
     // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
 
+
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+
+  public RobotContainer() {
     configureBindings();
     setShuffleboard();
   }
@@ -51,11 +63,20 @@ public class RobotContainer {
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
   }
 
+
   public void setShuffleboard() {
     Shuffleboard.getTab("Teleoperated").addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     Shuffleboard.getTab("Teleoperated").addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
-
+   // Shuffleboard.getTab("Gen").addBoolean("Note Detector", () -> intakeSubsystem.getNoteDetector());
+   autoChooser.setDefaultOption("No Auto", new InstantCommand());
+   // autoChooser.addOption("offline", new Offline(driveSubsystem));
+   // autoChooser.addOption("scoreOffline", new ScoreOffline(driveSubsystem, intakeSubsystem, shooterSubsystem));
+   // autoChooser.addOption("scoreOfflineScore", new ScoreOfflineScore(shooterSubsystem, intakeSubsystem, driveSubsystem));
+  //  autoChooser.addOption("score", new Score(shooterSubsystem, intakeSubsystem));
+    Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
   }
+ 
+
 
 
     public Command getAutonomousCommand() {
