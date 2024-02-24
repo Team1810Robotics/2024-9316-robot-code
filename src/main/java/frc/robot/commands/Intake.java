@@ -20,17 +20,28 @@ public class Intake extends Command {
 
     @Override
     public void execute() {
+        //restore this once beambreak is operational
+        
+        // if (isReversed && ignoreNote) {
+        //     intakeSubsystem.reverseIntake();
+        // } else if (!ignoreNote && !isReversed){
+        //     intakeSubsystem.horizontalIntakeOperator();
+        //     intakeSubsystem.verticalIntakeOperator();
+        // } else if (!isReversed && ignoreNote){
+        //     intakeSubsystem.runHorizontalIntake();
+        // }
         if (isReversed) {
             intakeSubsystem.reverseIntake();
         } else {
-            intakeSubsystem.horizontalIntakeOperator();
-            intakeSubsystem.verticalIntakeOperator();
+            intakeSubsystem.runHorizontalIntake();
+            intakeSubsystem.runVerticalIntake();
         }
     }
 
     @Override
     public boolean isFinished() {
-        if (!ignoreNote && !intakeSubsystem.getInternalNoteDetector()) {
+        boolean isNote = intakeSubsystem.getInternalNoteDetector();
+        if (!ignoreNote && !isNote) {
             return true;
         } else {
             return false;
