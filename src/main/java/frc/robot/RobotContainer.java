@@ -44,8 +44,6 @@ public class RobotContainer {
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 
-  private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 
   public RobotContainer() {
@@ -65,6 +63,9 @@ public class RobotContainer {
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
+
+    leftJoystickButton_11.whileTrue(new GearShift(gearShiftSubsystem, true))
+                          .whileFalse(new GearShift(gearShiftSubsystem, false));
   }
 
 
@@ -83,22 +84,5 @@ public class RobotContainer {
     }
 
 
-
-  private void configureBindings() {}
-   
-  public void setShuffleboard() {
-   // Shuffleboard.getTab("Gen").addBoolean("Note Detector", () -> intakeSubsystem.getNoteDetector());
-    
-    autoChooser.setDefaultOption("No Auto", new InstantCommand());
-   // autoChooser.addOption("offline", new Offline(driveSubsystem));
-   // autoChooser.addOption("scoreOffline", new ScoreOffline(driveSubsystem, intakeSubsystem, shooterSubsystem));
-   // autoChooser.addOption("scoreOfflineScore", new ScoreOfflineScore(shooterSubsystem, intakeSubsystem, driveSubsystem));
-  //  autoChooser.addOption("score", new Score(shooterSubsystem, intakeSubsystem));
-    Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
-    
-  }
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
 
 }
