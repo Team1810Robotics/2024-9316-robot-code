@@ -42,7 +42,6 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(
       new TankDrive(
@@ -51,7 +50,7 @@ public class RobotContainer {
         driveSubsystem)
     );
     // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
-  configureBindings();
+    configureBindings();
     setShuffleboard();
   }
 
@@ -61,6 +60,9 @@ public class RobotContainer {
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
+
+    leftJoystickButton_11.whileTrue(new GearShift(gearShiftSubsystem, true))
+                          .whileFalse(new GearShift(gearShiftSubsystem, false));
   }
 
 
@@ -71,9 +73,11 @@ public class RobotContainer {
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
   }
+ 
 
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+
+
+
+
 
 }
