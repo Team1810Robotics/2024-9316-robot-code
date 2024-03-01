@@ -9,11 +9,15 @@ public class Churro extends Command {
 
     private boolean isUp;
 
-    private boolean wasDown;
+    private boolean isDown;
+
+    private boolean previous;
 
     public Churro(ChurroSubsystem churroSubsystem, boolean isUp) {
         this.churroSubsystem = churroSubsystem;
         this.isUp = isUp;
+
+        previous = isDown;
 
         addRequirements(churroSubsystem);
     }
@@ -22,24 +26,24 @@ public class Churro extends Command {
     public void execute() {
         if (isUp) {
             churroSubsystem.churroUp();
-            wasDown = false;
+            isDown = false;
         } else {
             churroSubsystem.churroDown();
-            wasDown = true;
+            isDown = true;
         }
 
     }
 
     @Override
     public boolean isFinished() {
-        if (isUp && wasDown) {
+        if (previous && !isUp) {
+            return true;
+        } else if (!previous && !isUp){
             return false;
-        } else if (isUp && !wasDown) {
-            return true;
-        } else if (!isUp && wasDown) {
-            return true;
+        } else if (previous && isUp) {
+            return false;
         } else {
-            return false;
+            return true;
         }
     }
 

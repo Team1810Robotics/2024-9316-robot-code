@@ -12,7 +12,7 @@ public class ShootAmp extends SequentialCommandGroup {
 
         addCommands(
             new Churro(churroSubsystem, true),
-            new Shoot(intakeSubsystem, shooterSubsystem, churroSubsystem)
+            new Shoot(intakeSubsystem, shooterSubsystem)
         );
     }
 }
