@@ -8,7 +8,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class Shoot extends ParallelCommandGroup {
 
-    public Shoot(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem, ChurroSubsystem churroSubsystem) {
+    public Shoot(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem) {
 
         addCommands(
             new Shooter(shooterSubsystem),
