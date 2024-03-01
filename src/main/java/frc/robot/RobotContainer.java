@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ShootAmp;
 import frc.robot.commands.ShootSpeaker;
@@ -72,6 +73,10 @@ public class RobotContainer {
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
+  }
+
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
   }
  
 
