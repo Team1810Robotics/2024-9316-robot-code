@@ -4,24 +4,24 @@ import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
-public class PivotSubsystem extends SubsystemBase {
+public class LiftSubsystem extends SubsystemBase {
 
-    private Victor pivotMotor;
+    private Victor liftMotor;
 
-    public PivotSubsystem(){
-        pivotMotor = new Victor(IntakeConstants.PIVOT_MOTOR);
+    public LiftSubsystem(){
+        liftMotor = new Victor(IntakeConstants.PIVOT_MOTOR);
 
     }
 
     public void pivotUp(){
-        pivotMotor.set(.5);
+        liftMotor.set(.5);
     }
 
     public void pivotDown(){
-        pivotMotor.set(-.5);
+        liftMotor.set(-.5);
     }
     
     public void pivotStop(){
-        pivotMotor.stopMotor();
+        liftMotor.stopMotor();
     }
 }

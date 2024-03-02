@@ -2,18 +2,18 @@ package frc.robot.commands.utility;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Intake;
-import frc.robot.commands.Pivot;
+import frc.robot.commands.IntakeLift;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 
-public class PivotIntake extends SequentialCommandGroup {
+public class LiftIntake extends SequentialCommandGroup {
     
-    public PivotIntake(IntakeSubsystem intakeSubsystem, PivotSubsystem pivotSubsystem) {
+    public LiftIntake(IntakeSubsystem intakeSubsystem, LiftSubsystem pivotSubsystem) {
 
         addCommands(
             new Intake(intakeSubsystem, false, true),
             //TODO: add timeout
-            new Pivot(pivotSubsystem, true)
+            new IntakeLift(pivotSubsystem, true)
         );
     }
 }

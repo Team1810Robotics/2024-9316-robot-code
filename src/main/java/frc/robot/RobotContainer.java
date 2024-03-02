@@ -16,7 +16,7 @@ import frc.robot.commands.TankDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.PivotSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -31,7 +31,7 @@ public class RobotContainer {
   private ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
-  private PivotSubsystem pivotSubsystem = new PivotSubsystem();
+  private LiftSubsystem pivotSubsystem = new LiftSubsystem();
   
   private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
   private Joystick rightJoystick = new Joystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
