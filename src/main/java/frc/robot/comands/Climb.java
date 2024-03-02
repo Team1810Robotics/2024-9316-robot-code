@@ -1,14 +1,14 @@
 package frc.robot.comands;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.climbSubsystem;
 public class Climb extends Command {
   
   
-    private ClimbSubsystem climbSubsystem;
+    private climbSubsystem climbSubsystem;
     private Boolean isUp;
 
     
-    public Climb(ClimbSubsystem climbSubsystem, Boolean isUp) {
+    public Climb(climbSubsystem climbSubsystem, Boolean isUp) {
         this.climbSubsystem = climbSubsystem;
         this.isUp = isUp;
 

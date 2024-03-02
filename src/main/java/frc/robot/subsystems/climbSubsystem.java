@@ -5,25 +5,31 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
 
-public class ClimbSubsystem extends SubsystemBase{
+public class climbSubsystem extends SubsystemBase{
 
-    private Victor climbMotor;
+    private Victor climbLeftMotor;
+    private Victor climbRightMotor;
+    private Victor climbTensionMotor;
 
-    public ClimbSubsystem() {
-        climbMotor = new Victor(ClimbConstants.CLIMB_MOTOR);
-
+    public climbSubsystem() {
+        climbLeftMotor = new Victor(ClimbConstants.CLIMB_LEFT_MOTOR_PORT);
+        climbRightMotor = new Victor(ClimbConstants.CLIMB_RIGHT_MOTOR_PORT);
+        climbTensionMotor = new Victor(ClimbConstants.CLIMB_TENSION_MOTOR_PORT);
     }
 
     public void climbUp() {
-        climbMotor.set(1);
+        climbLeftMotor.set(1);
+        climbRightMotor.set(1);
     }
 
     public void climbDown() {
-        climbMotor.set(-1);
+        climbLeftMotor.set(-1);
+        climbRightMotor.set(-1);
     }
 
     public void stop() {
-        climbMotor.stopMotor();
+        climbLeftMotor.stopMotor();
+        climbRightMotor.stopMotor();
     }
 
 

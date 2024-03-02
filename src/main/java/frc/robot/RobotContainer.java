@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.comands.Climb;
-import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.climbSubsystem;
 
 public class RobotContainer {
 
-  private ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  private climbSubsystem climbSubsystem = new climbSubsystem();
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
