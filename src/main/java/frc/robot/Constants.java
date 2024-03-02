@@ -39,6 +39,8 @@ public class Constants {
        public static final int LEFT_VERTICAL_SENSOR = 0;
        public static final int RIGHT_VERTICAL_SENSOR = 1;
 
+       public static final int PIVOT_MOTOR = 5;
+
         
     }
     public class ChurroConstants {
