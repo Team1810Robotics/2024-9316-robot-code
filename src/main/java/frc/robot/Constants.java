@@ -43,4 +43,7 @@ public class Constants {
 
         
     }
+    public class ChurroConstants {
+        public static final int AMP_BAR = 9;
+    } 
 }

@@ -10,10 +10,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
+
 import frc.robot.commands.PivotShoot;
+
+import frc.robot.commands.ShootAmp;
+import frc.robot.commands.ShootSpeaker;
+
 import frc.robot.commands.TankDrive;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
@@ -21,7 +28,6 @@ import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.GearShift;
 import frc.robot.subsystems.GearShiftSubsystem;
 
 
@@ -32,6 +38,7 @@ public class RobotContainer {
   private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
   private LiftSubsystem pivotSubsystem = new LiftSubsystem();
+  private ChurroSubsystem churroSubsystem = new ChurroSubsystem();
   
   private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
   private Joystick rightJoystick = new Joystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
@@ -51,16 +58,21 @@ public class RobotContainer {
     );
     // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
    configureBindings();
+
     setShuffleboard();
   }
 
   private void configureBindings() {
-    xboxController.rightBumper().onTrue(new PivotShoot(pivotSubsystem, intakeSubsystem, shooterSubsystem).withTimeout(7));
+
+    xboxController.rightBumper().onTrue(new ShootSpeaker(shooterSubsystem, intakeSubsystem, churroSubsystem).withTimeout(7));
+    xboxController.leftBumper().onTrue(new ShootAmp(shooterSubsystem, intakeSubsystem, churroSubsystem).withTimeout(7));
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
-    xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
+    xboxController.b().whileTrue(new Intake(intakeSubsystem, false, false));
 
-    leftJoystickButton_11.whileFalse(new GearShift(gearShiftSubsystem, false)).whileTrue(new GearShift(gearShiftSubsystem, true));
+
+    leftJoystickButton_11.whileTrue(new GearShift(gearShiftSubsystem, true))
+                          .whileFalse(new GearShift(gearShiftSubsystem, false));
   }
 
 
@@ -71,12 +83,11 @@ public class RobotContainer {
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
   }
+
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
+  }
  
-
-
-    public Command getAutonomousCommand() {
-      return Commands.print("No Auto");
-    }
 
 
 }
