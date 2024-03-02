@@ -1,29 +1,29 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.motorcontrol.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
 
 public class ClimbSubsystem extends SubsystemBase{
 
-    private Relay climbMotor;
-    
+    private Victor climbMotor;
+
     public ClimbSubsystem() {
-        climbMotor = new Relay(CLIMB_MOTOR_PORT);
+        climbMotor = new Victor(ClimbConstants.CLIMB_MOTOR);
 
     }
 
     public void climbUp() {
-        climbMotor.set(Relay.Value.kForward);
+        climbMotor.set(1);
     }
 
     public void climbDown() {
-        climbMotor.set(Relay.Value.kReverse);
+        climbMotor.set(-1);
     }
 
     public void stop() {
-        climbMotor.set(Relay.Value.kOff);
+        climbMotor.stopMotor();
     }
 
 

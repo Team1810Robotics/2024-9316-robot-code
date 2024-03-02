@@ -5,24 +5,22 @@ public class Climb extends Command {
   
   
     private ClimbSubsystem climbSubsystem;
-    private String upDown;
+    private Boolean isUp;
 
     
-    public Climb(ClimbSubsystem climbSubsystem, String upDown) {
+    public Climb(ClimbSubsystem climbSubsystem, Boolean isUp) {
         this.climbSubsystem = climbSubsystem;
-        this.upDown = upDown;
+        this.isUp = isUp;
 
         addRequirements(climbSubsystem);
     }
 
     @Override
     public void execute() {
-        if(this.upDown == "Up"){
+        if(isUp == true){
             climbSubsystem.climbUp();
-        }
-        else{
+        } else {
             climbSubsystem.climbDown();
-    
         }
     }
 
