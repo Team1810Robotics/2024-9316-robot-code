@@ -18,6 +18,7 @@ import frc.robot.commands.TankDrive;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -29,11 +30,12 @@ import frc.robot.subsystems.GearShiftSubsystem;
 
 public class RobotContainer {
 
-  private DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
-  private ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
+  public final LightingSubsystem lightingSubsystem = new LightingSubsystem();
   
   private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
   private Joystick rightJoystick = new Joystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
@@ -44,8 +46,7 @@ public class RobotContainer {
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
 
-  private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+  
 
 
   public RobotContainer() {
@@ -75,28 +76,7 @@ public class RobotContainer {
      autoChooser.setDefaultOption("No Auto", new InstantCommand());
     Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
   }
- 
 
-
-    public Command getAutonomousCommand() {
-      return Commands.print("No Auto");
-    }
-
-
-
-  private void configureBindings() {}
-   
-  public void setShuffleboard() {
-   // Shuffleboard.getTab("Gen").addBoolean("Note Detector", () -> intakeSubsystem.getNoteDetector());
-    
-    autoChooser.setDefaultOption("No Auto", new InstantCommand());
-   // autoChooser.addOption("offline", new Offline(driveSubsystem));
-   // autoChooser.addOption("scoreOffline", new ScoreOffline(driveSubsystem, intakeSubsystem, shooterSubsystem));
-   // autoChooser.addOption("scoreOfflineScore", new ScoreOfflineScore(shooterSubsystem, intakeSubsystem, driveSubsystem));
-  //  autoChooser.addOption("score", new Score(shooterSubsystem, intakeSubsystem));
-    Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
-    
-  }
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
   }
