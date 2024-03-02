@@ -14,22 +14,22 @@ public class ShooterSubsystem  extends SubsystemBase {
 
 
 
-public ShooterSubsystem(){
-    leftShooter = new VictorSPX(ShooterConstants.LEFT_SHOOTER_MOTOR);
-    rightShooter = new VictorSPX(ShooterConstants.RIGHT_SHOOTER_MOTOR);
+    public ShooterSubsystem(){
+        leftShooter = new VictorSPX(ShooterConstants.LEFT_SHOOTER_MOTOR);
+        rightShooter = new VictorSPX(ShooterConstants.RIGHT_SHOOTER_MOTOR);
 
-}
+    }
 
-public void shoot(){
-    leftShooter.set(VictorSPXControlMode.PercentOutput, 1);
-    rightShooter.set(VictorSPXControlMode.PercentOutput, -1);
+    public void shoot(){
+        leftShooter.set(VictorSPXControlMode.PercentOutput, 1);
+        rightShooter.set(VictorSPXControlMode.PercentOutput, -1);
 
-}
+    }
 
-public void stop(){
-    leftShooter.set(VictorSPXControlMode.Disabled, 0);
-    rightShooter.set(VictorSPXControlMode.Disabled, 0);
-}
+    public void stop(){
+        leftShooter.set(VictorSPXControlMode.Disabled, 0);
+        rightShooter.set(VictorSPXControlMode.Disabled, 0);
+    }
 
 
 }

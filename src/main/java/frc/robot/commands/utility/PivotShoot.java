@@ -1,7 +1,8 @@
-package frc.robot.commands;
+package frc.robot.commands.utility;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.utility.Shoot;
+import frc.robot.commands.IntakeLift;
+import frc.robot.commands.shooter.Shoot;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;

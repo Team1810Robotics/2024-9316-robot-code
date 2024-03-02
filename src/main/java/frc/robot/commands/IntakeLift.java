@@ -6,15 +6,15 @@ import frc.robot.subsystems.LiftSubsystem;
 
 public class IntakeLift extends Command {
     
-    private LiftSubsystem pivotSubsystem;
+    private LiftSubsystem liftSubsystem;
 
     private boolean isUp;
 
     private boolean previous;
     private boolean wasDown;
 
-    public IntakeLift(LiftSubsystem pivotSubsystem, boolean isUp) {
-        this.pivotSubsystem = pivotSubsystem;
+    public IntakeLift(LiftSubsystem liftSubsystem, boolean isUp) {
+        this.liftSubsystem = liftSubsystem;
         this.isUp = isUp;
 
         wasDown = previous;
@@ -24,10 +24,10 @@ public class IntakeLift extends Command {
     @Override
     public void execute() {
         if (isUp) {
-            pivotSubsystem.pivotUp();
+            liftSubsystem.pivotUp();
             previous = false;
         } else {
-            pivotSubsystem.pivotDown();
+            liftSubsystem.pivotDown();
             previous = true;
         }
     }
@@ -46,6 +46,6 @@ public class IntakeLift extends Command {
     }
     @Override
     public void end(boolean interrupted) {
-        pivotSubsystem.pivotStop();
+        liftSubsystem.pivotStop();
     }
 }

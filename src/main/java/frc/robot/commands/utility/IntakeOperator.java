@@ -6,9 +6,9 @@ import frc.robot.commands.IntakeLift;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 
-public class LiftIntake extends SequentialCommandGroup {
+public class IntakeOperator extends SequentialCommandGroup {
     
-    public LiftIntake(IntakeSubsystem intakeSubsystem, LiftSubsystem pivotSubsystem) {
+    public IntakeOperator(IntakeSubsystem intakeSubsystem, LiftSubsystem pivotSubsystem) {
 
         addCommands(
             new Intake(intakeSubsystem, false, true),

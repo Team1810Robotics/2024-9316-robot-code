@@ -12,13 +12,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
-
-import frc.robot.commands.PivotShoot;
-
-import frc.robot.commands.ShootAmp;
-import frc.robot.commands.ShootSpeaker;
-
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.shooter.ShootAmp;
+import frc.robot.commands.shooter.ShootSpeaker;
+import frc.robot.commands.utility.IntakeOperator;
+import frc.robot.commands.utility.PivotShoot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -37,7 +35,7 @@ public class RobotContainer {
   private ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
-  private LiftSubsystem pivotSubsystem = new LiftSubsystem();
+  private LiftSubsystem liftSubsystem = new LiftSubsystem();
   private ChurroSubsystem churroSubsystem = new ChurroSubsystem();
   
   private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
@@ -56,16 +54,16 @@ public class RobotContainer {
         () -> -rightJoystick.getY(),
         driveSubsystem)
     );
-    // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
-   configureBindings();
+    // intakeSubsystem.setDefaultCommand(new IntakeOperator(intakeSubsystem, liftSubsystem));
+    configureBindings();
 
     setShuffleboard();
   }
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(new ShootSpeaker(shooterSubsystem, intakeSubsystem, churroSubsystem).withTimeout(7));
-    xboxController.leftBumper().onTrue(new ShootAmp(shooterSubsystem, intakeSubsystem, churroSubsystem).withTimeout(7));
+    xboxController.rightBumper().onTrue(new ShootSpeaker(shooterSubsystem, intakeSubsystem, churroSubsystem, liftSubsystem).withTimeout(7));
+    xboxController.leftBumper().onTrue(new ShootAmp(shooterSubsystem, intakeSubsystem, churroSubsystem, liftSubsystem).withTimeout(7));
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().whileTrue(new Intake(intakeSubsystem, false, false));
