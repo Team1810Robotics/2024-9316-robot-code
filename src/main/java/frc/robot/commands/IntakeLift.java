@@ -8,44 +8,48 @@ public class IntakeLift extends Command {
     
     private LiftSubsystem liftSubsystem;
 
-    private boolean isUp;
+    private boolean desiredPosition;
+    private boolean previousPosition;
 
-    private boolean previous;
-    private boolean wasDown;
+    public IntakeLift(LiftSubsystem liftSubsystem, boolean desiredPosition) {
+        this.desiredPosition = desiredPosition;
+        this.liftSubsystem = liftSubsystem;        
 
-    public IntakeLift(LiftSubsystem liftSubsystem, boolean isUp) {
-        this.liftSubsystem = liftSubsystem;
-        this.isUp = isUp;
+    }
 
-        wasDown = previous;
-        
+    /*We store the previous position variable in lift subsystem so it stays constant and 
+    doesn't get refreshed upon initialozing the command, 
+    then set a new (local) previousPosition variable equal to whatever it was */ 
+    @Override
+    public void initialize() {
+        previousPosition = liftSubsystem.previousPosition;
     }
 
     @Override
     public void execute() {
-        if (isUp) {
-            liftSubsystem.pivotUp();
-            previous = false;
+        if (desiredPosition) {
+            liftSubsystem.liftUp();
+            liftSubsystem.previousPosition = true;
         } else {
-            liftSubsystem.pivotDown();
-            previous = true;
+            liftSubsystem.liftDown();
+            liftSubsystem.previousPosition = false;
         }
     }
 
     @Override
     public boolean isFinished() {
-        if (isUp && wasDown) {
-            return false;
-        } else if (isUp && !wasDown) {
+        if (previousPosition && desiredPosition) {
             return true;
-        } else if (!isUp && wasDown) {
+        } else if (!previousPosition && !desiredPosition) {
+            return true;
+        } else if (previousPosition && !desiredPosition) {
             return false;
         } else {
-            return true;
-        }
+            return false;
+        } 
     }
     @Override
     public void end(boolean interrupted) {
-        liftSubsystem.pivotStop();
+        liftSubsystem.liftStop();
     }
 }
