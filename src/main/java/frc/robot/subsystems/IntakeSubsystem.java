@@ -49,7 +49,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void runHorizontalIntake() {
         leftHorzontialIntakeMotors.set(Relay.Value.kForward);
-        rightHorzontialIntakeMotors.set(Relay.Value.kReverse);
+        rightHorzontialIntakeMotors.set(Relay.Value.kForward);
     }
 
 

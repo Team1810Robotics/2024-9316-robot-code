@@ -20,7 +20,7 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  PhotonCamera camera = new PhotonCamera("photonvision");
+  // PhotonCamera camera = new PhotonCamera("photonvision");
 
   @Override
   public void robotInit() {
@@ -67,19 +67,19 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    var result = camera.getLatestResult();    
-    boolean hasTargets = result.hasTargets();
-    PhotonTrackedTarget target = result.getBestTarget();
-    if(hasTargets == true)
-    {
-      double yaw = target.getYaw();
-      double pitch = target.getPitch();
-      double area = target.getArea();
-      double skew = target.getSkew();
-      int targetID = target.getFiducialId();
-      //Transform2d pose = target.getCameraToTarget();
-      //List<TargetCorner> corners = target.getCorners();
-    }
+    // var result = camera.getLatestResult();    
+    // boolean hasTargets = result.hasTargets();
+    // PhotonTrackedTarget target = result.getBestTarget();
+    // if(hasTargets == true)
+    // {
+    //   double yaw = target.getYaw();
+    //   double pitch = target.getPitch();
+    //   double area = target.getArea();
+    //   double skew = target.getSkew();
+    //   int targetID = target.getFiducialId();
+    //   //Transform2d pose = target.getCameraToTarget();
+    //   //List<TargetCorner> corners = target.getCorners();
+    // }
   }
 
   @Override

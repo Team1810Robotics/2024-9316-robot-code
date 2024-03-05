@@ -45,8 +45,8 @@ public class DriveSubsystem extends SubsystemBase {
 
         var speeds = DifferentialDrive.tankDriveIK(leftSpeed, rightSpeed, true);
 
-        backLeftMotor.set(speeds.left);
-        backRightMotor.set(speeds.right);
+        frontLeftMotor.set(speeds.left);
+        frontRightMotor.set(speeds.right);
 
 
     }
