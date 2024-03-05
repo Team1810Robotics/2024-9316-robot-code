@@ -6,18 +6,19 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.commands.Churro;
 import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
+import frc.robot.commands.IntakeLift;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAmp;
 import frc.robot.commands.shooter.ShootSpeaker;
-import frc.robot.commands.utility.IntakeOperator;
-import frc.robot.commands.utility.PivotShoot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -47,6 +48,13 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
+  private ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
+  private ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
+
+  private GenericEntry liftUp = teleopTab.add("Manual Lift", false).getEntry();
+  private GenericEntry churroUp = teleopTab.add("Manual Churro", false).getEntry();
+
+
 
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(
@@ -72,15 +80,28 @@ public class RobotContainer {
 
     leftJoystickButton_11.whileTrue(new GearShift(gearShiftSubsystem, true))
                           .whileFalse(new GearShift(gearShiftSubsystem, false));
+
+    if (liftUp.getBoolean(false)) {
+      xboxController.a().whileTrue(new IntakeLift(liftSubsystem, false));
+      xboxController.y().whileTrue(new IntakeLift(liftSubsystem, true));
+    }
+
+    if (churroUp.getBoolean(false)) {
+      xboxController.a().whileTrue(new Churro(churroSubsystem, false));
+      xboxController.y().whileTrue(new Churro(churroSubsystem, true));
+    }
   }
 
 
   public void setShuffleboard() {
-    Shuffleboard.getTab("Teleoperated").addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
-    Shuffleboard.getTab("Teleoperated").addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
+
+    teleopTab.addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
+    teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
+
+
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
-    Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
+    autoTab.add("Auto Chooser", autoChooser);
   }
 
   public Command getAutonomousCommand() {
