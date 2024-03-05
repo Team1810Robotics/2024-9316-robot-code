@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.shooter.Shoot;
 import frc.robot.commands.shooter.ShootAmp;
 import frc.robot.commands.shooter.ShootSpeaker;
 import frc.robot.commands.utility.IntakeOperator;
@@ -62,11 +63,11 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(new ShootSpeaker(shooterSubsystem, intakeSubsystem, churroSubsystem, liftSubsystem).withTimeout(7));
-    xboxController.leftBumper().onTrue(new ShootAmp(shooterSubsystem, intakeSubsystem, churroSubsystem, liftSubsystem).withTimeout(7));
+    xboxController.rightBumper().onTrue(new Shoot(intakeSubsystem, shooterSubsystem).withTimeout(5));
+    xboxController.leftBumper().onTrue(new Shoot(intakeSubsystem, shooterSubsystem).withTimeout(5));
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
-    xboxController.b().whileTrue(new Intake(intakeSubsystem, false, false));
+    xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
 
 
     leftJoystickButton_11.whileTrue(new GearShift(gearShiftSubsystem, true))

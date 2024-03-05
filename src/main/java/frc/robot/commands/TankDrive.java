@@ -27,7 +27,6 @@ public class TankDrive extends Command {
             deadband(leftInput.getAsDouble()), 
             deadband(rightInput.getAsDouble())
             );
-        System.out.println("test");
     }
     
     public double deadband(double value) {

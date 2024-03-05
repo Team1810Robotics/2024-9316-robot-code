@@ -48,6 +48,10 @@ public class DriveSubsystem extends SubsystemBase {
         frontLeftMotor.set(speeds.left);
         frontRightMotor.set(speeds.right);
 
+        if (leftSpeed >= .05) {
+            System.out.println("drive left");
+        }
+
 
     }
 

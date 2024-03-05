@@ -48,8 +48,8 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void runHorizontalIntake() {
-        leftHorzontialIntakeMotors.set(Relay.Value.kForward);
-        rightHorzontialIntakeMotors.set(Relay.Value.kForward);
+        leftHorzontialIntakeMotors.set(Relay.Value.kReverse);
+        rightHorzontialIntakeMotors.set(Relay.Value.kReverse);
     }
 
 
@@ -58,8 +58,8 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void reverseIntake() {
-        leftHorzontialIntakeMotors.set(Relay.Value.kReverse);
-        rightHorzontialIntakeMotors.set(Relay.Value.kReverse);
+        leftHorzontialIntakeMotors.set(Relay.Value.kForward);
+        rightHorzontialIntakeMotors.set(Relay.Value.kForward);
     }
 
     public void stop() {
