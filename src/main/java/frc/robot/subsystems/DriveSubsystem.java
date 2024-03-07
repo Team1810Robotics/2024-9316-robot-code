@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
 import com.ctre.phoenix.sensors.PigeonIMU;
@@ -16,17 +18,11 @@ import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
     
-    private PWMSparkMax backLeftMotor;
-    private PWMSparkMax frontLeftMotor;
-
-    private PWMSparkMax backRightMotor;
-    private PWMSparkMax frontRightMotor;
 
     private PigeonIMU pigeon;
 
@@ -34,20 +30,26 @@ public class DriveSubsystem extends SubsystemBase {
 
 
 
+    private CANSparkMax backLeftMotor;
+    private CANSparkMax frontLeftMotor;
+    private CANSparkMax backRightMotor;
+    private CANSparkMax frontRightMotor;
+
 
     public DriveSubsystem() {
-        backLeftMotor = new PWMSparkMax(DriveConstants.BACK_LEFT_MOTOR);
-        frontLeftMotor = new PWMSparkMax(DriveConstants.FRONT_LEFT_MOTOR);
+        backLeftMotor = new CANSparkMax(DriveConstants.BACK_LEFT_MOTOR, MotorType.kBrushless);
+        frontLeftMotor = new CANSparkMax(DriveConstants.FRONT_LEFT_MOTOR, MotorType.kBrushless);
+        backRightMotor = new CANSparkMax(DriveConstants.BACK_RIGHT_MOTOR, MotorType.kBrushless);
+        frontRightMotor = new CANSparkMax(DriveConstants.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
 
 
-        backRightMotor = new PWMSparkMax(DriveConstants.BACK_RIGHT_MOTOR);
-        frontRightMotor = new PWMSparkMax(DriveConstants.FRONT_RIGHT_MOTOR);
 
-        backLeftMotor.addFollower(frontLeftMotor);
-        backRightMotor.addFollower(frontRightMotor);
+        backLeftMotor.follow(frontLeftMotor);
+        backRightMotor.follow(frontRightMotor);
 
-        backLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
-        backRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
+        frontLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
+        frontRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
+
 
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
 
@@ -75,9 +77,8 @@ public class DriveSubsystem extends SubsystemBase {
 
         var speeds = DifferentialDrive.tankDriveIK(leftSpeed, rightSpeed, true);
 
-        backLeftMotor.set(speeds.left);
-        backRightMotor.set(speeds.right);
-
+        frontLeftMotor.set(speeds.left);
+        frontRightMotor.set(speeds.right);
 
     }
 
@@ -115,8 +116,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void stop() {
-        backLeftMotor.stopMotor();
-        backRightMotor.stopMotor();
+        frontLeftMotor.stopMotor();
+        frontRightMotor.stopMotor();
     }
 
 }
