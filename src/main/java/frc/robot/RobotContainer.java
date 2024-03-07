@@ -9,6 +9,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -68,7 +69,9 @@ public class RobotContainer {
     // Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
   }
  
-
+  public Command getAutonomousCommand() {
+    return Commands.print("nothin");
+  }
 
 
 
