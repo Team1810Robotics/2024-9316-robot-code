@@ -23,7 +23,7 @@ public class TankDrive extends Command {
 
     @Override
     public void execute() {
-        driveSubsystem.drive(
+        driveSubsystem.tankDrive(
             deadband(leftInput.getAsDouble()), 
             deadband(rightInput.getAsDouble())
             );

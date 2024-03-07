@@ -9,18 +9,33 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
 import frc.robot.commands.TankDrive;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.DriveSubsystem;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 
 public class RobotContainer {
   private DriveSubsystem driveSubsystem = new DriveSubsystem();
 
   private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
   private Joystick rightJoystick = new Joystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
+
+  private JoystickButton leftJoystickButton_11 = new JoystickButton(leftJoystick, 11);
+  private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
+
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(
@@ -30,28 +45,32 @@ public class RobotContainer {
         driveSubsystem)
     );
     configureBindings();
+    setShuffleboard();
   }
 
-    private final SendableChooser<Command> autoChooser;
+  private void configureBindings() {
+    // xboxController.rightBumper().onTrue(new ShootSpeaker(shooterSubsystem, intakeSubsystem, churroSubsystem).withTimeout(7));
+    // xboxController.leftBumper().onTrue(new ShootAmp(shooterSubsystem, intakeSubsystem, churroSubsystem).withTimeout(7));
+    
+    // xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
+    // xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
+
+    // leftJoystickButton_11.whileTrue(new GearShift(gearShiftSubsystem, true))
+    //                       .whileFalse(new GearShift(gearShiftSubsystem, false));
+  }
 
 
-   
-    public RobotContainer() {
-        // ...
+  public void setShuffleboard() {
+    // Shuffleboard.getTab("Teleoperated").addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
+    // Shuffleboard.getTab("Teleoperated").addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
 
-        // Build an auto chooser. This will use Commands.none() as the default option.
-        autoChooser = AutoBuilder.buildAutoChooser();
-
-        // Another option that allows you to specify the default auto by its name
-        // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-
-        SmartDashboard.putData("Auto Chooser", autoChooser);
-    }
+    // autoChooser.setDefaultOption("No Auto", new InstantCommand());
+    // Shuffleboard.getTab("Auto").add("Auto Chooser", autoChooser);
+  }
+ 
 
 
-    public Command getAutonomousCommand() {
-      return new PathPlannerAuto("9316_Autonomous");
-    }
+
 
 
   

@@ -1,7 +1,20 @@
 package frc.robot.subsystems;
 
 
+
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,6 +27,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     private PWMSparkMax backRightMotor;
     private PWMSparkMax frontRightMotor;
+
+    private PigeonIMU pigeon;
+
+    private DifferentialDriveOdometry odometry;
 
 
 
@@ -32,11 +49,27 @@ public class DriveSubsystem extends SubsystemBase {
         backLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
         backRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
 
+        pigeon = new PigeonIMU(DriveConstants.PIGEON);
+
+        AutoBuilder.configureRamsete(
+            this::getPose, 
+            this::resetPose, 
+            this::getSpeeds, 
+            this::arcadeDrive, 
+            new ReplanningConfig(), 
+            () -> {
+                var alliance = DriverStation.getAlliance();
+                if (alliance.isPresent()) {
+                    return alliance.get() == DriverStation.Alliance.Red;
+                }
+                return false;
+            }, 
+            this);
 
 
     }
 
-    public void drive(double leftSpeed, double rightSpeed) {
+    public void tankDrive(double leftSpeed, double rightSpeed) {
         leftSpeed = MathUtil.applyDeadband(leftSpeed, .02);
         rightSpeed = MathUtil.applyDeadband(rightSpeed, .02);
 
@@ -46,6 +79,39 @@ public class DriveSubsystem extends SubsystemBase {
         backRightMotor.set(speeds.right);
 
 
+    }
+
+    public void arcadeDrive(ChassisSpeeds speeds) {
+        double forwardSpeed = MathUtil.applyDeadband(speeds.vxMetersPerSecond, DriveConstants.DEADBAND);
+        double rotationSpeed = MathUtil.applyDeadband(speeds.omegaRadiansPerSecond, DriveConstants.DEADBAND);
+
+        DifferentialDrive.arcadeDriveIK(forwardSpeed, rotationSpeed, true);
+    }
+
+    private Pose2d getPose() {
+        return odometry.getPoseMeters();
+    }
+
+    private DifferentialDriveWheelPositions getWheelPositions() {
+        DifferentialDriveWheelPositions positions = new DifferentialDriveWheelPositions(null, null);
+
+        return positions;
+    }
+
+    private void resetPose(Pose2d pose) {
+        odometry.resetPosition(getRoations(), getWheelPositions(), pose);
+    }
+
+    private Rotation2d getRoations() {
+        var rotations = new Rotation2d(Math.toRadians(pigeon.getYaw()));
+
+       return rotations;
+    }
+
+    public ChassisSpeeds getSpeeds() {
+        ChassisSpeeds speeds = new ChassisSpeeds();
+
+        return speeds;
     }
 
     public void stop() {
