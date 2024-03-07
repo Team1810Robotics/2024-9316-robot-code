@@ -22,7 +22,7 @@ public class TankDrive extends Command {
 
     @Override
     public void execute() {
-        driveSubsystem.drive(rightInput.getAsDouble(), leftInput.getAsDouble());
+        driveSubsystem.tankDrive(rightInput.getAsDouble(), leftInput.getAsDouble());
     }
 
     @Override
