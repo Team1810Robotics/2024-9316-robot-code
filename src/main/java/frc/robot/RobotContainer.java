@@ -15,7 +15,8 @@ import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
 import frc.robot.commands.IntakeLift;
 import frc.robot.commands.TankDrive;
-import frc.robot.commands.shooter.Shoot;
+import frc.robot.commands.shooter.ShootSpeaker;
+import frc.robot.commands.shooter.ShooterAmp;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -52,7 +53,8 @@ public class RobotContainer {
       new TankDrive(
         () -> leftJoystick.getY(), 
         () -> rightJoystick.getY(), 
-        driveSubsystem
+        driveSubsystem,
+        intakeSubsystem
         )
     );
 
@@ -65,14 +67,11 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(new Shoot(intakeSubsystem, shooterSubsystem).withTimeout(5));
-    xboxController.leftBumper().onTrue(new Shoot(intakeSubsystem, shooterSubsystem).withTimeout(5));
+    xboxController.rightBumper().onTrue(new ShootSpeaker(shooterSubsystem, intakeSubsystem, churroSubsystem, liftSubsystem).withTimeout(5));
+    xboxController.leftBumper().onTrue(new ShooterAmp(intakeSubsystem, shooterSubsystem).withTimeout(5));
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
-    xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
-
-
-
+    xboxController.b().whileTrue(new Intake(intakeSubsystem, false, false));
 
     leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
                           .whileFalse(new GearShift(gearShiftSubsystem, false));
@@ -80,12 +79,17 @@ public class RobotContainer {
     xboxController.a().whileTrue(new IntakeLift(liftSubsystem, false));
     xboxController.y().whileTrue(new IntakeLift(liftSubsystem, true));
 
+    xboxController.leftTrigger().whileTrue(new Churro(churroSubsystem, false));
+    xboxController.rightTrigger().whileTrue(new Churro(churroSubsystem, true));
+
   }
 
 
   public void setShuffleboard() {
     teleopTab.addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
+    teleopTab.addBoolean("leftIR", () -> !intakeSubsystem.getLeftVerticalIntakeSensor());
+    teleopTab.addBoolean("RightIR", () -> !intakeSubsystem.getRightVerticalIntakeSensor());
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     autoTab.add("Auto Chooser", autoChooser);

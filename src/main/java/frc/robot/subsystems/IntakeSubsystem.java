@@ -4,6 +4,7 @@ import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -27,8 +28,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
         externalNoteDetector = new DigitalInput(IntakeConstants.EXTERNAL_SENSOR);
         internalNoteDetector = new DigitalInput(IntakeConstants.INTERNAL_SENSOR);
-        // leftVerticalIntakeSensor = new DigitalInput(IntakeConstants.LEFT_VERTICAL_SENSOR);
-        // rightVerticalIntakeSensor = new DigitalInput(IntakeConstants.RIGHT_VERTICAL_SENSOR);
+        leftVerticalIntakeSensor = new DigitalInput(IntakeConstants.LEFT_VERTICAL_SENSOR);
+        rightVerticalIntakeSensor = new DigitalInput(IntakeConstants.RIGHT_VERTICAL_SENSOR);
 
     }
 
@@ -41,11 +42,13 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void verticalIntakeOperator() {
-        boolean isLeftNote = getLeftVerticalIntakeSensor();
-        boolean isRightNote = getRightVerticalIntakeSensor();
-
+        boolean isLeftNote = !getLeftVerticalIntakeSensor();
+        boolean isRightNote = !getRightVerticalIntakeSensor();
+        
         if (isLeftNote || isRightNote) {
             runVerticalIntake();
+        } else {
+            stop();
         }
     }
 
@@ -85,7 +88,11 @@ public class IntakeSubsystem extends SubsystemBase {
     public boolean getRightVerticalIntakeSensor() {
         return rightVerticalIntakeSensor.get();
     }
-    
+
+    @Override
+    public void periodic() {
+        verticalIntakeOperator();
+    }
 
 
 }

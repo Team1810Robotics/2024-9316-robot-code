@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
 
@@ -22,21 +23,22 @@ public class Intake extends Command {
     public void execute() {
         //restore this once sensors work
         
-        // if (isReversed && ignoreNote) {
-        //     intakeSubsystem.reverseIntake();
-        // } else if (!ignoreNote && !isReversed){
-        //     intakeSubsystem.horizontalIntakeOperator();
-        //     intakeSubsystem.verticalIntakeOperator();
-        // } else if (!isReversed && ignoreNote){
-        //     intakeSubsystem.runHorizontalIntake();
-        // }
+        if (isReversed && ignoreNote) {
+            intakeSubsystem.reverseIntake();
+        } else if (!ignoreNote && !isReversed){
+            intakeSubsystem.horizontalIntakeOperator();
+            intakeSubsystem.verticalIntakeOperator();
+        } else if (!isReversed && ignoreNote){
+            intakeSubsystem.runHorizontalIntake();
+        }
 
         if (isReversed) {
             intakeSubsystem.reverseIntake();
         } else {
             intakeSubsystem.runHorizontalIntake(); 
             intakeSubsystem.runVerticalIntake();
-            System.out.println("verts run");
+            // System.out.println("verts run");
+
         }
 
     }

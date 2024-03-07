@@ -16,7 +16,7 @@ public class ShootAmp extends SequentialCommandGroup {
             //TODO: Add timeouts
             // new Churro(churroSubsystem, true),
             // new IntakeLift(liftSubsystem, false),
-            new Shoot(intakeSubsystem, shooterSubsystem)
+            new ShooterAmp(intakeSubsystem, shooterSubsystem)
         );
     }
 }

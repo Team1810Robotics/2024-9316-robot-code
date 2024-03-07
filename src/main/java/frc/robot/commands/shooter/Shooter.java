@@ -6,15 +6,22 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class Shooter extends Command {
     private ShooterSubsystem shooterSubsystem;
 
-    public Shooter(ShooterSubsystem shooterSubsystem) {
+    private boolean amp;
+
+    public Shooter(ShooterSubsystem shooterSubsystem, boolean amp) {
         this.shooterSubsystem = shooterSubsystem;
+        this.amp = amp;
 
         addRequirements(shooterSubsystem);
     }
 
     @Override 
     public void execute() {
-        shooterSubsystem.shoot();
+        if (amp) {
+            shooterSubsystem.shootAmp();
+        } else {
+            shooterSubsystem.shootSpeaker();
+        }
     }
 
     @Override
