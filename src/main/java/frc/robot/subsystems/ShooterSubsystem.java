@@ -20,11 +20,12 @@ public class ShooterSubsystem  extends SubsystemBase {
 
     }
 
-    public void shoot(){
-        leftShooter.set(VictorSPXControlMode.PercentOutput, -1);
-        rightShooter.set(VictorSPXControlMode.PercentOutput, 1);
+    public void shoot(double speed){
+        leftShooter.set(VictorSPXControlMode.PercentOutput, -speed);
+        rightShooter.set(VictorSPXControlMode.PercentOutput, speed);
 
     }
+
 
     public void stop(){
         leftShooter.set(VictorSPXControlMode.Disabled, 0);

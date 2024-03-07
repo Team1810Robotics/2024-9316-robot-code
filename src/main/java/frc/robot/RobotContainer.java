@@ -14,8 +14,8 @@ import frc.robot.commands.Churro;
 import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
 import frc.robot.commands.IntakeLift;
+import frc.robot.commands.Shooter;
 import frc.robot.commands.TankDrive;
-import frc.robot.commands.shooter.Shoot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -24,6 +24,7 @@ import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.GearShiftSubsystem;
 
 
@@ -57,7 +58,8 @@ public class RobotContainer {
     );
 
 
-    // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
+    intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false).andThen(new IntakeLift(liftSubsystem, false)));
+
     configureBindings();
 
     setShuffleboard();
@@ -65,8 +67,8 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(new Shoot(intakeSubsystem, shooterSubsystem).withTimeout(5));
-    xboxController.leftBumper().onTrue(new Shoot(intakeSubsystem, shooterSubsystem).withTimeout(5));
+    xboxController.rightBumper().onTrue(shootSpeaker());
+    xboxController.leftBumper().onTrue(shootAmp());
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
@@ -89,6 +91,14 @@ public class RobotContainer {
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     autoTab.add("Auto Chooser", autoChooser);
+  }
+
+  public Command shootSpeaker() {
+    return (new Churro(churroSubsystem, false).alongWith(new IntakeLift(liftSubsystem, false))).andThen(new Shooter(1, shooterSubsystem).alongWith(new WaitCommand(1).andThen(new Intake(intakeSubsystem, false, true))));
+  }
+
+  public Command shootAmp() {
+    return (new Churro(churroSubsystem, true).alongWith(new IntakeLift(liftSubsystem, false))).andThen(new Shooter(.5, shooterSubsystem).alongWith(new WaitCommand(1).andThen(new Intake(intakeSubsystem, false, true))));
   }
 
   public Command getAutonomousCommand() {
