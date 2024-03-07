@@ -20,7 +20,7 @@ public class Intake extends Command {
 
     @Override
     public void execute() {
-        //restore this once beambreak is operational
+        //restore this once sensors work
         
         // if (isReversed && ignoreNote) {
         //     intakeSubsystem.reverseIntake();
@@ -30,12 +30,15 @@ public class Intake extends Command {
         // } else if (!isReversed && ignoreNote){
         //     intakeSubsystem.runHorizontalIntake();
         // }
+
         if (isReversed) {
             intakeSubsystem.reverseIntake();
         } else {
-            intakeSubsystem.runHorizontalIntake();
+            intakeSubsystem.runHorizontalIntake(); 
             intakeSubsystem.runVerticalIntake();
+            System.out.println("verts run");
         }
+
     }
 
     @Override

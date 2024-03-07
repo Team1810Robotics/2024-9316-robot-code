@@ -7,43 +7,45 @@ import frc.robot.subsystems.ChurroSubsystem;
 public class Churro extends Command {
     private ChurroSubsystem churroSubsystem;
 
-    private boolean isUp;
 
-    private boolean isDown;
+    //up is true, down is false
+    private boolean desiredPosition;
+    private boolean previousPosition;
 
-    private boolean previous;
-
-    public Churro(ChurroSubsystem churroSubsystem, boolean isUp) {
+    public Churro(ChurroSubsystem churroSubsystem, boolean desiredPosition) {
         this.churroSubsystem = churroSubsystem;
-        this.isUp = isUp;
+        this.desiredPosition = desiredPosition;
 
-        previous = isDown;
 
         addRequirements(churroSubsystem);
     }
 
     @Override
+    public void initialize() {
+        previousPosition = churroSubsystem.previousPosition;
+    }
+    @Override
     public void execute() {
-        if (isUp) {
+        if (desiredPosition) {
             churroSubsystem.churroUp();
-            isDown = false;
+            previousPosition = false;
         } else {
             churroSubsystem.churroDown();
-            isDown = true;
+            previousPosition = true;
         }
 
     }
 
     @Override
     public boolean isFinished() {
-        if (previous && !isUp) {
+        if (previousPosition && desiredPosition) {
             return true;
-        } else if (!previous && !isUp){
-            return false;
-        } else if (previous && isUp) {
+        } else if (!previousPosition && !desiredPosition){
+            return true;
+        } else if (!previousPosition && desiredPosition) {
             return false;
         } else {
-            return true;
+            return false;
         }
     }
 

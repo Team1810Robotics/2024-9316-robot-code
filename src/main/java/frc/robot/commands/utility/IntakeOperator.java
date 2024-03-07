@@ -8,12 +8,12 @@ import frc.robot.subsystems.LiftSubsystem;
 
 public class IntakeOperator extends SequentialCommandGroup {
     
-    public IntakeOperator(IntakeSubsystem intakeSubsystem, LiftSubsystem pivotSubsystem) {
+    public IntakeOperator(IntakeSubsystem intakeSubsystem, LiftSubsystem liftSubsystem) {
 
         addCommands(
             new Intake(intakeSubsystem, false, true),
             //TODO: add timeout
-            new IntakeLift(pivotSubsystem, true)
+            new IntakeLift(liftSubsystem, true)
         );
     }
 }

@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,8 +27,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
         externalNoteDetector = new DigitalInput(IntakeConstants.EXTERNAL_SENSOR);
         internalNoteDetector = new DigitalInput(IntakeConstants.INTERNAL_SENSOR);
-        leftVerticalIntakeSensor = new DigitalInput(IntakeConstants.LEFT_VERTICAL_SENSOR);
-        rightVerticalIntakeSensor = new DigitalInput(IntakeConstants.RIGHT_VERTICAL_SENSOR);
+        // leftVerticalIntakeSensor = new DigitalInput(IntakeConstants.LEFT_VERTICAL_SENSOR);
+        // rightVerticalIntakeSensor = new DigitalInput(IntakeConstants.RIGHT_VERTICAL_SENSOR);
 
     }
 
@@ -48,7 +50,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void runHorizontalIntake() {
-        leftHorzontialIntakeMotors.set(Relay.Value.kReverse);
+        leftHorzontialIntakeMotors.set(Relay.Value.kForward);
         rightHorzontialIntakeMotors.set(Relay.Value.kReverse);
     }
 
@@ -58,7 +60,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void reverseIntake() {
-        leftHorzontialIntakeMotors.set(Relay.Value.kForward);
+        leftHorzontialIntakeMotors.set(Relay.Value.kReverse);
         rightHorzontialIntakeMotors.set(Relay.Value.kForward);
     }
 

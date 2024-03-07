@@ -6,9 +6,8 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Churro;
@@ -17,8 +16,6 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.IntakeLift;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.shooter.Shoot;
-import frc.robot.commands.shooter.ShootAmp;
-import frc.robot.commands.shooter.ShootSpeaker;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -27,7 +24,6 @@ import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.GearShiftSubsystem;
 
 
@@ -40,10 +36,9 @@ public class RobotContainer {
   private LiftSubsystem liftSubsystem = new LiftSubsystem();
   private ChurroSubsystem churroSubsystem = new ChurroSubsystem();
   
-  private Joystick leftJoystick = new Joystick(OperatorConstants.LEFT_JOYSTICK_PORT);
-  private Joystick rightJoystick = new Joystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
+  private CommandJoystick leftJoystick = new CommandJoystick(OperatorConstants.LEFT_JOYSTICK_PORT);
+  private CommandJoystick rightJoystick = new CommandJoystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
 
-  private JoystickButton leftJoystickButton_11 = new JoystickButton(leftJoystick, 11);
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -51,19 +46,18 @@ public class RobotContainer {
   private ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   private ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
 
-  private GenericEntry liftUp = teleopTab.add("Manual Lift", false).getEntry();
-  private GenericEntry churroUp = teleopTab.add("Manual Churro", false).getEntry();
-
-
 
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(
       new TankDrive(
-        () -> -leftJoystick.getY(),
-        () -> -rightJoystick.getY(),
-        driveSubsystem)
+        () -> leftJoystick.getY(), 
+        () -> rightJoystick.getY(), 
+        driveSubsystem
+        )
     );
-    // intakeSubsystem.setDefaultCommand(new IntakeOperator(intakeSubsystem, liftSubsystem));
+
+
+    // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
     configureBindings();
 
     setShuffleboard();
@@ -78,27 +72,20 @@ public class RobotContainer {
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
 
 
-    leftJoystickButton_11.whileTrue(new GearShift(gearShiftSubsystem, true))
+
+
+    leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
                           .whileFalse(new GearShift(gearShiftSubsystem, false));
 
-    if (liftUp.getBoolean(false)) {
-      xboxController.a().whileTrue(new IntakeLift(liftSubsystem, false));
-      xboxController.y().whileTrue(new IntakeLift(liftSubsystem, true));
-    }
+    xboxController.a().whileTrue(new IntakeLift(liftSubsystem, false));
+    xboxController.y().whileTrue(new IntakeLift(liftSubsystem, true));
 
-    if (churroUp.getBoolean(false)) {
-      xboxController.a().whileTrue(new Churro(churroSubsystem, false));
-      xboxController.y().whileTrue(new Churro(churroSubsystem, true));
-    }
   }
 
 
   public void setShuffleboard() {
-
     teleopTab.addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
-
-
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     autoTab.add("Auto Chooser", autoChooser);

@@ -34,10 +34,10 @@ public class Constants {
        public static final int RIGHT_INTAKE_MOTORS = 1;
        public static final int VERTICAL_INTAKE_MOTORS = 2;
 
-       public static final int INTERNAL_SENSOR = 2;
-       public static final int EXTERNAL_SENSOR = 3;
-       public static final int LEFT_VERTICAL_SENSOR = 0;
-       public static final int RIGHT_VERTICAL_SENSOR = 1;
+       public static final int INTERNAL_SENSOR = 0;
+       public static final int EXTERNAL_SENSOR = 1;
+    //    public static final int LEFT_VERTICAL_SENSOR = 0;
+    //    public static final int RIGHT_VERTICAL_SENSOR = 1;
 
        public static final int PIVOT_MOTOR = 5;
 

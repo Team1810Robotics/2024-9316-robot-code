@@ -12,8 +12,8 @@ public class ShootSpeaker extends SequentialCommandGroup{
     public ShootSpeaker(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem, ChurroSubsystem churroSubsystem, LiftSubsystem liftSubsystem) {
 
         addCommands(
-            new Churro(churroSubsystem, false),
-            new IntakeLift(liftSubsystem, false),
+            // new Churro(churroSubsystem, false),
+            // new IntakeLift(liftSubsystem, false),
             new Shoot(intakeSubsystem, shooterSubsystem)
         );
     }

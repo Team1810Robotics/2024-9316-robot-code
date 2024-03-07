@@ -18,7 +18,7 @@ public class LiftSubsystem extends SubsystemBase {
     }
 
     public void liftUp(){
-        liftMotor.set(VictorSPXControlMode.PercentOutput, .5);
+        liftMotor.set(VictorSPXControlMode.PercentOutput, -.5);
     }
 
     public void liftDown(){
