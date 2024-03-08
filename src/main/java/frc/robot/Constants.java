@@ -41,4 +41,8 @@ public class Constants {
 
         
     }
+    public class LightingConstants{
+        public static final int LED_LIGHTING = 2;
+        public static final double LED_GREEN = 0.77;
+    }
 }
