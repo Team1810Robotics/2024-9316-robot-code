@@ -16,7 +16,7 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.IntakeLift;
 import frc.robot.commands.Shooter;
 import frc.robot.commands.TankDrive;
-import frc.robot.commands.shooter.Shoot;
+import frc.robot.commands.auto.SpeakerOffline;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -45,8 +45,8 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-  private ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
-  private ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
+  public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
+  public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
 
 
   public RobotContainer() {
@@ -54,8 +54,7 @@ public class RobotContainer {
       new TankDrive(
         () -> leftJoystick.getY(), 
         () -> rightJoystick.getY(), 
-        driveSubsystem,
-        intakeSubsystem
+        driveSubsystem
         )
     );
 
@@ -69,8 +68,8 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(new Shoot(intakeSubsystem, shooterSubsystem).withTimeout(5));
-    xboxController.leftBumper().onTrue(new Shoot(intakeSubsystem, shooterSubsystem).withTimeout(5));
+    xboxController.rightBumper().onTrue(shootSpeaker());
+    xboxController.leftBumper().onTrue(shootAmp());
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().whileTrue(new Intake(intakeSubsystem, false, false));
@@ -78,6 +77,8 @@ public class RobotContainer {
     leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
                           .whileFalse(new GearShift(gearShiftSubsystem, false));
 
+
+    //for testing
     xboxController.a().whileTrue(new IntakeLift(liftSubsystem, false));
     xboxController.y().whileTrue(new IntakeLift(liftSubsystem, true));
 
@@ -95,6 +96,7 @@ public class RobotContainer {
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     autoTab.add("Auto Chooser", autoChooser);
+    autoChooser.addOption("Speaker Offline", new SpeakerOffline(driveSubsystem, shooterSubsystem, intakeSubsystem));
   }
 
   public Command shootSpeaker() {
