@@ -67,7 +67,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-      m_robotContainer.lightingSubsystem.allianceLights();
 
   }
 
@@ -85,6 +84,12 @@ public class Robot extends TimedRobot {
       int targetID = target.getFiducialId();
       //Transform2d pose = target.getCameraToTarget();
       //List<TargetCorner> corners = target.getCorners();
+    }
+
+    if (m_robotContainer.intakeSubsystem.getInternalNoteDetector()) {
+      m_robotContainer.lightingSubsystem.lightsGreen();
+    } else {
+      m_robotContainer.lightingSubsystem.allianceLights();
     }
   }
 

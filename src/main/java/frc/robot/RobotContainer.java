@@ -33,7 +33,7 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
 
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
   public final LightingSubsystem lightingSubsystem = new LightingSubsystem();
   
