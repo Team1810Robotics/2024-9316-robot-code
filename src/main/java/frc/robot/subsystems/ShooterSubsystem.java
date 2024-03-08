@@ -14,8 +14,6 @@ public class ShooterSubsystem  extends SubsystemBase {
     private VictorSPX leftShooter;
     private VictorSPX rightShooter;
 
-    private double ampShoot = 1;
-
 
 
     public ShooterSubsystem(){
@@ -26,15 +24,10 @@ public class ShooterSubsystem  extends SubsystemBase {
         Shuffleboard.getTab("shooter").addNumber("rightShooter", () -> rightShooter.getMotorOutputPercent());
     }
 
-    public void shootSpeaker(){
-        leftShooter.set(VictorSPXControlMode.PercentOutput, -1);
-        rightShooter.set(VictorSPXControlMode.PercentOutput, 1);
 
-    }
-
-    public void shootAmp() {
-        leftShooter.set(VictorSPXControlMode.PercentOutput, -ampShoot);
-        rightShooter.set(VictorSPXControlMode.PercentOutput, ampShoot);
+    public void shoot(double speed){
+        leftShooter.set(VictorSPXControlMode.PercentOutput, -speed);
+        rightShooter.set(VictorSPXControlMode.PercentOutput, speed);
 
     }
 
