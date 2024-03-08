@@ -41,6 +41,12 @@ public class Constants {
 
         public static final int PIVOT_MOTOR = 5;
     }
+
+    public class LightingConstants{
+        public static final int LED_LIGHTING = 2;
+        public static final double LED_GREEN = 0.77;
+    }
+
     public class ChurroConstants {
         public static final int AMP_BAR = 9;
     } 
