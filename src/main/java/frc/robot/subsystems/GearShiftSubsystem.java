@@ -17,7 +17,7 @@ public class GearShiftSubsystem extends SubsystemBase {
     }
 
     public double shiftLeftUp() {
-        leftGearShifter.setAngle(20);
+        leftGearShifter.setAngle(160);
 
         return leftGearShifter.getAngle();
     }
@@ -29,7 +29,7 @@ public class GearShiftSubsystem extends SubsystemBase {
     }
 
     public double shiftLeftDown() {
-        leftGearShifter.setAngle(160);
+        leftGearShifter.setAngle(20);
 
         return leftGearShifter.getAngle();
     }

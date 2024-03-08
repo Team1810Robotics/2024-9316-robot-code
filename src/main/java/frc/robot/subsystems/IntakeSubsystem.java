@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -39,11 +40,13 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void verticalIntakeOperator() {
-        boolean isLeftNote = getLeftVerticalIntakeSensor();
-        boolean isRightNote = getRightVerticalIntakeSensor();
-
+        boolean isLeftNote = !getLeftVerticalIntakeSensor();
+        boolean isRightNote = !getRightVerticalIntakeSensor();
+        
         if (isLeftNote || isRightNote) {
             runVerticalIntake();
+        } else {
+            stop();
         }
     }
 
@@ -59,7 +62,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void reverseIntake() {
         leftHorzontialIntakeMotors.set(Relay.Value.kReverse);
-        rightHorzontialIntakeMotors.set(Relay.Value.kReverse);
+        rightHorzontialIntakeMotors.set(Relay.Value.kForward);
     }
 
     public void stop() {
@@ -83,7 +86,11 @@ public class IntakeSubsystem extends SubsystemBase {
     public boolean getRightVerticalIntakeSensor() {
         return rightVerticalIntakeSensor.get();
     }
-    
+
+    @Override
+    public void periodic() {
+        verticalIntakeOperator();
+    }
 
 
 }
