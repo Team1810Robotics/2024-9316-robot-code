@@ -17,8 +17,11 @@ public class climbSubsystem extends SubsystemBase{
         climbLeftMotor = new Victor(ClimbConstants.CLIMB_LEFT_MOTOR_PORT);
         climbRightMotor = new Victor(ClimbConstants.CLIMB_RIGHT_MOTOR_PORT);
         climbEncoder = new Encoder(ClimbConstants.CLIMB_ENCODER_PORT_A , ClimbConstants.CLIMB_ENCODER_PORT_B);
+        climbEncoder.setDistancePerPulse(0.01); //needs tuning
+    
         //climbTensionMotor = new Victor(ClimbConstants.CLIMB_TENSION_MOTOR_PORT);
     }
+
 
     public void climbUp() {
         climbLeftMotor.set(1);
@@ -33,6 +36,9 @@ public class climbSubsystem extends SubsystemBase{
     public void stop() {
         climbLeftMotor.stopMotor();
         climbRightMotor.stopMotor();
+    }
+    public double getEncoderDistance(){
+        return climbEncoder.getDistance();
     }
 
 
