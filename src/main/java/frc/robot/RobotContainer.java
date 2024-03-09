@@ -59,7 +59,7 @@ public class RobotContainer {
     );
 
 
-    intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false).andThen(new IntakeLift(liftSubsystem, false)));
+    intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
 
     configureBindings();
 
@@ -72,10 +72,10 @@ public class RobotContainer {
     xboxController.leftBumper().onTrue(shootAmp());
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
-    xboxController.b().whileTrue(new Intake(intakeSubsystem, false, false));
+    // xboxController.b().whileTrue(new Intake(intakeSubsystem, false, false));
 
-    leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
-                          .whileFalse(new GearShift(gearShiftSubsystem, false));
+    leftJoystick.button(11).onTrue(new GearShift(gearShiftSubsystem, true));
+    leftJoystick.button(10).onTrue(new GearShift(gearShiftSubsystem, false));
 
 
     //for testing
@@ -100,11 +100,11 @@ public class RobotContainer {
   }
 
   public Command shootSpeaker() {
-    return (new Churro(churroSubsystem, false).alongWith(new IntakeLift(liftSubsystem, false))).andThen(new Shooter(1, shooterSubsystem).alongWith(new WaitCommand(1).andThen(new Intake(intakeSubsystem, false, true))));
+    return (/*new Churro(churroSubsystem, false).alongWith(new IntakeLift(liftSubsystem, false))).andThen(*/new Shooter(1, shooterSubsystem).alongWith(new WaitCommand(1).andThen(new Intake(intakeSubsystem, false, true).withTimeout(.5))));
   }
 
   public Command shootAmp() {
-    return (new Churro(churroSubsystem, true).alongWith(new IntakeLift(liftSubsystem, false))).andThen(new Shooter(.5, shooterSubsystem).alongWith(new WaitCommand(1).andThen(new Intake(intakeSubsystem, false, true))));
+    return (/*new Churro(churroSubsystem, true).alongWith(new IntakeLift(liftSubsystem, false))).andThen(*/new Shooter(.5, shooterSubsystem).alongWith(new WaitCommand(1).andThen(new Intake(intakeSubsystem, false, true))));
   }
 
   public Command getAutonomousCommand() {

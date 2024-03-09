@@ -16,6 +16,7 @@ public class ShooterSubsystem  extends SubsystemBase {
 
 
 
+
     public ShooterSubsystem(){
         leftShooter = new VictorSPX(ShooterConstants.LEFT_SHOOTER_MOTOR);
         rightShooter = new VictorSPX(ShooterConstants.RIGHT_SHOOTER_MOTOR);

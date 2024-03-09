@@ -9,19 +9,16 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class TankDrive extends Command {
     private DriveSubsystem driveSubsystem;
-    private IntakeSubsystem intakeSubsystem;
 
     private DoubleSupplier leftInput;
     private DoubleSupplier rightInput;
 
-    public TankDrive(DoubleSupplier leftInput, DoubleSupplier rightInput, DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem) {
+    public TankDrive(DoubleSupplier leftInput, DoubleSupplier rightInput, DriveSubsystem driveSubsystem) {
         this.leftInput = leftInput;
         this.rightInput = rightInput;
         this.driveSubsystem = driveSubsystem;
-        this.intakeSubsystem = intakeSubsystem;
 
         addRequirements(driveSubsystem);
-        addRequirements(intakeSubsystem);
     }
 
     @Override
