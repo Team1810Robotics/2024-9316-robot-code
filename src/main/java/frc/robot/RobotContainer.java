@@ -21,6 +21,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.LiftSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -31,12 +32,14 @@ import frc.robot.subsystems.GearShiftSubsystem;
 
 public class RobotContainer {
 
-  private DriveSubsystem driveSubsystem = new DriveSubsystem();
-  private ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  private GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
-  private LiftSubsystem liftSubsystem = new LiftSubsystem();
-  private ChurroSubsystem churroSubsystem = new ChurroSubsystem();
+  private final DriveSubsystem driveSubsystem = new DriveSubsystem();
+
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
+  public final LightingSubsystem lightingSubsystem = new LightingSubsystem();
+  private final LiftSubsystem liftSubsystem = new LiftSubsystem();
+  private final ChurroSubsystem churroSubsystem = new ChurroSubsystem();
   
   private CommandJoystick leftJoystick = new CommandJoystick(OperatorConstants.LEFT_JOYSTICK_PORT);
   private CommandJoystick rightJoystick = new CommandJoystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
@@ -44,6 +47,7 @@ public class RobotContainer {
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
   private SendableChooser<Command> autoChooser = new SendableChooser<>();
+
 
   public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
@@ -76,7 +80,6 @@ public class RobotContainer {
 
     leftJoystick.button(11).onTrue(new GearShift(gearShiftSubsystem, true));
     leftJoystick.button(10).onTrue(new GearShift(gearShiftSubsystem, false));
-
 
     //for testing
     xboxController.a().whileTrue(new IntakeLift(liftSubsystem, false));
