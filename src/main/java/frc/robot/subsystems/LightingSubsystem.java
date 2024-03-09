@@ -24,20 +24,21 @@ public class LightingSubsystem extends SubsystemBase {
 	}
 
     public void lightsOff() {
-		blinkin.set(0.99); 
+		blinkin.set(LightingConstants.LED_OFF); 
 	}
 
 	public void lightsRainbow(){
-		blinkin.set(-0.99);
+		blinkin.set(LightingConstants.LED_RAINBOW);
 	}
 
 	public void lightsRed() {
-		blinkin.set(.61);
+		blinkin.set(LightingConstants.LED_RED);
 	}
 
 	public void lightsBlue() {
-		blinkin.set(0.87);
+		blinkin.set(LightingConstants.LED_BLUE);
 	}
+	
 
 	public void allianceLights() {
 		DriverStation.Alliance redAlliance = DriverStation.Alliance.Red;

@@ -42,7 +42,11 @@ public class Constants {
         
     }
     public class LightingConstants{
-        public static final int LED_LIGHTING = 2;
+        public static final int LED_LIGHTING = 9;
         public static final double LED_GREEN = 0.77;
+        public static final double LED_OFF = 0.99;
+        public static final double LED_RAINBOW = -0.99;
+        public static final double LED_RED = 0.61;
+        public static final double LED_BLUE = 0.87;
     }
 }
