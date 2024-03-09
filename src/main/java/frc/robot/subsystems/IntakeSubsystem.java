@@ -31,19 +31,22 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void horizontalIntakeOperator() {
-        boolean isNote = getExternalNoteDetector();
+        boolean isNote = !getExternalNoteDetector();
 
-        if (!isNote) {
+        if (isNote) {
             runHorizontalIntake();
+            System.out.println("intaking");
         }
     }
 
     public void verticalIntakeOperator() {
-        boolean isLeftNote = getLeftVerticalIntakeSensor();
-        boolean isRightNote = getRightVerticalIntakeSensor();
-
+        boolean isLeftNote = !getLeftVerticalIntakeSensor();
+        boolean isRightNote = !getRightVerticalIntakeSensor();
+        
         if (isLeftNote || isRightNote) {
             runVerticalIntake();
+        } else {
+            stop();
         }
     }
 
@@ -59,7 +62,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void reverseIntake() {
         leftHorzontialIntakeMotors.set(Relay.Value.kReverse);
-        rightHorzontialIntakeMotors.set(Relay.Value.kReverse);
+        rightHorzontialIntakeMotors.set(Relay.Value.kForward);
     }
 
     public void stop() {
@@ -83,7 +86,12 @@ public class IntakeSubsystem extends SubsystemBase {
     public boolean getRightVerticalIntakeSensor() {
         return rightVerticalIntakeSensor.get();
     }
-    
+
+    @Override
+    public void periodic() {
+        verticalIntakeOperator();
+        horizontalIntakeOperator();
+    }
 
 
 }

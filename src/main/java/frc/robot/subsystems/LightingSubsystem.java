@@ -40,6 +40,10 @@ public class LightingSubsystem extends SubsystemBase {
 	}
 	
 
+	public void lightsPurple() {
+		blinkin.set(LightingConstants.LED_PURPLE);
+	}
+
 	public void allianceLights() {
 		DriverStation.Alliance redAlliance = DriverStation.Alliance.Red;
 		DriverStation.Alliance blueAlliance = DriverStation.Alliance.Blue;
