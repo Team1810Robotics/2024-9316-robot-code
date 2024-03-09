@@ -35,7 +35,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
         if (isNote) {
             runHorizontalIntake();
-            System.out.println("intaking");
+            // System.out.println("intaking");
         }
     }
 

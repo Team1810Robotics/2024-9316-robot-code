@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -32,11 +33,17 @@ public class DriveSubsystem extends SubsystemBase {
         backLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
         backRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
 
+        Shuffleboard.getTab("drive").addNumber("BL", () -> backLeftMotor.get());
+        Shuffleboard.getTab("drive").addNumber("FL", () -> frontLeftMotor.get());
+        Shuffleboard.getTab("drive").addNumber("BR", () -> backRightMotor.get());
+        Shuffleboard.getTab("drive").addNumber("FR", () -> frontRightMotor.get());
+        
+
     }
 
     public void drive(double leftSpeed, double rightSpeed) {
         leftSpeed = MathUtil.applyDeadband(leftSpeed, DriveConstants.DEADBAND);
-        rightSpeed  =MathUtil.applyDeadband(rightSpeed, DriveConstants.DEADBAND);
+        rightSpeed  = MathUtil.applyDeadband(rightSpeed, DriveConstants.DEADBAND);
 
         var speeds = DifferentialDrive.tankDriveIK(leftSpeed, rightSpeed, true);
 

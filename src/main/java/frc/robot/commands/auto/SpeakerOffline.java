@@ -19,8 +19,10 @@ public class SpeakerOffline extends SequentialCommandGroup{
         this.intakeSubsystem = intakeSubsystem;
 
         addCommands(
-            shootSpeaker().withTimeout(3),
-            new Drive(driveSubsystem, -1, -1).withTimeout(1)
+            shootSpeaker().withTimeout(1.5),
+            new Drive(driveSubsystem, -.5, -.5).withTimeout(2),
+            new Drive(driveSubsystem, .5, 0.5).withTimeout(2.4),
+            shootSpeaker().withTimeout(1.5)
         );
     }
 

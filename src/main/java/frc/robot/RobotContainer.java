@@ -56,30 +56,30 @@ public class RobotContainer {
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(
       new TankDrive(
-        () -> leftJoystick.getY(), 
-        () -> rightJoystick.getY(), 
+        () -> -leftJoystick.getY(), 
+        () -> -rightJoystick.getY(), 
         driveSubsystem
         )
     );
 
 
-    intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
+    // intakeSubsystem.setDefaultCommand(new Intake(intakeSubsystem, false, false));
 
     configureBindings();
 
-    setShuffleboard();
+    setElastic();
   }
 
   private void configureBindings() {
 
     xboxController.rightBumper().onTrue(shootSpeaker());
-    xboxController.leftBumper().onTrue(shootAmp());
+
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
-    // xboxController.b().whileTrue(new Intake(intakeSubsystem, false, false));
+    // xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
 
-    leftJoystick.button(11).onTrue(new GearShift(gearShiftSubsystem, true));
-    leftJoystick.button(10).onTrue(new GearShift(gearShiftSubsystem, false));
+    leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
+                                  .whileFalse(new GearShift(gearShiftSubsystem, false));
 
     //for testing
     xboxController.a().whileTrue(new IntakeLift(liftSubsystem, false));
@@ -91,7 +91,7 @@ public class RobotContainer {
   }
 
 
-  public void setShuffleboard() {
+  public void setElastic() {
     teleopTab.addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
     teleopTab.addBoolean("leftIR", () -> !intakeSubsystem.getLeftVerticalIntakeSensor());
@@ -103,7 +103,7 @@ public class RobotContainer {
   }
 
   public Command shootSpeaker() {
-    return (/*new Churro(churroSubsystem, false).alongWith(new IntakeLift(liftSubsystem, false))).andThen(*/new Shooter(1, shooterSubsystem).alongWith(new WaitCommand(1).andThen(new Intake(intakeSubsystem, false, true).withTimeout(.5))));
+    return (new Shooter(1, shooterSubsystem).alongWith(new WaitCommand(1).andThen(new Intake(intakeSubsystem, false, true).withTimeout(.5)))).withTimeout(3);
   }
 
   public Command shootAmp() {
@@ -111,7 +111,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return new SpeakerOffline(driveSubsystem, shooterSubsystem, intakeSubsystem);
   }
  
 

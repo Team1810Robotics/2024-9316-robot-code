@@ -67,9 +67,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    if (m_robotContainer.intakeSubsystem.getInternalNoteDetector()) {
+    if (!m_robotContainer.intakeSubsystem.getInternalNoteDetector()) {
       m_robotContainer.lightingSubsystem.lightsGreen();
-    } else if (m_robotContainer.intakeSubsystem.getExternalNoteDetector() || m_robotContainer.intakeSubsystem.getLeftVerticalIntakeSensor() || m_robotContainer.intakeSubsystem.getRightVerticalIntakeSensor()){
+    } else if (!m_robotContainer.intakeSubsystem.getExternalNoteDetector() || !m_robotContainer.intakeSubsystem.getLeftVerticalIntakeSensor() || !m_robotContainer.intakeSubsystem.getRightVerticalIntakeSensor()){
       m_robotContainer.lightingSubsystem.lightsPurple();
     } else {
       m_robotContainer.lightingSubsystem.allianceLights();
