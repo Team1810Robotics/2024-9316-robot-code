@@ -19,12 +19,12 @@ public class SpeakerOffline extends SequentialCommandGroup{
         this.intakeSubsystem = intakeSubsystem;
 
         addCommands(
-            shootSpeaker(),
+            shootSpeaker().withTimeout(3),
             new Drive(driveSubsystem, -1, -1).withTimeout(1)
         );
     }
 
-    public Command shootSpeaker() {
+    private Command shootSpeaker() {
         return (new Shooter(1, shooterSubsystem).alongWith(new WaitCommand(1).andThen(new Intake(intakeSubsystem, false, true))));
   }
 }
