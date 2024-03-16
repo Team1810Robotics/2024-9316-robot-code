@@ -38,12 +38,8 @@ public class Churro extends Command {
 
     @Override
     public boolean isFinished() {
-        if (previousPosition && desiredPosition) {
+        if (desiredPosition == previousPosition) {
             return true;
-        } else if (!previousPosition && !desiredPosition){
-            return true;
-        } else if (!previousPosition && desiredPosition) {
-            return false;
         } else {
             return false;
         }
