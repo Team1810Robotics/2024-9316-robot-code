@@ -13,7 +13,8 @@ public class Constants {
         public static final int CLIMB_RIGHT_MOTOR_PORT = 10;
         // this one is still to be determined
         public static final int CLIMB_TENSION_MOTOR_PORT = 11;
-        
+      public static final int CLIMB_ENCODER_PORT_A = 3; //to be determined
+      public static final int CLIMB_ENCODER_PORT_B = 4; //to be determined
     }
     
 }

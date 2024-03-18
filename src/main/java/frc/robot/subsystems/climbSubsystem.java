@@ -3,10 +3,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
+import edu.wpi.first.wpilibj.Encoder;
 
 
 public class ClimbSubsystem extends SubsystemBase{
@@ -22,8 +22,10 @@ public class ClimbSubsystem extends SubsystemBase{
         climbRightMotor = new VictorSPX(ClimbConstants.CLIMB_RIGHT_MOTOR_PORT);
         climbTensionMotor = new VictorSPX(ClimbConstants.CLIMB_TENSION_MOTOR_PORT);
 
-        climbEncoder = new Encoder(0, 1);
+        climbEncoder = new Encoder(ClimbConstants.CLIMB_ENCODER_PORT_A, ClimbConstants.CLIMB_ENCODER_PORT_B);
+
     }
+
 
     public void climbUp() {
         climbLeftMotor.set(VictorSPXControlMode.PercentOutput, 1);
@@ -42,10 +44,16 @@ public class ClimbSubsystem extends SubsystemBase{
         return climbEncoder.getDistancePerPulse();
     }
 
+
+
     public void stop() {
         climbLeftMotor.set(VictorSPXControlMode.Disabled, 0);;
         climbRightMotor.set(VictorSPXControlMode.Disabled, 0);;
     }
+
+    
+    
+
 
 
 }
