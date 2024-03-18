@@ -15,6 +15,7 @@ import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shooter;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.auto.SpeakerOffline;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -61,8 +62,7 @@ public class RobotContainer {
       new Intake(
         intakeSubsystem, 
         false, 
-        false, 
-        () -> !intakeSubsystem.getInternalNoteDetector()
+        false
       )
     );
 
@@ -76,8 +76,8 @@ public class RobotContainer {
     xboxController.rightBumper().onTrue(shootSpeaker());
     xboxController.leftBumper().onTrue(shootAmp());
     
-    xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true, () -> !intakeSubsystem.getInternalNoteDetector()));
-    xboxController.b().onTrue(new Intake(intakeSubsystem, false, false, () -> !intakeSubsystem.getInternalNoteDetector()));
+    xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
+    xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
 
 
 
@@ -94,20 +94,22 @@ public class RobotContainer {
     teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
+    autoChooser.addOption("Speaker Offline", new SpeakerOffline(driveSubsystem, shooterSubsystem, intakeSubsystem, churroSubsystem));
     autoTab.add("Auto Chooser", autoChooser);
   }
 
 
   private Command shootSpeaker() {
+    //churro needs a timeout
     return new Churro(churroSubsystem, false /*up is true, down is false*/)
                 .andThen(new Shooter(1, shooterSubsystem))
-                .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true, () -> !intakeSubsystem.getInternalNoteDetector()));
+                .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true));
   }
 
   private Command shootAmp() {
     return new Churro(churroSubsystem, true)
                 .andThen(new Shooter(1, shooterSubsystem))
-                .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true, () -> !intakeSubsystem.getInternalNoteDetector()));
+                .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true));
     }
 
   public Command getAutonomousCommand() {

@@ -17,6 +17,8 @@ public class IntakeSubsystem extends SubsystemBase {
     private DigitalInput internalNoteDetector;
     private DigitalInput leftVerticalIntakeSensor;
     private DigitalInput rightVerticalIntakeSensor;
+    
+    private boolean tripped;
 
     public IntakeSubsystem() {
         leftHorzontialIntakeMotors = new Relay(IntakeConstants.LEFT_INTAKE_MOTORS);
@@ -28,13 +30,16 @@ public class IntakeSubsystem extends SubsystemBase {
         leftVerticalIntakeSensor = new DigitalInput(IntakeConstants.LEFT_VERTICAL_SENSOR);
         rightVerticalIntakeSensor = new DigitalInput(IntakeConstants.RIGHT_VERTICAL_SENSOR);
 
+        tripped = false;
+
     }
 
     public void horizontalIntakeOperator() {
         boolean isNote = !getExternalNoteDetector();
 
-        if (isNote) {
+        if (isNote || tripped) {
             runHorizontalIntake();
+            tripped = true;
             // System.out.println("intaking");
         }
     }

@@ -34,6 +34,6 @@ public class SpeakerOffline extends SequentialCommandGroup{
     private Command shootSpeaker() {
         return new Churro(churroSubsystem, false)
                     .andThen(new Shooter(1, shooterSubsystem))
-                    .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true, () -> !intakeSubsystem.getInternalNoteDetector()));
+                    .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true));
       }
 }

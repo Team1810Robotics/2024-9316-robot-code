@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -18,8 +17,6 @@ public class TankDrive extends Command {
         this.rightInput = rightInput;
         this.driveSubsystem = driveSubsystem;
 
-        // Shuffleboard.getTab("drive").addNumber("Left Drive", leftInput);
-        // Shuffleboard.getTab("drive").addNumber("Right Drive", rightInput);
 
         addRequirements(driveSubsystem);
     }
