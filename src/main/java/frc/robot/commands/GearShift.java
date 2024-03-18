@@ -22,12 +22,12 @@ public class GearShift extends Command {
             gearShiftSubsystem.shiftLeftUp();
             gearShiftSubsystem.shiftRightUp();
 
-            System.out.println("ShiftingUp");
+            // System.out.println("ShiftingUp");
         } else {
             gearShiftSubsystem.shiftLeftDown();
             gearShiftSubsystem.shiftRightDown();
             
-            System.out.println("ShiftingDown");
+            // System.out.println("ShiftingDown");
 
         }
     }

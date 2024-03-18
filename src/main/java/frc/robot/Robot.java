@@ -25,6 +25,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    m_robotContainer.lightingSubsystem.lightsOff();
   }
 
   @Override
@@ -33,7 +34,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+     m_robotContainer.lightingSubsystem.lightsOff();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -48,6 +51,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    m_robotContainer.lightingSubsystem.lightsRainbow();
   }
 
   @Override
@@ -63,10 +68,20 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
   }
 
   @Override
   public void teleopPeriodic() {
+
+    if (!m_robotContainer.intakeSubsystem.getInternalNoteDetector()) {
+      m_robotContainer.lightingSubsystem.lightsGreen();
+    } else if (!m_robotContainer.intakeSubsystem.getExternalNoteDetector() || !m_robotContainer.intakeSubsystem.getLeftVerticalIntakeSensor() || !m_robotContainer.intakeSubsystem.getRightVerticalIntakeSensor()){
+      m_robotContainer.lightingSubsystem.lightsPurple();
+    } else {
+      m_robotContainer.lightingSubsystem.allianceLights();
+    }
+
     // var result = camera.getLatestResult();    
     // boolean hasTargets = result.hasTargets();
     // PhotonTrackedTarget target = result.getBestTarget();

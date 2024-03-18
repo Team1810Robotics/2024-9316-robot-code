@@ -32,19 +32,28 @@ public class Constants {
     }
 
     public class IntakeConstants {
-       public static final int LEFT_INTAKE_MOTORS = 0;
-       public static final int RIGHT_INTAKE_MOTORS = 1;
-       public static final int VERTICAL_INTAKE_MOTORS = 2;
+        public static final int LEFT_INTAKE_MOTORS = 0;
+        public static final int RIGHT_INTAKE_MOTORS = 1;
+        public static final int VERTICAL_INTAKE_MOTORS = 2;
 
-       public static final int INTERNAL_SENSOR = 0;
-       public static final int EXTERNAL_SENSOR = 1;
-    //    public static final int LEFT_VERTICAL_SENSOR = 0;
-    //    public static final int RIGHT_VERTICAL_SENSOR = 1;
+        public static final int INTERNAL_SENSOR = 2;
+        public static final int EXTERNAL_SENSOR = 3;
+        public static final int LEFT_VERTICAL_SENSOR = 0;
+        public static final int RIGHT_VERTICAL_SENSOR = 1;
 
-       public static final int PIVOT_MOTOR = 5;
-
-        
+        public static final int PIVOT_MOTOR = 5;
     }
+
+    public class LightingConstants{
+        public static final int LED_LIGHTING = 9;
+        public static final double LED_GREEN = 0.77;
+        public static final double LED_OFF = 0.99;
+        public static final double LED_RAINBOW = -0.99;
+        public static final double LED_RED = 0.61;
+        public static final double LED_BLUE = 0.87;
+        public static final double LED_PURPLE = .91;
+    }
+
     public class ChurroConstants {
         public static final int AMP_BAR = 9;
     } 

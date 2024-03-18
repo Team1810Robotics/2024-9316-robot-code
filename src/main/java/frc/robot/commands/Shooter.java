@@ -1,20 +1,22 @@
-package frc.robot.commands.shooter;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class Shooter extends Command {
     private ShooterSubsystem shooterSubsystem;
+    private double shooterSpeed;
 
-    public Shooter(ShooterSubsystem shooterSubsystem) {
+    public Shooter(double shooterSpeed, ShooterSubsystem shooterSubsystem) {
+        this.shooterSpeed = shooterSpeed;
         this.shooterSubsystem = shooterSubsystem;
 
         addRequirements(shooterSubsystem);
     }
 
-    @Override 
+    @Override
     public void execute() {
-        shooterSubsystem.shoot();
+        shooterSubsystem.shoot(shooterSpeed);
     }
 
     @Override

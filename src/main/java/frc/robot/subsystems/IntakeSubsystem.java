@@ -18,6 +18,8 @@ public class IntakeSubsystem extends SubsystemBase {
     private DigitalInput internalNoteDetector;
     private DigitalInput leftVerticalIntakeSensor;
     private DigitalInput rightVerticalIntakeSensor;
+    
+    private boolean tripped;
 
     public IntakeSubsystem() {
         leftHorzontialIntakeMotors = new Relay(IntakeConstants.LEFT_INTAKE_MOTORS);
@@ -26,25 +28,31 @@ public class IntakeSubsystem extends SubsystemBase {
 
         externalNoteDetector = new DigitalInput(IntakeConstants.EXTERNAL_SENSOR);
         internalNoteDetector = new DigitalInput(IntakeConstants.INTERNAL_SENSOR);
-        // leftVerticalIntakeSensor = new DigitalInput(IntakeConstants.LEFT_VERTICAL_SENSOR);
-        // rightVerticalIntakeSensor = new DigitalInput(IntakeConstants.RIGHT_VERTICAL_SENSOR);
+        leftVerticalIntakeSensor = new DigitalInput(IntakeConstants.LEFT_VERTICAL_SENSOR);
+        rightVerticalIntakeSensor = new DigitalInput(IntakeConstants.RIGHT_VERTICAL_SENSOR);
+
+        tripped = false;
 
     }
 
     public void horizontalIntakeOperator() {
-        boolean isNote = getExternalNoteDetector();
+        boolean isNote = !getExternalNoteDetector();
 
-        if (!isNote) {
+        if (isNote || tripped) {
             runHorizontalIntake();
+            tripped = true;
+            // System.out.println("intaking");
         }
     }
 
     public void verticalIntakeOperator() {
-        boolean isLeftNote = getLeftVerticalIntakeSensor();
-        boolean isRightNote = getRightVerticalIntakeSensor();
-
+        boolean isLeftNote = !getLeftVerticalIntakeSensor();
+        boolean isRightNote = !getRightVerticalIntakeSensor();
+        
         if (isLeftNote || isRightNote) {
             runVerticalIntake();
+        } else {
+            stop();
         }
     }
 
@@ -84,7 +92,12 @@ public class IntakeSubsystem extends SubsystemBase {
     public boolean getRightVerticalIntakeSensor() {
         return rightVerticalIntakeSensor.get();
     }
-    
+
+    @Override
+    public void periodic() {
+        verticalIntakeOperator();
+        horizontalIntakeOperator();
+    }
 
 
 }
