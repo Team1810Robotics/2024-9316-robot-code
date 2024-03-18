@@ -19,7 +19,7 @@ public class Drive extends Command {
 
     @Override
     public void execute() {
-        driveSubsystem.drive(leftSpeed, rightSpeed);
+        driveSubsystem.tankDrive(leftSpeed, rightSpeed);
     }
 
     @Override
