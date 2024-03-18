@@ -128,7 +128,7 @@ public class RobotContainer {
     }
 
   public void setNamedCommands() {
-    NamedCommands.registerCommand("Shoot Speaker", new ShootSpeaker(shooterSubsystem, intakeSubsystem, churroSubsystem, liftSubsystem));
+    NamedCommands.registerCommand("Shoot Speaker", shootSpeaker());
     NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false));
   }
  
