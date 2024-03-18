@@ -79,7 +79,8 @@ public class RobotContainer {
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
 
-
+    xboxController.rightTrigger().whileTrue(new Churro(churroSubsystem, true));
+    xboxController.leftTrigger().whileFalse(new Churro(churroSubsystem, false));
 
 
     leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))

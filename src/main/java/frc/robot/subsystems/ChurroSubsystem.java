@@ -11,7 +11,6 @@ public class ChurroSubsystem extends SubsystemBase {
     
     private VictorSPX ampLinearActuator;
 
-    public boolean previousPosition;
 
     public ChurroSubsystem() {
        ampLinearActuator = new VictorSPX(ChurroConstants.AMP_BAR);

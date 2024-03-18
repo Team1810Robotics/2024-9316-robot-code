@@ -10,7 +10,6 @@ public class Churro extends Command {
 
     //up is true, down is false
     private boolean desiredPosition;
-    private boolean previousPosition;
 
     public Churro(ChurroSubsystem churroSubsystem, boolean desiredPosition) {
         this.churroSubsystem = churroSubsystem;
@@ -20,30 +19,17 @@ public class Churro extends Command {
         addRequirements(churroSubsystem);
     }
 
-    @Override
-    public void initialize() {
-        previousPosition = churroSubsystem.previousPosition;
-    }
+
     @Override
     public void execute() {
         if (desiredPosition) {
             churroSubsystem.churroUp();
-            previousPosition = false;
         } else {
             churroSubsystem.churroDown();
-            previousPosition = true;
         }
 
     }
 
-    @Override
-    public boolean isFinished() {
-        if (desiredPosition == previousPosition) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     @Override
     public void end(boolean interrupted) {
