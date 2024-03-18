@@ -7,8 +7,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.ReplanningConfig;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,16 +22,14 @@ import frc.robot.Constants.DriveConstants;
 public class DriveSubsystem extends SubsystemBase {
     
 
-    private PigeonIMU pigeon;
-
-    private DifferentialDriveOdometry odometry;
-
-
 
     private CANSparkMax backLeftMotor;
     private CANSparkMax frontLeftMotor;
     private CANSparkMax backRightMotor;
     private CANSparkMax frontRightMotor;
+
+    private PigeonIMU pigeon;
+    private DifferentialDriveOdometry odometry;
 
 
     public DriveSubsystem() {
@@ -87,6 +83,7 @@ public class DriveSubsystem extends SubsystemBase {
         double rotationSpeed = MathUtil.applyDeadband(speeds.omegaRadiansPerSecond, DriveConstants.DEADBAND);
 
         DifferentialDrive.arcadeDriveIK(forwardSpeed, rotationSpeed, true);
+
     }
 
     private Pose2d getPose() {
@@ -104,7 +101,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private Rotation2d getRoations() {
-        var rotations = new Rotation2d(Math.toRadians(pigeon.getYaw()));
+        var rotations =  Rotation2d.fromDegrees(pigeon.getYaw());
 
        return rotations;
     }
