@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.comands.Climb;
-import frc.robot.subsystems.climbSubsystem;
+import frc.robot.commands.Climb;
+import frc.robot.subsystems.ClimbSubsystem;
 
 public class RobotContainer {
 
-  private climbSubsystem climbSubsystem = new climbSubsystem();
+  private ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
@@ -22,8 +22,9 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    xboxController.a().whileTrue(new Climb(climbSubsystem, false));
-    xboxController.y().whileFalse(new Climb(climbSubsystem, true));
+    xboxController.y().onTrue(new Climb(climbSubsystem, true));
+    xboxController.a().onTrue(new Climb(climbSubsystem, false));
+
   }
 
   public Command getAutonomousCommand() {

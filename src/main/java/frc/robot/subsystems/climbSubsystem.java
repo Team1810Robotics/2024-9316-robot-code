@@ -1,35 +1,50 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Victor;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
 
-public class climbSubsystem extends SubsystemBase{
+public class ClimbSubsystem extends SubsystemBase{
 
-    private Victor climbLeftMotor;
-    private Victor climbRightMotor;
-    private Victor climbTensionMotor;
+    private VictorSPX climbLeftMotor;
+    private VictorSPX climbRightMotor;
+    private VictorSPX climbTensionMotor;
 
-    public climbSubsystem() {
-        climbLeftMotor = new Victor(ClimbConstants.CLIMB_LEFT_MOTOR_PORT);
-        climbRightMotor = new Victor(ClimbConstants.CLIMB_RIGHT_MOTOR_PORT);
-        climbTensionMotor = new Victor(ClimbConstants.CLIMB_TENSION_MOTOR_PORT);
+    private Encoder climbEncoder;
+
+    public ClimbSubsystem() {
+        climbLeftMotor = new VictorSPX(ClimbConstants.CLIMB_LEFT_MOTOR_PORT);
+        climbRightMotor = new VictorSPX(ClimbConstants.CLIMB_RIGHT_MOTOR_PORT);
+        climbTensionMotor = new VictorSPX(ClimbConstants.CLIMB_TENSION_MOTOR_PORT);
+
+        climbEncoder = new Encoder(0, 1);
     }
 
     public void climbUp() {
-        climbLeftMotor.set(1);
-        climbRightMotor.set(1);
+        climbLeftMotor.set(VictorSPXControlMode.PercentOutput, 1);
+        climbRightMotor.set(VictorSPXControlMode.PercentOutput, -1);
     }
 
     public void climbDown() {
-        climbLeftMotor.set(-1);
-        climbRightMotor.set(-1);
+        climbLeftMotor.set(VictorSPXControlMode.PercentOutput, -1);
+        climbRightMotor.set(VictorSPXControlMode.PercentOutput, 1);
+    }
+
+    public double getRotations() {
+        //don't know if this will work how I think it will, I think what this will do (based off the docs) this will return a distance of 1 per 256 pules (i think one rotation)
+        climbEncoder.setDistancePerPulse(1/256);
+
+        return climbEncoder.getDistancePerPulse();
     }
 
     public void stop() {
-        climbLeftMotor.stopMotor();
-        climbRightMotor.stopMotor();
+        climbLeftMotor.set(VictorSPXControlMode.Disabled, 0);;
+        climbRightMotor.set(VictorSPXControlMode.Disabled, 0);;
     }
 
 
