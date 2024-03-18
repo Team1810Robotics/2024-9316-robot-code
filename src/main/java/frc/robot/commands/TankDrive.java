@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -23,10 +22,7 @@ public class TankDrive extends Command {
 
     @Override
     public void execute() {
-        driveSubsystem.drive(leftInput.getAsDouble(), rightInput.getAsDouble());
-
-
-
+        driveSubsystem.tankDrive(rightInput.getAsDouble(), leftInput.getAsDouble());
     }
 
     @Override

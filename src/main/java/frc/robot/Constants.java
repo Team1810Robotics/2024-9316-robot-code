@@ -21,6 +21,8 @@ public class Constants {
 
         public static final double DEADBAND = .05;
 
+        public static final int PIGEON = 12;
+
         
     }
 

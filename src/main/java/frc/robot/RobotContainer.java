@@ -4,11 +4,23 @@
 
 package frc.robot;
 
-
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
+import frc.robot.commands.TankDrive;
+
+
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Churro;
 import frc.robot.commands.GearShift;
@@ -22,10 +34,12 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.GearShiftSubsystem;
+
+
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 public class RobotContainer {
@@ -42,7 +56,7 @@ public class RobotContainer {
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private SendableChooser<Command> autoChooser;
 
   private ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   private ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
@@ -67,8 +81,8 @@ public class RobotContainer {
     );
 
     configureBindings();
+    setElastic();
 
-    setShuffleboard();
   }
 
   private void configureBindings() {
@@ -89,7 +103,7 @@ public class RobotContainer {
   }
 
 
-  public void setShuffleboard() {
+  public void setElastic() {
     teleopTab.addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
 
@@ -112,9 +126,21 @@ public class RobotContainer {
                 .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true));
     }
 
+  public void setNamedCommands() {
+    NamedCommands.registerCommand("Shoot Speaker", new ShootSpeaker(shooterSubsystem, intakeSubsystem, churroSubsystem, liftSubsystem));
+    NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false));
+  }
+ 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
   }
+
+
+
+
+
+
+
  
 
 
