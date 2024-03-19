@@ -19,7 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private DigitalInput leftVerticalIntakeSensor;
     private DigitalInput rightVerticalIntakeSensor;
     
-    private boolean tripped;
+    public boolean tripped;
 
     public IntakeSubsystem() {
         leftHorzontialIntakeMotors = new Relay(IntakeConstants.LEFT_INTAKE_MOTORS);

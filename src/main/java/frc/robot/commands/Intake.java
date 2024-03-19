@@ -24,6 +24,8 @@ public class Intake extends Command {
         
         if (isReversed) {
             intakeSubsystem.reverseIntake();
+        } else {
+            intakeSubsystem.runHorizontalIntake();
         }
     }
 
@@ -39,6 +41,8 @@ public class Intake extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        intakeSubsystem.tripped = false;
         intakeSubsystem.stop();
+
     }
 }

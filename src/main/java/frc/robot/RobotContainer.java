@@ -9,6 +9,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -56,10 +57,10 @@ public class RobotContainer {
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
-  private SendableChooser<Command> autoChooser;
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-  private ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
-  private ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
+  public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
+  public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
 
 
   public RobotContainer() {
@@ -87,8 +88,7 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(shootSpeaker());
-    xboxController.leftBumper().onTrue(shootAmp());
+    xboxController.rightBumper().onTrue(shoot());
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
@@ -107,6 +107,11 @@ public class RobotContainer {
   public void setElastic() {
     teleopTab.addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
+    teleopTab.addBoolean("Left IR", () -> !intakeSubsystem.getLeftVerticalIntakeSensor());
+    teleopTab.addBoolean("Right IR", () -> !intakeSubsystem.getRightVerticalIntakeSensor());
+
+    //no clue if this will work but why not try it to see what it does
+    teleopTab.add("Command Scheduler", CommandScheduler.getInstance());
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     autoChooser.addOption("Speaker Offline", new SpeakerOffline(driveSubsystem, shooterSubsystem, intakeSubsystem, churroSubsystem));
@@ -114,21 +119,14 @@ public class RobotContainer {
   }
 
 
-  private Command shootSpeaker() {
-    //churro needs a timeout
-    return new Churro(churroSubsystem, false /*up is true, down is false*/)
-                .andThen(new Shooter(1, shooterSubsystem))
-                .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true));
+  private Command shoot() {
+    return (new Shooter(1, shooterSubsystem))
+            .alongWith(new WaitCommand(1))
+              .andThen(new Intake(intakeSubsystem, false, true));
   }
 
-  private Command shootAmp() {
-    return new Churro(churroSubsystem, true)
-                .andThen(new Shooter(1, shooterSubsystem))
-                .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true));
-    }
-
   public void setNamedCommands() {
-    NamedCommands.registerCommand("Shoot Speaker", shootSpeaker());
+    NamedCommands.registerCommand("Shoot", shoot());
     NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false));
   }
  
