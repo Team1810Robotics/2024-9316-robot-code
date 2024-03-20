@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
@@ -32,6 +33,7 @@ public class DriveSubsystem extends SubsystemBase {
     private DifferentialDriveOdometry odometry;
 
 
+
     public DriveSubsystem() {
         backLeftMotor = new CANSparkMax(DriveConstants.BACK_LEFT_MOTOR, MotorType.kBrushless);
         frontLeftMotor = new CANSparkMax(DriveConstants.FRONT_LEFT_MOTOR, MotorType.kBrushless);
@@ -47,7 +49,10 @@ public class DriveSubsystem extends SubsystemBase {
         frontRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
 
 
+
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
+
+        odometry = new DifferentialDriveOdometry(getRoations(), null, null);
 
         AutoBuilder.configureRamsete(
             this::getPose, 
@@ -113,6 +118,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         return speeds;
     }
+
 
     public void stop() {
         frontLeftMotor.stopMotor();
