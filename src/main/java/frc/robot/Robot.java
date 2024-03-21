@@ -10,6 +10,8 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import java.util.List;
 import org.photonvision.targeting.TargetCorner;
+
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,6 +28,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     m_robotContainer.lightingSubsystem.lightsOff();
+
+    CameraServer.startAutomaticCapture();
   }
 
   @Override
