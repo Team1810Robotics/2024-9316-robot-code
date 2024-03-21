@@ -24,7 +24,7 @@ public class Intake extends Command {
         
         if (isReversed) {
             intakeSubsystem.reverseIntake();
-        } else {
+        } else if (ignoreNote){
             intakeSubsystem.runHorizontalIntake();
         }
     }

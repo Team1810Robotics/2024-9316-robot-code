@@ -66,8 +66,8 @@ public class RobotContainer {
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(
       new TankDrive(
-        () -> leftJoystick.getY(), 
-        () -> rightJoystick.getY(), 
+        () -> -leftJoystick.getY(), 
+        () -> -rightJoystick.getY(), 
         driveSubsystem
         )
     );
