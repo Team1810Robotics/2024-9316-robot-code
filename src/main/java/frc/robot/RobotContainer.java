@@ -62,8 +62,8 @@ public class RobotContainer {
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(
       new TankDrive(
-        () -> leftJoystick.getY(), 
-        () -> rightJoystick.getY(), 
+        () -> -leftJoystick.getY(), 
+        () -> -rightJoystick.getY(), 
         driveSubsystem
         )
     );
@@ -84,8 +84,7 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(shootSpeaker());
-    xboxController.leftBumper().onTrue(shootAmp());
+    xboxController.rightBumper().onTrue(shoot());
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
@@ -107,7 +106,7 @@ public class RobotContainer {
 
     autoChooser.addOption("Four", new FourCenter());
     autoChooser.addOption("Three Center", new ThreeCenter());
-    autoChooser.addOption("Two Center", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem, churroSubsystem));
+    autoChooser.addOption("Two Center", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
 
     autoChooser.addOption("Three Left", new ThreeLeft());
     autoChooser.addOption("Two Left", new TwoLeft());
@@ -119,21 +118,16 @@ public class RobotContainer {
   }
 
 
-  private Command shootSpeaker() {
-    //churro needs a timeout
-    return new Churro(churroSubsystem, false /*up is true, down is false*/)
-                .andThen(new Shooter(1, shooterSubsystem))
-                .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true));
+  private Command shoot() {
+    return (new Shooter(1, shooterSubsystem)).withTimeout(1.5)
+              .alongWith(new WaitCommand(1)
+                .andThen(new Intake(intakeSubsystem, false, true)));
   }
 
-  private Command shootAmp() {
-    return new Churro(churroSubsystem, true)
-                .andThen(new Shooter(1, shooterSubsystem))
-                .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true));
-    }
+
 
   public void setNamedCommands() {
-    NamedCommands.registerCommand("Shoot Speaker", shootSpeaker());
+    NamedCommands.registerCommand("Shoot Speaker", shoot());
     NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false));
   }
 

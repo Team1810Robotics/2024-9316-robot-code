@@ -20,17 +20,18 @@ public class TwoCenter extends SequentialCommandGroup{
         this.intakeSubsystem = intakeSubsystem;
 
         addCommands(
-            shootSpeaker().withTimeout(1.5),
-            new Drive(driveSubsystem, -.5, -.5).withTimeout(2),
+            shoot().withTimeout(3),
+            new Drive(driveSubsystem, -.52, -.5).withTimeout(2.5).alongWith(new Intake(intakeSubsystem, false, false)),
             
-            new Drive(driveSubsystem, .5, 0.5).withTimeout(2.4),
-            shootSpeaker().withTimeout(1.5)
+            new Drive(driveSubsystem, .51, 0.5).withTimeout(2.9),
+            shoot().withTimeout(3),
+            new Drive(driveSubsystem, -.52, -.5).withTimeout(4)
         );
     }
 
-    private Command shootSpeaker() {
-        return new Shooter(1, shooterSubsystem)
-                    .alongWith(new WaitCommand(1))
-                        .andThen(new Intake(intakeSubsystem, false, true));
+    private Command shoot() {
+        return (new Shooter(1, shooterSubsystem)).withTimeout(1.5)
+                  .alongWith(new WaitCommand(1)
+                    .andThen(new Intake(intakeSubsystem, false, true)));
       }
 }

@@ -52,7 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
 
-        odometry = new DifferentialDriveOdometry(getRoations(), null, null);
+        // odometry = new DifferentialDriveOdometry(getRoations(), null, null);
 
         AutoBuilder.configureRamsete(
             this::getPose, 
