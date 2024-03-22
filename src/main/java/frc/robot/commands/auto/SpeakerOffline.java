@@ -23,17 +23,17 @@ public class SpeakerOffline extends SequentialCommandGroup{
         this.churroSubsystem = churroSubsystem;
 
         addCommands(
-            shootSpeaker().withTimeout(1.5),
+            shoot().withTimeout(1.5),
             new Drive(driveSubsystem, -.5, -.5).withTimeout(2),
             
             new Drive(driveSubsystem, .5, 0.5).withTimeout(2.4),
-            shootSpeaker().withTimeout(1.5)
+            shoot().withTimeout(1.5)
         );
     }
 
-    private Command shootSpeaker() {
-        return new Churro(churroSubsystem, false)
-                    .andThen(new Shooter(1, shooterSubsystem))
-                    .alongWith(new WaitCommand(1)).andThen(new Intake(intakeSubsystem, false, true));
+    private Command shoot() {
+        return (new Shooter(1, shooterSubsystem))
+                .alongWith(new WaitCommand(1)
+                  .andThen(new Intake(intakeSubsystem, false, true)));
       }
 }

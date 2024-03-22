@@ -19,7 +19,6 @@ public class IntakeSubsystem extends SubsystemBase {
     private DigitalInput leftVerticalIntakeSensor;
     private DigitalInput rightVerticalIntakeSensor;
 
-    public boolean tripped;
     
 
     public IntakeSubsystem() {
@@ -32,17 +31,14 @@ public class IntakeSubsystem extends SubsystemBase {
         leftVerticalIntakeSensor = new DigitalInput(IntakeConstants.LEFT_VERTICAL_SENSOR);
         rightVerticalIntakeSensor = new DigitalInput(IntakeConstants.RIGHT_VERTICAL_SENSOR);
 
-        tripped = false;
-
 
     }
 
     public void horizontalIntakeOperator() {
         boolean isNote = !getExternalNoteDetector();
 
-        if (isNote || tripped) {
+        if (isNote) {
             runHorizontalIntake();
-            tripped = true;
         }
     }
 
@@ -64,7 +60,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
 
     public void runVerticalIntake() {
-        verticalIntakeMotors.set(Relay.Value.kReverse);
+        verticalIntakeMotors.set(Relay.Value.kForward);
     }
 
     public void reverseIntake() {

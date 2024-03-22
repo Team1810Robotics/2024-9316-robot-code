@@ -88,13 +88,13 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(shoot());
+    xboxController.rightBumper().onTrue(shoot().withTimeout(2.4));
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
 
     xboxController.rightTrigger().whileTrue(new Churro(churroSubsystem, true));
-    xboxController.leftTrigger().whileFalse(new Churro(churroSubsystem, false));
+    xboxController.leftTrigger().whileTrue(new Churro(churroSubsystem, false));
 
 
     leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
@@ -121,8 +121,8 @@ public class RobotContainer {
 
   private Command shoot() {
     return (new Shooter(1, shooterSubsystem))
-            .alongWith(new WaitCommand(1))
-              .andThen(new Intake(intakeSubsystem, false, true));
+            .alongWith(new WaitCommand(1)
+              .andThen(new Intake(intakeSubsystem, false, true)));
   }
 
   public void setNamedCommands() {

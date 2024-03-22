@@ -55,6 +55,8 @@ public class Constants {
     }
 
     public class ChurroConstants {
-        public static final int AMP_BAR = 9;
+        public static final int LEFT_CHURRO_MOTOR = 9;
+        public static final int RIGHT_CHURRO_MOTOR = 5;
+
     } 
 }
