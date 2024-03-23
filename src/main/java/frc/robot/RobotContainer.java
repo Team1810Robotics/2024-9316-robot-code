@@ -4,18 +4,13 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import frc.robot.commands.TankDrive;
@@ -27,7 +22,6 @@ import frc.robot.commands.Churro;
 import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shooter;
-import frc.robot.commands.TankDrive;
 import frc.robot.commands.auto.SpeakerOffline;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
@@ -40,7 +34,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.GearShiftSubsystem;
 
 
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 public class RobotContainer {
@@ -91,7 +84,7 @@ public class RobotContainer {
     xboxController.rightBumper().onTrue(shoot().withTimeout(2.4));
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
-    xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
+    // xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
 
     xboxController.rightTrigger().whileTrue(new Churro(churroSubsystem, true));
     xboxController.leftTrigger().whileTrue(new Churro(churroSubsystem, false));
@@ -110,11 +103,10 @@ public class RobotContainer {
     teleopTab.addBoolean("Left IR", () -> !intakeSubsystem.getLeftVerticalIntakeSensor());
     teleopTab.addBoolean("Right IR", () -> !intakeSubsystem.getRightVerticalIntakeSensor());
 
-    //no clue if this will work but why not try it to see what it does
     teleopTab.add("Command Scheduler", CommandScheduler.getInstance());
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
-    autoChooser.addOption("Speaker Offline", new SpeakerOffline(driveSubsystem, shooterSubsystem, intakeSubsystem, churroSubsystem));
+    autoChooser.addOption("Speaker Offline", new SpeakerOffline(driveSubsystem, shooterSubsystem, intakeSubsystem));
     autoTab.add("Auto Chooser", autoChooser);
   }
 
