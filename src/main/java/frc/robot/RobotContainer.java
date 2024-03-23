@@ -105,7 +105,7 @@ public class RobotContainer {
     autoChooser.addOption("Offline", new Offline());
 
     autoChooser.addOption("Four", new FourCenter());
-    autoChooser.addOption("Three Center", new ThreeCenter());
+    autoChooser.addOption("Three Center", new ThreeCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
     autoChooser.addOption("Two Center", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
 
     autoChooser.addOption("Three Left", new ThreeLeft());
