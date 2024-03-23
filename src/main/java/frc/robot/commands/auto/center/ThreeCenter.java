@@ -21,13 +21,15 @@ public class ThreeCenter extends SequentialCommandGroup{
 
         addCommands(
             shoot().withTimeout(3),
-            new Drive(driveSubsystem, -.52, -.5).withTimeout(2.5).alongWith(new Intake(intakeSubsystem, false, false)),
+            new Drive(driveSubsystem, -.5, -.6).withTimeout(1.75).alongWith(new Intake(intakeSubsystem, false, false)),
             
-            new Drive(driveSubsystem, .51, 0.5).withTimeout(2.9),
+            new Drive(driveSubsystem, .55, 0.5).withTimeout(2.2),
             shoot().withTimeout(3),
 
-            new Drive(driveSubsystem, -.25, -.5).withTimeout(2.5),
-            new Drive(driveSubsystem, .25, .5).withTimeout(2.7),
+            new Drive(driveSubsystem, -.75, -.25).withTimeout(.5),
+            new Drive(driveSubsystem, -.75, -.75).withTimeout(1),
+            new Drive(driveSubsystem, .75, .75).withTimeout(1),
+            new Drive(driveSubsystem, .25, .75).withTimeout(1),
             shoot().withTimeout(3)
         );
     }
