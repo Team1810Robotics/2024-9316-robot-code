@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
@@ -16,6 +15,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
@@ -31,6 +31,10 @@ public class DriveSubsystem extends SubsystemBase {
 
     private PigeonIMU pigeon;
     private DifferentialDriveOdometry odometry;
+
+    private Encoder leftDriveEncoder;
+    private Encoder rightDriveEncoder;
+
 
 
 
@@ -48,11 +52,14 @@ public class DriveSubsystem extends SubsystemBase {
         frontLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
         frontRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
 
+        leftDriveEncoder = new Encoder(null, null);
+        rightDriveEncoder = new Encoder(null, null);
+
 
 
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
 
-        // odometry = new DifferentialDriveOdometry(getRoations(), null, null);
+        odometry = new DifferentialDriveOdometry(getRoations(), getLeftDistance(), getRightDistance());
 
         AutoBuilder.configureRamsete(
             this::getPose, 
@@ -85,11 +92,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     }
 
-    public void arcadeDrive(ChassisSpeeds speeds) {
-        double forwardSpeed = MathUtil.applyDeadband(speeds.vxMetersPerSecond, DriveConstants.DEADBAND);
-        double rotationSpeed = MathUtil.applyDeadband(speeds.omegaRadiansPerSecond, DriveConstants.DEADBAND);
+    public void arcadeDrive(ChassisSpeeds chassisSpeeds) {
+        double forwardSpeed = MathUtil.applyDeadband(chassisSpeeds.vxMetersPerSecond, DriveConstants.DEADBAND);
+        double rotationSpeed = MathUtil.applyDeadband(chassisSpeeds.omegaRadiansPerSecond, DriveConstants.DEADBAND);
 
-        DifferentialDrive.arcadeDriveIK(forwardSpeed, rotationSpeed, true);
+        var speeds = DifferentialDrive.arcadeDriveIK(forwardSpeed, rotationSpeed, true);
+
+        frontLeftMotor.set(speeds.left);
+        frontRightMotor.set(speeds.right);
 
     }
 
@@ -98,7 +108,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private DifferentialDriveWheelPositions getWheelPositions() {
-        DifferentialDriveWheelPositions positions = new DifferentialDriveWheelPositions(null, null);
+        DifferentialDriveWheelPositions positions = new DifferentialDriveWheelPositions(getLeftDistance(), getRightDistance());
 
         return positions;
     }
@@ -117,6 +127,14 @@ public class DriveSubsystem extends SubsystemBase {
         ChassisSpeeds speeds = new ChassisSpeeds();
 
         return speeds;
+    }
+
+    public double getLeftDistance() {
+        return leftDriveEncoder.getDistance();
+    }
+
+    public double getRightDistance() {
+        return rightDriveEncoder.getDistance();
     }
 
 

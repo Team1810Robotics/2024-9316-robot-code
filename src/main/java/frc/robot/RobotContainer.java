@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -51,7 +52,7 @@ public class RobotContainer {
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private SendableChooser<Command> autoChooser;
 
   private ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   private ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
@@ -80,6 +81,8 @@ public class RobotContainer {
     configureBindings();
     setElastic();
 
+    autoChooser = AutoBuilder.buildAutoChooser();
+
   }
 
   private void configureBindings() {
@@ -101,18 +104,18 @@ public class RobotContainer {
     teleopTab.addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
 
-    autoChooser.setDefaultOption("Nothing", new InstantCommand());
-    autoChooser.addOption("Offline", new Offline());
+    // autoChooser.setDefaultOption("Nothing", new InstantCommand());
+    // autoChooser.addOption("Offline", new Offline());
 
-    autoChooser.addOption("Four", new FourCenter());
-    autoChooser.addOption("Three Center", new ThreeCenter());
-    autoChooser.addOption("Two Center", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
+    // autoChooser.addOption("Four", new FourCenter());
+    // autoChooser.addOption("Three Center", new ThreeCenter());
+    // autoChooser.addOption("Two Center", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
 
-    autoChooser.addOption("Three Left", new ThreeLeft());
-    autoChooser.addOption("Two Left", new TwoLeft());
+    // autoChooser.addOption("Three Left", new ThreeLeft());
+    // autoChooser.addOption("Two Left", new TwoLeft());
 
-    autoChooser.addOption("Three Right", new ThreeRight());
-    autoChooser.addOption("Two Left", new TwoLeft());
+    // autoChooser.addOption("Three Right", new ThreeRight());
+    // autoChooser.addOption("Two Left", new TwoLeft());
 
     autoTab.add("Auto Chooser", autoChooser);
   }
