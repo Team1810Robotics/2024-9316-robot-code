@@ -12,8 +12,11 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -32,11 +35,9 @@ public class DriveSubsystem extends SubsystemBase {
     private PigeonIMU pigeon;
     private DifferentialDriveOdometry odometry;
 
-    private Encoder leftDriveEncoder;
-    private Encoder rightDriveEncoder;
+    private DifferentialDriveKinematics kinematics;
 
-
-
+    private DifferentialDriveWheelSpeeds wheelSpeeds;
 
     public DriveSubsystem() {
         backLeftMotor = new CANSparkMax(DriveConstants.BACK_LEFT_MOTOR, MotorType.kBrushless);
@@ -50,16 +51,18 @@ public class DriveSubsystem extends SubsystemBase {
         backRightMotor.follow(frontRightMotor);
 
         frontLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
+        frontLeftMotor.getEncoder().setPositionConversionFactor(8 * Math.PI);
+
         frontRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
-
-        leftDriveEncoder = new Encoder(null, null);
-        rightDriveEncoder = new Encoder(null, null);
-
-
+        frontRightMotor.getEncoder().setPositionConversionFactor(8 * Math.PI);
 
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
 
         odometry = new DifferentialDriveOdometry(getRoations(), getLeftDistance(), getRightDistance());
+
+        kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(18.5));
+
+        wheelSpeeds = new DifferentialDriveWheelSpeeds(frontLeftMotor.getEncoder().getVelocity(), frontRightMotor.getEncoder().getVelocity());
 
         AutoBuilder.configureRamsete(
             this::getPose, 
@@ -94,9 +97,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void arcadeDrive(ChassisSpeeds chassisSpeeds) {
         double forwardSpeed = MathUtil.applyDeadband(chassisSpeeds.vxMetersPerSecond, DriveConstants.DEADBAND);
-        double rotationSpeed = MathUtil.applyDeadband(chassisSpeeds.omegaRadiansPerSecond, DriveConstants.DEADBAND);
+        double roationSpeed = MathUtil.applyDeadband(chassisSpeeds.omegaRadiansPerSecond, DriveConstants.DEADBAND);
 
-        var speeds = DifferentialDrive.arcadeDriveIK(forwardSpeed, rotationSpeed, true);
+        var speeds = DifferentialDrive.arcadeDriveIK(forwardSpeed, roationSpeed, true);
 
         frontLeftMotor.set(speeds.left);
         frontRightMotor.set(speeds.right);
@@ -118,23 +121,19 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private Rotation2d getRoations() {
-        var rotations =  Rotation2d.fromDegrees(pigeon.getYaw());
-
-       return rotations;
+        return Rotation2d.fromDegrees(pigeon.getYaw());
     }
 
     public ChassisSpeeds getSpeeds() {
-        ChassisSpeeds speeds = new ChassisSpeeds();
-
-        return speeds;
+        return kinematics.toChassisSpeeds(wheelSpeeds);
     }
 
     public double getLeftDistance() {
-        return leftDriveEncoder.getDistance();
+        return frontLeftMotor.getEncoder().getPosition();
     }
 
     public double getRightDistance() {
-        return rightDriveEncoder.getDistance();
+        return frontRightMotor.getEncoder().getPosition();
     }
 
 
@@ -143,4 +142,8 @@ public class DriveSubsystem extends SubsystemBase {
         frontRightMotor.stopMotor();
     }
 
+    @Override
+    public void periodic() {
+        odometry.update(getRoations(), getWheelPositions());
+    }
 }

@@ -14,13 +14,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import frc.robot.commands.TankDrive;
-import frc.robot.commands.auto.center.FourCenter;
-import frc.robot.commands.auto.center.ThreeCenter;
-import frc.robot.commands.auto.center.TwoCenter;
-import frc.robot.commands.auto.left.ThreeLeft;
-import frc.robot.commands.auto.left.TwoLeft;
-import frc.robot.commands.auto.other.Offline;
-import frc.robot.commands.auto.right.ThreeRight;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Churro;
@@ -61,6 +54,8 @@ public class RobotContainer {
 
 
   public RobotContainer() {
+    autoChooser = AutoBuilder.buildAutoChooser();
+
     driveSubsystem.setDefaultCommand(
       new TankDrive(
         () -> -leftJoystick.getY(), 
@@ -79,9 +74,9 @@ public class RobotContainer {
     );
 
     configureBindings();
-    setElastic();
 
-    autoChooser = AutoBuilder.buildAutoChooser();
+
+    setElastic();
 
   }
 
@@ -104,18 +99,6 @@ public class RobotContainer {
     teleopTab.addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
 
-    // autoChooser.setDefaultOption("Nothing", new InstantCommand());
-    // autoChooser.addOption("Offline", new Offline());
-
-    // autoChooser.addOption("Four", new FourCenter());
-    // autoChooser.addOption("Three Center", new ThreeCenter());
-    // autoChooser.addOption("Two Center", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
-
-    // autoChooser.addOption("Three Left", new ThreeLeft());
-    // autoChooser.addOption("Two Left", new TwoLeft());
-
-    // autoChooser.addOption("Three Right", new ThreeRight());
-    // autoChooser.addOption("Two Left", new TwoLeft());
 
     autoTab.add("Auto Chooser", autoChooser);
   }
