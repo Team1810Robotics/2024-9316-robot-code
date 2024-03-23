@@ -36,19 +36,18 @@ public class DriveSubsystem extends SubsystemBase {
     private DifferentialDriveOdometry odometry;
 
     private DifferentialDriveKinematics kinematics;
-
-    private DifferentialDriveWheelSpeeds wheelSpeeds;
+    private DifferentialDrive drive;
 
     public DriveSubsystem() {
         backLeftMotor = new CANSparkMax(DriveConstants.BACK_LEFT_MOTOR, MotorType.kBrushless);
         frontLeftMotor = new CANSparkMax(DriveConstants.FRONT_LEFT_MOTOR, MotorType.kBrushless);
         backRightMotor = new CANSparkMax(DriveConstants.BACK_RIGHT_MOTOR, MotorType.kBrushless);
         frontRightMotor = new CANSparkMax(DriveConstants.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
-
-
-
+    
         backLeftMotor.follow(frontLeftMotor);
         backRightMotor.follow(frontRightMotor);
+
+        drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
         frontLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
         frontLeftMotor.getEncoder().setPositionConversionFactor(8 * Math.PI);
@@ -61,8 +60,6 @@ public class DriveSubsystem extends SubsystemBase {
         odometry = new DifferentialDriveOdometry(getRoations(), getLeftDistance(), getRightDistance());
 
         kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(18.5));
-
-        wheelSpeeds = new DifferentialDriveWheelSpeeds(frontLeftMotor.getEncoder().getVelocity(), frontRightMotor.getEncoder().getVelocity());
 
         AutoBuilder.configureRamsete(
             this::getPose, 
@@ -90,9 +87,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         var speeds = DifferentialDrive.tankDriveIK(leftSpeed, rightSpeed, true);
 
-        frontLeftMotor.set(speeds.left);
-        frontRightMotor.set(speeds.right);
-
+        drive.tankDrive(speeds.left, speeds.right);
     }
 
     public void arcadeDrive(ChassisSpeeds chassisSpeeds) {
@@ -101,8 +96,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         var speeds = DifferentialDrive.arcadeDriveIK(forwardSpeed, roationSpeed, true);
 
-        frontLeftMotor.set(speeds.left);
-        frontRightMotor.set(speeds.right);
+        drive.arcadeDrive(speeds.left, speeds.right);
 
     }
 
@@ -125,7 +119,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public ChassisSpeeds getSpeeds() {
-        return kinematics.toChassisSpeeds(wheelSpeeds);
+        var speeds = new DifferentialDriveWheelSpeeds(getRightDistance(), getLeftDistance());
+        return kinematics.toChassisSpeeds(speeds);
     }
 
     public double getLeftDistance() {
