@@ -9,16 +9,19 @@ public class Intake extends Command {
     private IntakeSubsystem intakeSubsystem;
 
     private boolean isReversed;
-    private boolean ignoreNote;
+    private boolean ignoreNoteExt;
+    private boolean ignoreNoteInt;
 
     /**
      * 
      * @param isReversed sets whether or not the intake is reversed
-     * @param ignoreNote allows the intake to run regardless of what the sensors read
+     * @param ignoreNoteInt allows the intake to run regardless of what the intenral sensor reads
+     * @param ignoreNoteExt runs intake regardless of what external sensor reads
      */
-    public Intake(IntakeSubsystem intakeSubsystem, boolean isReversed, boolean ignoreNote) {
+    public Intake(IntakeSubsystem intakeSubsystem, boolean isReversed, boolean ignoreNoteExt, boolean ignoreNoteInt) {
         this.intakeSubsystem = intakeSubsystem;
-        this.ignoreNote = ignoreNote;
+        this.ignoreNoteExt = ignoreNoteExt;
+        this.ignoreNoteInt = ignoreNoteInt;
         this.isReversed = isReversed;
 
         addRequirements(intakeSubsystem); 
@@ -29,7 +32,7 @@ public class Intake extends Command {
         
         if (isReversed) {
             intakeSubsystem.reverseIntake();
-        } else if (ignoreNote) {
+        } else if (ignoreNoteExt) {
             intakeSubsystem.runHorizontalIntake();
         }
     }
@@ -37,7 +40,7 @@ public class Intake extends Command {
     @Override
     public boolean isFinished() {
         boolean isNote = intakeSubsystem.getInternalNoteDetector();
-        if (!ignoreNote && !isNote) {
+        if (!ignoreNoteInt && !isNote) {
             return true;
         } else {
             return false;

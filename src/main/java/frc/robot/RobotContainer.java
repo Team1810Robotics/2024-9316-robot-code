@@ -71,6 +71,7 @@ public class RobotContainer {
       new Intake(
         intakeSubsystem, 
         false, 
+        false,
         false
       )
     );
@@ -84,8 +85,8 @@ public class RobotContainer {
 
     xboxController.rightBumper().onTrue(shoot().withTimeout(2.4));
     
-    xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
-    // xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
+    xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true, true));
+    xboxController.b().onTrue(new Intake(intakeSubsystem, false, true, false));
 
     xboxController.rightTrigger().whileTrue(new Churro(churroSubsystem, true));
     xboxController.leftTrigger().whileTrue(new Churro(churroSubsystem, false));
@@ -117,7 +118,7 @@ public class RobotContainer {
   private Command shoot() {
     return (new Shooter(1, shooterSubsystem)).withTimeout(1.5)
               .alongWith(new WaitCommand(1)
-                .andThen(new Intake(intakeSubsystem, false, true)));
+                .andThen(new Intake(intakeSubsystem, false, true, true)));
   }
 
 
@@ -126,7 +127,7 @@ public class RobotContainer {
 
   public void setNamedCommands() {
     NamedCommands.registerCommand("Shoot", shoot());
-    NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false));
+    NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false, false));
   }
 
  
