@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
@@ -38,10 +39,11 @@ public class ClimbSubsystem extends SubsystemBase{
     }
 
     public double getRotations() {
-        //8 is diameter, subject to change
-        var rotations = climbEncoder.getDistance() / 8 * Math.PI;
+        //Need to fighure out what diameter is
+        int diameter = 4;
+        double rotations = climbEncoder.getDistance() / (diameter * Math.PI);
 
-        System.out.println(rotations);
+        Shuffleboard.getTab("Test").addDouble("Rotations", () -> rotations);
         return rotations;
     }
 
