@@ -6,11 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import frc.robot.commands.TankDrive;
@@ -26,10 +29,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.GearShiftSubsystem;
-
 
 public class RobotContainer {
 
@@ -45,16 +46,17 @@ public class RobotContainer {
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
-  private SendableChooser<Command> autoChooser;
+  private SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
-  private ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
-  private ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
+  public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
+  public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
+
+  private Field2d field = new Field2d();
 
 
 
 
   public RobotContainer() {
-    autoChooser = AutoBuilder.buildAutoChooser();
 
     driveSubsystem.setDefaultCommand(
       new TankDrive(
@@ -74,20 +76,22 @@ public class RobotContainer {
     );
 
     configureBindings();
-
-
     setElastic();
 
   }
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(shoot());
+    xboxController.rightBumper().onTrue(shoot().withTimeout(2.4));
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
-    xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
+    // xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
 
-  
+    xboxController.rightTrigger().whileTrue(new Churro(churroSubsystem, true));
+    xboxController.leftTrigger().whileTrue(new Churro(churroSubsystem, false));
+
+
+    //Pretty sure we're not actually going to use this, just keeping it so on the off chance we do use it Gary doesn't kill us
     leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
                           .whileFalse(new GearShift(gearShiftSubsystem, false));
 
@@ -98,6 +102,13 @@ public class RobotContainer {
   public void setElastic() {
     teleopTab.addBoolean("External Sensor", () -> !intakeSubsystem.getExternalNoteDetector());
     teleopTab.addBoolean("Internal Sensor", () -> !intakeSubsystem.getInternalNoteDetector());
+    teleopTab.addBoolean("Left IR", () -> !intakeSubsystem.getLeftVerticalIntakeSensor());
+    teleopTab.addBoolean("Right IR", () -> !intakeSubsystem.getRightVerticalIntakeSensor());
+
+    //stuff for fun BECAUSE WE HERE AT PROGRAMMING LIKE FUN (drivers will probably want it gone but i'll keep it around for now)
+    teleopTab.add("Command Scheduler", CommandScheduler.getInstance());
+    teleopTab.add(field);
+    teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
 
 
     autoTab.add("Auto Chooser", autoChooser);
@@ -112,8 +123,10 @@ public class RobotContainer {
 
 
 
+
+
   public void setNamedCommands() {
-    NamedCommands.registerCommand("Shoot Speaker", shoot());
+    NamedCommands.registerCommand("Shoot", shoot());
     NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false));
   }
 
