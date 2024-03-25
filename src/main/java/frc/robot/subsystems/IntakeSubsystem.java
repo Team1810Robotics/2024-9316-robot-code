@@ -92,6 +92,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        //I don't love that this is here but I can't get it to work anywhere else 
         verticalIntakeOperator();
         horizontalIntakeOperator();
     }

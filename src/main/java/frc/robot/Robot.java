@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_robotContainer.lightingSubsystem.lightsOff();
 
+    // add this back when zach distracts gary long enough to add the camera
     // CameraServer.startAutomaticCapture();
   }
 

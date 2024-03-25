@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import frc.robot.commands.TankDrive;
@@ -55,6 +57,8 @@ public class RobotContainer {
   public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
 
+  private Field2d field = new Field2d();
+
 
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(
@@ -90,6 +94,7 @@ public class RobotContainer {
     xboxController.leftTrigger().whileTrue(new Churro(churroSubsystem, false));
 
 
+    //Pretty sure we're not actually going to use this, just keeping it so on the off chance we do use it Gary doesn't kill us
     leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
                           .whileFalse(new GearShift(gearShiftSubsystem, false));
 
@@ -103,7 +108,10 @@ public class RobotContainer {
     teleopTab.addBoolean("Left IR", () -> !intakeSubsystem.getLeftVerticalIntakeSensor());
     teleopTab.addBoolean("Right IR", () -> !intakeSubsystem.getRightVerticalIntakeSensor());
 
+    //stuff for fun BECAUSE I LIKE FUN (drivers will probably want it gone but i'll keep it around for now)
     teleopTab.add("Command Scheduler", CommandScheduler.getInstance());
+    teleopTab.add(field);
+    teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
     autoChooser.addOption("Speaker Offline", new SpeakerOffline(driveSubsystem, shooterSubsystem, intakeSubsystem));

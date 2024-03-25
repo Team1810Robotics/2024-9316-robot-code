@@ -5,12 +5,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ChurroSubsystem;
 
 public class Churro extends Command {
+
     private ChurroSubsystem churroSubsystem;
 
-
-    //up is true, down is false
     private boolean desiredPosition;
 
+    /**
+     * 
+     * @param desiredPosition up is true, down is false
+     */
     public Churro(ChurroSubsystem churroSubsystem, boolean desiredPosition) {
         this.churroSubsystem = churroSubsystem;
         this.desiredPosition = desiredPosition;
