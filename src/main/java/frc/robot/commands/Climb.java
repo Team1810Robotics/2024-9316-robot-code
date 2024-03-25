@@ -1,5 +1,4 @@
 package frc.robot.commands;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimbSubsystem;
 public class Climb extends Command {
@@ -8,7 +7,10 @@ public class Climb extends Command {
     private ClimbSubsystem climbSubsystem;
     private Boolean isUp;
 
-    
+    /**
+     * 
+     * @param isUp if up, climber goes up
+     */
     public Climb(ClimbSubsystem climbSubsystem, Boolean isUp) {
         this.climbSubsystem = climbSubsystem;
         this.isUp = isUp;
