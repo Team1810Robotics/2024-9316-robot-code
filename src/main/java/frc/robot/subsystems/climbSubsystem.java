@@ -38,12 +38,11 @@ public class ClimbSubsystem extends SubsystemBase{
     }
 
     public double getRotations() {
-        //don't know if this will work how I think it will, I think what this will do (based off the docs) this will return a distance of 1 per 2048 pules (i think one rotation??????)
-        climbEncoder.setDistancePerPulse(1/2048);
+        //8 is diameter, subject to change
+        var rotations = climbEncoder.getDistance() / 8 * Math.PI;
 
-        SmartDashboard.putNumber("Rotations", climbEncoder.getDistance());
-
-        return climbEncoder.getDistance();
+        System.out.println(rotations);
+        return rotations;
     }
 
 
