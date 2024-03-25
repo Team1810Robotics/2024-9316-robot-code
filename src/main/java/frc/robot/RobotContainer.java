@@ -4,39 +4,33 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import frc.robot.commands.TankDrive;
-
-
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Churro;
 import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shooter;
-import frc.robot.commands.auto.SpeakerOffline;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.GearShiftSubsystem;
-
-
-
 
 public class RobotContainer {
 
@@ -52,7 +46,7 @@ public class RobotContainer {
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
-  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+  private SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
@@ -60,7 +54,10 @@ public class RobotContainer {
   private Field2d field = new Field2d();
 
 
+
+
   public RobotContainer() {
+
     driveSubsystem.setDefaultCommand(
       new TankDrive(
         () -> -leftJoystick.getY(), 
@@ -108,27 +105,31 @@ public class RobotContainer {
     teleopTab.addBoolean("Left IR", () -> !intakeSubsystem.getLeftVerticalIntakeSensor());
     teleopTab.addBoolean("Right IR", () -> !intakeSubsystem.getRightVerticalIntakeSensor());
 
-    //stuff for fun BECAUSE I LIKE FUN (drivers will probably want it gone but i'll keep it around for now)
+    //stuff for fun BECAUSE WE HERE AT PROGRAMMING LIKE FUN (drivers will probably want it gone but i'll keep it around for now)
     teleopTab.add("Command Scheduler", CommandScheduler.getInstance());
     teleopTab.add(field);
     teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
 
-    autoChooser.setDefaultOption("No Auto", new InstantCommand());
-    autoChooser.addOption("Speaker Offline", new SpeakerOffline(driveSubsystem, shooterSubsystem, intakeSubsystem));
+
     autoTab.add("Auto Chooser", autoChooser);
   }
 
 
   private Command shoot() {
-    return (new Shooter(1, shooterSubsystem))
-            .alongWith(new WaitCommand(1)
-              .andThen(new Intake(intakeSubsystem, false, true)));
+    return (new Shooter(1, shooterSubsystem)).withTimeout(1.5)
+              .alongWith(new WaitCommand(1)
+                .andThen(new Intake(intakeSubsystem, false, true)));
   }
+
+
+
+
 
   public void setNamedCommands() {
     NamedCommands.registerCommand("Shoot", shoot());
     NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false));
   }
+
  
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();

@@ -23,6 +23,8 @@ public class Constants {
 
         public static final int PIGEON = 12;
 
+        public static final double TRACKWIDTH = 18.5;
+
         
     }
 

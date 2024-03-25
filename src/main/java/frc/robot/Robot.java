@@ -15,8 +15,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  // PhotonCamera camera = new PhotonCamera("photonvision");
-
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
@@ -54,9 +52,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {
-    
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void autonomousExit() {}
