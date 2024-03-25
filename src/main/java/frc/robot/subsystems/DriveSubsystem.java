@@ -49,6 +49,8 @@ public class DriveSubsystem extends SubsystemBase {
         drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
         frontLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
+        //we do this so that when we call getPosition() it takes the rotations and multiplies it by 8π,
+        //which is the circumfrence of our wheels, so that getPosition() returns total distance traveled
         frontLeftMotor.getEncoder().setPositionConversionFactor(8 * Math.PI);
 
         frontRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
@@ -89,8 +91,8 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void autoDrive(ChassisSpeeds chassisSpeeds) {
-        double forwardSpeed = MathUtil.applyDeadband(chassisSpeeds.vxMetersPerSecond, DriveConstants.DEADBAND);
-        double roationSpeed = MathUtil.applyDeadband(chassisSpeeds.omegaRadiansPerSecond, DriveConstants.DEADBAND);
+        double forwardSpeed = chassisSpeeds.vxMetersPerSecond;
+        double roationSpeed = chassisSpeeds.omegaRadiansPerSecond;
 
         var speeds = DifferentialDrive.arcadeDriveIK(forwardSpeed, roationSpeed, true);
 
@@ -115,7 +117,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public ChassisSpeeds getSpeeds() {
-        var speeds = new DifferentialDriveWheelSpeeds(getRightDistance(), getLeftDistance());
+        var speeds = new DifferentialDriveWheelSpeeds(getLeftDistance(), getRightDistance());
 
         return kinematics.toChassisSpeeds(speeds);
     }

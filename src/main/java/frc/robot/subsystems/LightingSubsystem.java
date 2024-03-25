@@ -10,8 +10,6 @@ public class LightingSubsystem extends SubsystemBase {
 	
 	private Spark blinkin;
 
-	
-
 	 public LightingSubsystem() {
 	 	blinkin = new Spark(LightingConstants.LED_LIGHTING);
 	 }

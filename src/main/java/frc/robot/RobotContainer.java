@@ -20,7 +20,6 @@ import frc.robot.commands.TankDrive;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Churro;
-import frc.robot.commands.GearShift;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Shooter;
 import frc.robot.Constants.OperatorConstants;
@@ -37,6 +36,7 @@ public class RobotContainer {
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  @SuppressWarnings("unused")
   private final GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
   private final ChurroSubsystem churroSubsystem = new ChurroSubsystem();
   public final LightingSubsystem lightingSubsystem = new LightingSubsystem();
@@ -92,8 +92,8 @@ public class RobotContainer {
 
 
     //Pretty sure we're not actually going to use this, just keeping it so on the off chance we do use it Gary doesn't kill us
-    leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
-                          .whileFalse(new GearShift(gearShiftSubsystem, false));
+    // leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
+    //                       .whileFalse(new GearShift(gearShiftSubsystem, false));
 
 
   }
@@ -109,7 +109,6 @@ public class RobotContainer {
     teleopTab.add("Command Scheduler", CommandScheduler.getInstance());
     teleopTab.add(field);
     teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
-
 
     autoTab.add("Auto Chooser", autoChooser);
   }
