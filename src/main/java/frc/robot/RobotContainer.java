@@ -66,15 +66,8 @@ public class RobotContainer {
         )
     );
 
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeOperator());
 
-    intakeSubsystem.setDefaultCommand(
-      new Intake(
-        intakeSubsystem, 
-        false, 
-        false,
-        false
-      )
-    );
 
     configureBindings();
     setElastic();

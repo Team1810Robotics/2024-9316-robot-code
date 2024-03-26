@@ -35,6 +35,10 @@ public class IntakeSubsystem extends SubsystemBase {
 
     }
 
+    public Command intakeOperator() {
+        return horizontalIntakeOperator().alongWith(verticalIntakeOperator());
+    }
+
     public Command horizontalIntakeOperator() {
         boolean isNote = !getExternalNoteDetector();
 
