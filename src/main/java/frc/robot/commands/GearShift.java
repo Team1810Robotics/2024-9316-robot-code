@@ -11,8 +11,6 @@ public class GearShift extends Command {
     private boolean isShiftUp;
 
     /**
-     * 
-     * 
      * @param isShiftUp if true, shifts up
      */
     public GearShift(GearShiftSubsystem gearShiftSubsystem, boolean isShiftUp) {

@@ -16,7 +16,6 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -59,7 +58,7 @@ public class DriveSubsystem extends SubsystemBase {
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
 
         odometry = new DifferentialDriveOdometry(getRoations(), getLeftDistance(), getRightDistance());
-        kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(DriveConstants.TRACKWIDTH));
+        kinematics = new DifferentialDriveKinematics(DriveConstants.TRACKWIDTH);
 
         AutoBuilder.configureRamsete(
             this::getPose, 

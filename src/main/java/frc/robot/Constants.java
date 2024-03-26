@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 public class Constants {
     public class OperatorConstants {
         public static final int LEFT_JOYSTICK_PORT = 0;
@@ -23,7 +25,7 @@ public class Constants {
 
         public static final int PIGEON = 12;
 
-        public static final double TRACKWIDTH = 18.5;
+        public static final double TRACKWIDTH = Units.inchesToMeters(18.5);
 
         
     }
