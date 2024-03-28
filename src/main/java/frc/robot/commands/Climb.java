@@ -1,17 +1,18 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ClimbSubsystem;
+
 public class Climb extends Command {
   
   
     private ClimbSubsystem climbSubsystem;
-    private Boolean isUp;
+    private boolean isUp;
 
     /**
      * 
      * @param isUp if up, climber goes up
      */
-    public Climb(ClimbSubsystem climbSubsystem, Boolean isUp) {
+    public Climb(ClimbSubsystem climbSubsystem, boolean isUp) {
         this.climbSubsystem = climbSubsystem;
         this.isUp = isUp;
 
@@ -27,10 +28,10 @@ public class Climb extends Command {
         }
     }
 
-
+    //If the climber is moving down and sensor A gets tripped, it will stop running. Or, if the climber is moving up and sensor b gets tripped, it will stop running
     @Override
     public boolean isFinished() {
-        if (climbSubsystem.getRotations() >= Math.abs(7) /*not sure if the absolute value is necessary but I could only find a reddit post with the answer I need so I can't tell */) {
+        if ((climbSubsystem.getclimbSensorA() && !isUp) || (climbSubsystem.getclimbSensorB() && isUp)) {
             return true;
         } else {
             return false;

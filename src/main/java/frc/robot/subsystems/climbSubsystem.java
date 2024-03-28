@@ -2,59 +2,50 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
 
 public class ClimbSubsystem extends SubsystemBase{
 
-    //Not sure on the whole state of the motors, the wiring sheet and design disagree
-    private VictorSPX climbLeftMotor;
-    private VictorSPX climbRightMotor;
-    private VictorSPX climbTensionMotor;
+    private VictorSPX climbMotor;
+    private DigitalInput climbSensorA;
+    private DigitalInput climbSensorB;
 
-    private Encoder climbEncoder;
 
     public ClimbSubsystem() {
-        climbLeftMotor = new VictorSPX(ClimbConstants.CLIMB_LEFT_MOTOR);
-        climbRightMotor = new VictorSPX(ClimbConstants.CLIMB_RIGHT_MOTOR);
-        climbTensionMotor = new VictorSPX(ClimbConstants.CLIMB_TENSION_MOTOR);
-
-        climbEncoder = new Encoder(ClimbConstants.CLIMB_ENCODER_A, ClimbConstants.CLIMB_ENCODER_B);    
-        
-    }
+        climbMotor = new VictorSPX(ClimbConstants.CLIMB_MOTOR);
+        climbSensorA = new DigitalInput(ClimbConstants.CLIMB_SENSOR_A);
+        climbSensorB = new DigitalInput(ClimbConstants.CLIMB_SENSOR_B);
+                    
+        }
 
 
     public void climbUp() {
-        climbLeftMotor.set(VictorSPXControlMode.PercentOutput, 1);
-        climbRightMotor.set(VictorSPXControlMode.PercentOutput, -1);
+        climbMotor.set(VictorSPXControlMode.PercentOutput, 0.5);
     }
 
     public void climbDown() {
-        climbLeftMotor.set(VictorSPXControlMode.PercentOutput, -1);
-        climbRightMotor.set(VictorSPXControlMode.PercentOutput, 1);
+        climbMotor.set(VictorSPXControlMode.PercentOutput, -0.5);
     }
 
-    public double getRotations() {
-        //Need to fighure out what diameter is
-        int diameter = 4;
-        double rotations = climbEncoder.getDistance() / (diameter * Math.PI);
-
-        Shuffleboard.getTab("Test").addDouble("Rotations", () -> rotations);
-        return rotations;
+    public boolean getclimbSensorA() {
+        return !climbSensorA.get();
     }
-
+     public boolean getclimbSensorB() {
+        return !climbSensorB.get();
+    }
 
 
     public void stop() {
-        climbLeftMotor.set(VictorSPXControlMode.Disabled, 0);;
-        climbRightMotor.set(VictorSPXControlMode.Disabled, 0);;
+        climbMotor.set(VictorSPXControlMode.Disabled, 0);
     }
 
     
     
+
+
 
 }

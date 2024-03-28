@@ -9,12 +9,9 @@ public class Constants {
     
     }
     public class ClimbConstants {
-        public static final int CLIMB_LEFT_MOTOR = 6;
-        public static final int CLIMB_RIGHT_MOTOR = 10;
-        // this one is still to be determined
-        public static final int CLIMB_TENSION_MOTOR = 11;
-      public static final int CLIMB_ENCODER_A = 3; //to be determined
-      public static final int CLIMB_ENCODER_B = 4; //to be determined
-    }
+        public static final int CLIMB_MOTOR = 6;
+        public static final int CLIMB_SENSOR_A = 4;
+        public static final int CLIMB_SENSOR_B = 5;
+       }
     
 }
