@@ -6,16 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-
 import frc.robot.commands.TankDrive;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -28,17 +26,20 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.Climb;
+import frc.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.GearShiftSubsystem;
 
 public class RobotContainer {
-
+ 
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   @SuppressWarnings("unused")
   private final GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
   private final ChurroSubsystem churroSubsystem = new ChurroSubsystem();
+  private ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public final LightingSubsystem lightingSubsystem = new LightingSubsystem();
   
   private CommandJoystick leftJoystick = new CommandJoystick(OperatorConstants.LEFT_JOYSTICK_PORT);
@@ -52,9 +53,6 @@ public class RobotContainer {
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
 
   private Field2d field = new Field2d();
-
-
-
 
   public RobotContainer() {
 
@@ -75,6 +73,8 @@ public class RobotContainer {
 
   private void configureBindings() {
 
+    xboxController.y().onTrue(new Climb(climbSubsystem, true));
+    xboxController.a().onTrue(new Climb(climbSubsystem, false));
     xboxController.rightBumper().onTrue(shoot().withTimeout(2.4));
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true, true));
