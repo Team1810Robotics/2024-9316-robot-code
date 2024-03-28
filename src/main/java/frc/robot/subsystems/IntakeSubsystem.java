@@ -35,24 +35,24 @@ public class IntakeSubsystem extends SubsystemBase {
 
     }
 
-    public Command intakeOperator() {
-        return horizontalIntakeOperator().alongWith(verticalIntakeOperator());
-    }
 
-    public Command horizontalIntakeOperator() {
+    public void horizontalIntakeOperator() {
         boolean isNote = !getExternalNoteDetector();
 
-        return run(() -> runHorizontalIntake()).onlyIf(() -> isNote)
-                .andThen((run(() -> runHorizontalIntake()).withTimeout(.5)));
+        if (isNote) {
+            runHorizontalIntake();
+        }
 
         
     }
 
-    public Command verticalIntakeOperator() {
+    public void verticalIntakeOperator() {
         boolean isLeftNote = !getLeftVerticalIntakeSensor();
         boolean isRightNote = !getRightVerticalIntakeSensor();
         
-        return run(() -> runVerticalIntake()).onlyIf(() -> (isLeftNote || isRightNote));
+        if (isLeftNote || isRightNote) {
+            runVerticalIntake();
+        }
     }
 
     public void runHorizontalIntake() {
