@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.PubSub;
 
 public class Constants {
     public class OperatorConstants {
@@ -65,12 +66,10 @@ public class Constants {
     } 
 
     public class ClimbConstants {
-        public static final int CLIMB_LEFT_MOTOR_PORT = 6;
-        public static final int CLIMB_RIGHT_MOTOR_PORT = 10;
-        // this one is still to be determined
-       // public static final int CLIMB_TENSION_MOTOR_PORT = 11;
-      public static final int CLIMB_ENCODER_PORT_A = 3; //to be determined
-      public static final int CLIMB_ENCODER_PORT_B = 4; //to be determined
+        public static final int CLIMB_MOTOR = 6;
+        public static final int CLIMB_SENSOR_A = 4;
+        public static final int CLIMB_SENSOR_B = 5;
+
     }
 }
 
