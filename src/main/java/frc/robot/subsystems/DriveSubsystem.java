@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -55,10 +56,18 @@ public class DriveSubsystem extends SubsystemBase {
         frontRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
         frontRightMotor.getEncoder().setPositionConversionFactor(8 * Math.PI);
 
+        frontLeftMotor.burnFlash();
+        frontRightMotor.burnFlash();
+
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
 
         odometry = new DifferentialDriveOdometry(getRoations(), getLeftDistance(), getRightDistance());
         kinematics = new DifferentialDriveKinematics(DriveConstants.TRACKWIDTH);
+        
+        Shuffleboard.getTab("auto").addDouble("gyro",() -> pigeon.getYaw());
+
+        Shuffleboard.getTab("auto").addDouble("leftEncoder", () -> frontLeftMotor.getEncoder().getPosition());
+        Shuffleboard.getTab("auto").addDouble("rightEncoder", () -> frontRightMotor.getEncoder().getPosition());
 
         AutoBuilder.configureRamsete(
             this::getPose, 
