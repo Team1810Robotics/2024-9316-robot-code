@@ -15,12 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.auto.TwoCenter;
-import frc.robot.commands.auto.center.FourCenter;
-import frc.robot.commands.auto.center.ThreeCenter;
-import frc.robot.commands.auto.left.ThreeLeft;
-import frc.robot.commands.auto.left.TwoLeft;
-import frc.robot.commands.auto.other.Offline;
-import frc.robot.commands.auto.right.ThreeRight;
+
 
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -122,7 +117,7 @@ public class RobotContainer {
     teleopTab.add(field);
     teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
 
-    autoChooser.addOption("Two Center", new TwoCenter());
+    autoChooser.addOption("Two Center", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
     autoTab.add("Auto Chooser", autoChooser);
   }
 

@@ -20,7 +20,7 @@ public class TwoCenter extends SequentialCommandGroup{
 
         addCommands(
             shoot().withTimeout(3),
-            new Drive(driveSubsystem, -.52, -.5).withTimeout(2.5).alongWith(new Intake(intakeSubsystem, false, false)),
+            new Drive(driveSubsystem, -.52, -.5).withTimeout(2.5).alongWith(new Intake(intakeSubsystem, false, false, false)),
             
             new Drive(driveSubsystem, .51, 0.5).withTimeout(2.9),
             shoot().withTimeout(3),
@@ -31,6 +31,6 @@ public class TwoCenter extends SequentialCommandGroup{
     private Command shoot() {
         return (new Shooter(1, shooterSubsystem)).withTimeout(1.5)
                   .alongWith(new WaitCommand(1)
-                    .andThen(new Intake(intakeSubsystem, false, true)));
+                    .andThen(new Intake(intakeSubsystem, false, true, false)));
       }
 }
