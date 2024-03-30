@@ -13,9 +13,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.auto.TwoCenter;
 import frc.robot.commands.auto.center.FourCenter;
 import frc.robot.commands.auto.center.ThreeCenter;
-import frc.robot.commands.auto.center.TwoCenter;
 import frc.robot.commands.auto.left.ThreeLeft;
 import frc.robot.commands.auto.left.TwoLeft;
 import frc.robot.commands.auto.other.Offline;
