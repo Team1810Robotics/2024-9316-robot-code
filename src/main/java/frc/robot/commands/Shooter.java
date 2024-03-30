@@ -19,7 +19,7 @@ public class Shooter extends Command {
 
    @Override
    public void end(boolean interrupted) {
-       shooterSubsystem.stop();
+      shooterSubsystem.shoot(.33);
    }
 
 }
