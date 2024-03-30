@@ -9,14 +9,16 @@ import frc.robot.Constants.ChurroConstants;
 
 public class ChurroSubsystem extends SubsystemBase {
     
-    private VictorSPX rightChurroMotor;
     private VictorSPX leftChurroMotor;
+    private VictorSPX rightChurroMotor;
+
 
 
     public ChurroSubsystem() {
-       leftChurroMotor = new VictorSPX(ChurroConstants.LEFT_CHURRO_MOTOR);
-       rightChurroMotor = new VictorSPX(ChurroConstants.RIGHT_CHURRO_MOTOR);
+       leftChurroMotor = new VictorSPX(ChurroConstants.LEFT_CHURRO);
+       rightChurroMotor = new VictorSPX(ChurroConstants.RIGHT_CHURRO);
     }
+
 
     public void churroUp() {
         leftChurroMotor.set(VictorSPXControlMode.PercentOutput, .75);
@@ -31,6 +33,7 @@ public class ChurroSubsystem extends SubsystemBase {
     public void churroStop() {
         leftChurroMotor.set(VictorSPXControlMode.Disabled, 0);
         rightChurroMotor.set(VictorSPXControlMode.Disabled, 0);
+
     }
 
 }

@@ -14,6 +14,14 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.auto.TwoCenter;
+import frc.robot.commands.auto.center.FourCenter;
+import frc.robot.commands.auto.center.ThreeCenter;
+import frc.robot.commands.auto.left.ThreeLeft;
+import frc.robot.commands.auto.left.TwoLeft;
+import frc.robot.commands.auto.other.Offline;
+import frc.robot.commands.auto.right.ThreeRight;
+
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Churro;
@@ -46,7 +54,7 @@ public class RobotContainer {
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
-  // private SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
@@ -93,6 +101,7 @@ public class RobotContainer {
     xboxController.leftTrigger().whileTrue(new Churro(churroSubsystem, false));
 
 
+
     //Pretty sure we're not actually going to use this, just keeping it so on the off chance we do use it Gary doesn't kill us
     // leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
     //                       .whileFalse(new GearShift(gearShiftSubsystem, false));
@@ -107,12 +116,14 @@ public class RobotContainer {
     teleopTab.addBoolean("Left IR", () -> !intakeSubsystem.getLeftVerticalIntakeSensor());
     teleopTab.addBoolean("Right IR", () -> !intakeSubsystem.getRightVerticalIntakeSensor());
 
+
     //stuff for fun BECAUSE WE HERE AT PROGRAMMING LIKE FUN (drivers will probably want it gone but i'll keep it around for now)
     teleopTab.add("Command Scheduler", CommandScheduler.getInstance());
     teleopTab.add(field);
     teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
 
-    // autoTab.add("Auto Chooser", autoChooser);
+    autoChooser.addOption("Two Center", new TwoCenter());
+    autoTab.add("Auto Chooser", autoChooser);
   }
 
 
@@ -133,8 +144,8 @@ public class RobotContainer {
 
  
   public Command getAutonomousCommand() {
-    // return autoChooser.getSelected();
-    return null;
+    return autoChooser.getSelected();
+
   }
 
 
