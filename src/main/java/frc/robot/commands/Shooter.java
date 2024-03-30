@@ -21,6 +21,7 @@ public class Shooter extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        shooterSubsystem.stop();
+        //carter did this
+        shooterSubsystem.shoot(.5);
     }
 }
