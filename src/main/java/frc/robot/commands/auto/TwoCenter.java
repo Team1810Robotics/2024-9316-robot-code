@@ -20,11 +20,11 @@ public class TwoCenter extends SequentialCommandGroup{
 
         addCommands(
             shoot().withTimeout(3),
-            new Drive(driveSubsystem, -.52, -.5).withTimeout(2.5).alongWith(new Intake(intakeSubsystem, false, false, false)),
+            driveSubsystem.drive( -.52, -.5).withTimeout(2.5).alongWith(new Intake(intakeSubsystem, false, false, false)),
             
-            new Drive(driveSubsystem, .51, 0.5).withTimeout(2.9),
+            driveSubsystem.drive( .51, 0.5).withTimeout(2.9),
             shoot().withTimeout(3),
-            new Drive(driveSubsystem, -.52, -.5).withTimeout(4)
+            driveSubsystem.drive( -.52, -.5).withTimeout(4)
         );
     }
 
