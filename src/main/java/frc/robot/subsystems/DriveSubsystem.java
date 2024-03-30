@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
@@ -24,8 +25,6 @@ import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
     
-
-
     private CANSparkMax backLeftMotor;
     private CANSparkMax frontLeftMotor;
     private CANSparkMax backRightMotor;
@@ -35,7 +34,7 @@ public class DriveSubsystem extends SubsystemBase {
     private DifferentialDriveOdometry odometry;
 
     private DifferentialDriveKinematics kinematics;
-    // private DifferentialDrive drive;
+    private DifferentialDrive drive;
 
     public DriveSubsystem() {
         backLeftMotor = new CANSparkMax(DriveConstants.BACK_LEFT_MOTOR, MotorType.kBrushless);
@@ -43,31 +42,24 @@ public class DriveSubsystem extends SubsystemBase {
         backRightMotor = new CANSparkMax(DriveConstants.BACK_RIGHT_MOTOR, MotorType.kBrushless);
         frontRightMotor = new CANSparkMax(DriveConstants.FRONT_RIGHT_MOTOR, MotorType.kBrushless);
     
-        backLeftMotor.follow(frontLeftMotor);
-        backRightMotor.follow(frontRightMotor);
 
-        // drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
+        drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
-        frontLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
-        //we do this so that when we call getPosition() it takes the rotations and multiplies it by 8π,
-        //which is the circumfrence of our wheels, so that getPosition() returns total distance traveled
-        frontLeftMotor.getEncoder().setPositionConversionFactor(8 * Math.PI);
+        setSparkMAXSettings();
 
-        frontRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
-        frontRightMotor.getEncoder().setPositionConversionFactor(8 * Math.PI);
 
-        frontLeftMotor.burnFlash();
-        frontRightMotor.burnFlash();
 
+
+
+        
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
 
         odometry = new DifferentialDriveOdometry(getRoations(), getLeftDistance(), getRightDistance());
         kinematics = new DifferentialDriveKinematics(DriveConstants.TRACKWIDTH);
         
-        Shuffleboard.getTab("auto").addDouble("gyro",() -> pigeon.getYaw());
-
-        Shuffleboard.getTab("auto").addDouble("leftEncoder", () -> frontLeftMotor.getEncoder().getPosition());
-        Shuffleboard.getTab("auto").addDouble("rightEncoder", () -> frontRightMotor.getEncoder().getPosition());
+        Shuffleboard.getTab("Autonomous").addDouble("Gyro Yaw", () -> pigeon.getYaw());
+        Shuffleboard.getTab("Autonomous").addDouble("leftEncoder", () -> frontLeftMotor.getEncoder().getPosition());
+        Shuffleboard.getTab("Autonomous").addDouble("rightEncoder", () -> frontRightMotor.getEncoder().getPosition());
 
         AutoBuilder.configureRamsete(
             this::getPose, 
@@ -95,10 +87,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         var speeds = DifferentialDrive.tankDriveIK(leftSpeed, rightSpeed, true);
 
-        backLeftMotor.set(speeds.left);
-        frontLeftMotor.set(speeds.left);
-        backRightMotor.set(speeds.right);
-        frontRightMotor.set(speeds.right);
+        drive.tankDrive(speeds.left, speeds.right);
 
     }
 
@@ -108,7 +97,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         var speeds = DifferentialDrive.arcadeDriveIK(forwardSpeed, roationSpeed, true);
 
-        // drive.arcadeDrive(speeds.left, speeds.right);
+        drive.arcadeDrive(speeds.left, speeds.right);
     }
 
     private Pose2d getPose() {
@@ -142,10 +131,53 @@ public class DriveSubsystem extends SubsystemBase {
         return frontRightMotor.getEncoder().getPosition();
     }
 
+    public void zeroGyro() {
+        pigeon.setYaw(0);
+    }
+
 
     public void stop() {
         frontLeftMotor.stopMotor();
         frontRightMotor.stopMotor();
+    }
+
+    public void setSparkMAXSettings() {
+        backLeftMotor.restoreFactoryDefaults();
+        frontLeftMotor.restoreFactoryDefaults();
+        backRightMotor.restoreFactoryDefaults();
+        frontRightMotor.restoreFactoryDefaults();
+
+        backLeftMotor.follow(frontLeftMotor);
+        backRightMotor.follow(frontRightMotor);
+
+        backLeftMotor.setIdleMode(IdleMode.kCoast);
+        frontLeftMotor.setIdleMode(IdleMode.kCoast);
+        backRightMotor.setIdleMode(IdleMode.kCoast);
+        frontRightMotor.setIdleMode(IdleMode.kCoast);
+        
+        backLeftMotor.setSmartCurrentLimit(80);
+        frontRightMotor.setSmartCurrentLimit(80);
+        backRightMotor.setSmartCurrentLimit(80);
+        frontRightMotor.setSmartCurrentLimit(80);
+        
+        frontLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
+        frontRightMotor.setInverted(DriveConstants.RIGHT_INVERTED);
+        
+        //we do this so that when we call getPosition() it takes the rotations and multiplies it by 8π,
+        //which is the circumfrence of our wheels, so that getPosition() returns total distance traveled
+        frontLeftMotor.getEncoder().setPositionConversionFactor(8 * Math.PI);
+        frontRightMotor.getEncoder().setPositionConversionFactor(8 * Math.PI);
+
+        backLeftMotor.burnFlash();
+        frontLeftMotor.burnFlash();
+        backRightMotor.burnFlash();
+        frontRightMotor.burnFlash();
+        try {
+            Thread.sleep(750);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

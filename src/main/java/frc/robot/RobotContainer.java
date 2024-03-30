@@ -39,7 +39,7 @@ public class RobotContainer {
   @SuppressWarnings("unused")
   private final GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
   private final ChurroSubsystem churroSubsystem = new ChurroSubsystem();
-  private ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+  private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public final LightingSubsystem lightingSubsystem = new LightingSubsystem();
   
   private CommandJoystick leftJoystick = new CommandJoystick(OperatorConstants.LEFT_JOYSTICK_PORT);
@@ -53,6 +53,12 @@ public class RobotContainer {
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
 
   private Field2d field = new Field2d();
+
+  public enum ClimbModes {
+    UP,
+    DOWN,
+    HOLD
+  }
 
   public RobotContainer() {
     // im gay :)
@@ -73,8 +79,9 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.y().whileTrue(new Climb(climbSubsystem, true));
-    xboxController.a().whileTrue(new Climb(climbSubsystem, false));
+    xboxController.y().whileTrue(new Climb(climbSubsystem, ClimbModes.UP));
+    xboxController.a().whileTrue(new Climb(climbSubsystem, ClimbModes.DOWN));
+    xboxController.leftBumper().and(xboxController.a()).whileTrue(new Climb(climbSubsystem, ClimbModes.HOLD));
     
     xboxController.rightBumper().onTrue(shoot().withTimeout(2.4));
     

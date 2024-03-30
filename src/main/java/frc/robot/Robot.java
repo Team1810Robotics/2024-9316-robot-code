@@ -21,7 +21,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     m_robotContainer.lightingSubsystem.lightsOff();
 
-    CameraServer.startAutomaticCapture();
+    // CameraServer.startAutomaticCapture();
   }
 
   @Override
@@ -69,8 +69,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     if (!m_robotContainer.intakeSubsystem.getInternalNoteDetector()) {
       m_robotContainer.lightingSubsystem.lightsGreen();
-    } else if (!m_robotContainer.intakeSubsystem.getExternalNoteDetector() || !m_robotContainer.intakeSubsystem.getLeftVerticalIntakeSensor() || !m_robotContainer.intakeSubsystem.getRightVerticalIntakeSensor()){
-      m_robotContainer.lightingSubsystem.lightsPurple();
     } else {
       m_robotContainer.lightingSubsystem.allianceLights();
     }
