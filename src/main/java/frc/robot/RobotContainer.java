@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -47,7 +46,7 @@ public class RobotContainer {
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
-  private SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  // private SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
@@ -113,7 +112,7 @@ public class RobotContainer {
     teleopTab.add(field);
     teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
 
-    autoTab.add("Auto Chooser", autoChooser);
+    // autoTab.add("Auto Chooser", autoChooser);
   }
 
 
@@ -134,7 +133,8 @@ public class RobotContainer {
 
  
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    // return autoChooser.getSelected();
+    return null;
   }
 
 

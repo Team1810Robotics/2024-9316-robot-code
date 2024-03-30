@@ -27,7 +27,7 @@ public class ClimbSubsystem extends SubsystemBase{
 
 
     public void climbUp() {
-        climbMotor.set(VictorSPXControlMode.PercentOutput, .75);
+        climbMotor.set(VictorSPXControlMode.PercentOutput, .3);
     }
 
     public void climbDown() {
