@@ -84,10 +84,13 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.rightBumper().onTrue(shoot());
+    xboxController.rightBumper().onTrue(shoot().withTimeout(3));
     
     xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
+
+    xboxController.rightTrigger().whileTrue(new Churro(churroSubsystem, true));
+    xboxController.leftTrigger().whileTrue(new Churro(churroSubsystem, false));
 
   
     leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
@@ -103,9 +106,10 @@ public class RobotContainer {
 
     autoChooser.setDefaultOption("Nothing", new InstantCommand());
     autoChooser.addOption("Offline", new Offline());
+    autoChooser.addOption("Score", shoot());
 
     autoChooser.addOption("Four", new FourCenter());
-    autoChooser.addOption("Three Center", new ThreeCenter());
+    autoChooser.addOption("Three Center", new ThreeCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
     autoChooser.addOption("Two Center", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
 
     autoChooser.addOption("Three Left", new ThreeLeft());
