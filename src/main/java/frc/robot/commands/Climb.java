@@ -4,7 +4,6 @@ import frc.robot.subsystems.ClimbSubsystem;
 
 public class Climb extends Command {
   
-  
     private ClimbSubsystem climbSubsystem;
     private boolean isUp;
 
@@ -28,7 +27,8 @@ public class Climb extends Command {
         }
     }
 
-    //If the climber is moving down and sensor A gets tripped, it will stop running. Or, if the climber is moving up and sensor b gets tripped, it will stop running
+    // If the climber is moving down and sensor A gets tripped, it will stop running
+    // Or, if the climber is moving up and sensor b gets tripped, it will stop running
     @Override
     public boolean isFinished() {
         if ((climbSubsystem.getclimbSensorA() && !isUp) || (climbSubsystem.getclimbSensorB() && isUp)) {

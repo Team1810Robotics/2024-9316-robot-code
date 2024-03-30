@@ -35,7 +35,7 @@ public class DriveSubsystem extends SubsystemBase {
     private DifferentialDriveOdometry odometry;
 
     private DifferentialDriveKinematics kinematics;
-    private DifferentialDrive drive;
+    // private DifferentialDrive drive;
 
     public DriveSubsystem() {
         backLeftMotor = new CANSparkMax(DriveConstants.BACK_LEFT_MOTOR, MotorType.kBrushless);
@@ -46,7 +46,7 @@ public class DriveSubsystem extends SubsystemBase {
         backLeftMotor.follow(frontLeftMotor);
         backRightMotor.follow(frontRightMotor);
 
-        drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
+        // drive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
         frontLeftMotor.setInverted(DriveConstants.LEFT_INVERTED);
         //we do this so that when we call getPosition() it takes the rotations and multiplies it by 8π,
@@ -95,7 +95,11 @@ public class DriveSubsystem extends SubsystemBase {
 
         var speeds = DifferentialDrive.tankDriveIK(leftSpeed, rightSpeed, true);
 
-        drive.tankDrive(speeds.left, speeds.right);
+        backLeftMotor.set(speeds.left);
+        frontLeftMotor.set(speeds.left);
+        backRightMotor.set(speeds.right);
+        frontRightMotor.set(speeds.right);
+
     }
 
     public void autoDrive(ChassisSpeeds chassisSpeeds) {
@@ -104,7 +108,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         var speeds = DifferentialDrive.arcadeDriveIK(forwardSpeed, roationSpeed, true);
 
-        drive.arcadeDrive(speeds.left, speeds.right);
+        // drive.arcadeDrive(speeds.left, speeds.right);
     }
 
     private Pose2d getPose() {
