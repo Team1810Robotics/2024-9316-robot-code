@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.IntakeConstants;
 
@@ -18,6 +19,7 @@ public class IntakeSubsystem extends SubsystemBase {
     private DigitalInput internalNoteDetector;
     private DigitalInput leftVerticalIntakeSensor;
     private DigitalInput rightVerticalIntakeSensor;
+
     
 
     public IntakeSubsystem() {
@@ -33,13 +35,17 @@ public class IntakeSubsystem extends SubsystemBase {
 
     }
 
+
     public void horizontalIntakeOperator() {
         boolean isNote = !getExternalNoteDetector();
 
         if (isNote) {
             runHorizontalIntake();
-            // System.out.println("intaking");
+        } else {
+            stopHorizontalIntake();
         }
+
+        
     }
 
     public void verticalIntakeOperator() {
@@ -49,7 +55,7 @@ public class IntakeSubsystem extends SubsystemBase {
         if (isLeftNote || isRightNote) {
             runVerticalIntake();
         } else {
-            stop();
+            stopVerticalIntake();
         }
     }
 
@@ -68,10 +74,17 @@ public class IntakeSubsystem extends SubsystemBase {
         rightHorzontialIntakeMotors.set(Relay.Value.kReverse);
     }
 
-    public void stop() {
+    public void stopHorizontalIntake() {
         leftHorzontialIntakeMotors.stopMotor();
         rightHorzontialIntakeMotors.stopMotor();
+    }
+    public void stopVerticalIntake() {
         verticalIntakeMotors.stopMotor();
+    }
+
+    public void stop() {
+        stopHorizontalIntake();
+        stopVerticalIntake();
     }
 
     public boolean getExternalNoteDetector() {
@@ -92,6 +105,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        //I don't love that this is here but I can't get it to work anywhere else 
         verticalIntakeOperator();
         horizontalIntakeOperator();
     }

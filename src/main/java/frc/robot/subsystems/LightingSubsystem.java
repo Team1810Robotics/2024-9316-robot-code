@@ -10,15 +10,11 @@ public class LightingSubsystem extends SubsystemBase {
 	
 	private Spark blinkin;
 
-	
-
 	 public LightingSubsystem() {
 	 	blinkin = new Spark(LightingConstants.LED_LIGHTING);
 	 }
 		
-	/**
-	 * if the robot is not in hatMode and in normal drive, the LED turns solid white (0.93)
-	 */
+	
 	public void lightsGreen(){
 		blinkin.set(LightingConstants.LED_GREEN);
 	}

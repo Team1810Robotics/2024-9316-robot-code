@@ -4,11 +4,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.GearShiftSubsystem;
 
 public class GearShift extends Command {
+    
 
     private GearShiftSubsystem gearShiftSubsystem;
 
     private boolean isShiftUp;
 
+    /**
+     * @param isShiftUp if true, shifts up
+     */
     public GearShift(GearShiftSubsystem gearShiftSubsystem, boolean isShiftUp) {
         this.gearShiftSubsystem = gearShiftSubsystem;
         this.isShiftUp = isShiftUp;

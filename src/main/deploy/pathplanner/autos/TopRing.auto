@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2,
-      "y": 2
+      "x": 0.7401886415755699,
+      "y": 6.663465994549679
     },
-    "rotation": 0
+    "rotation": 53.13010235415598
   },
   "command": {
     "type": "sequential",
@@ -14,12 +14,18 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Back"
+            "pathName": "Top1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Top2"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Rings",
   "choreoAuto": false
 }

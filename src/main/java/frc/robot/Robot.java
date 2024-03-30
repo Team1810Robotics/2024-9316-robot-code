@@ -6,11 +6,7 @@ package frc.robot;
 
 
 
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonTrackedTarget;
-import java.util.List;
-import org.photonvision.targeting.TargetCorner;
-import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,12 +16,12 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  // PhotonCamera camera = new PhotonCamera("photonvision");
-
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     m_robotContainer.lightingSubsystem.lightsOff();
+
+    // CameraServer.startAutomaticCapture();
   }
 
   @Override
@@ -56,9 +52,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {
-    
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void autonomousExit() {}
@@ -73,28 +67,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-
     if (!m_robotContainer.intakeSubsystem.getInternalNoteDetector()) {
       m_robotContainer.lightingSubsystem.lightsGreen();
-    } else if (!m_robotContainer.intakeSubsystem.getExternalNoteDetector() || !m_robotContainer.intakeSubsystem.getLeftVerticalIntakeSensor() || !m_robotContainer.intakeSubsystem.getRightVerticalIntakeSensor()){
-      m_robotContainer.lightingSubsystem.lightsPurple();
     } else {
       m_robotContainer.lightingSubsystem.allianceLights();
     }
-
-    // var result = camera.getLatestResult();    
-    // boolean hasTargets = result.hasTargets();
-    // PhotonTrackedTarget target = result.getBestTarget();
-    // if(hasTargets == true)
-    // {
-    //   double yaw = target.getYaw();
-    //   double pitch = target.getPitch();
-    //   double area = target.getArea();
-    //   double skew = target.getSkew();
-    //   int targetID = target.getFiducialId();
-    //   //Transform2d pose = target.getCameraToTarget();
-    //   //List<TargetCorner> corners = target.getCorners();
-    // }
   }
 
   @Override

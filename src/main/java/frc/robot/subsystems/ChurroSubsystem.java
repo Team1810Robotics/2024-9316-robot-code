@@ -12,23 +12,22 @@ public class ChurroSubsystem extends SubsystemBase {
     private VictorSPX leftChurroMotor;
     private VictorSPX rightChurroMotor;
 
-    public boolean previousPosition;
+
 
     public ChurroSubsystem() {
        leftChurroMotor = new VictorSPX(ChurroConstants.LEFT_CHURRO);
        rightChurroMotor = new VictorSPX(ChurroConstants.RIGHT_CHURRO);
     }
 
-    public void churroUp() {
-        leftChurroMotor.set(VictorSPXControlMode.PercentOutput, 1);
-        rightChurroMotor.set(VictorSPXControlMode.PercentOutput, 1);
 
+    public void churroUp() {
+        leftChurroMotor.set(VictorSPXControlMode.PercentOutput, .75);
+        rightChurroMotor.set(VictorSPXControlMode.PercentOutput, .75);
     }
 
     public void churroDown() {
-        leftChurroMotor.set(VictorSPXControlMode.PercentOutput, -1);
-        rightChurroMotor.set(VictorSPXControlMode.PercentOutput, -1);
-
+        leftChurroMotor.set(VictorSPXControlMode.PercentOutput, -.75);
+        rightChurroMotor.set(VictorSPXControlMode.PercentOutput, -.75);
     }
 
     public void churroStop() {
