@@ -46,7 +46,7 @@ public class RobotContainer {
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
-  // private SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
+  private SendableChooser<Command> autoChooser = AutoBuilder.buildAutoChooser();
 
   public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
@@ -112,7 +112,7 @@ public class RobotContainer {
     teleopTab.add(field);
     teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
 
-    // autoTab.add("Auto Chooser", autoChooser);
+    autoTab.add("Auto Chooser", autoChooser);
   }
 
 
@@ -133,17 +133,6 @@ public class RobotContainer {
 
  
   public Command getAutonomousCommand() {
-    // return autoChooser.getSelected();
     return null;
   }
-
-
-
-
-
-
-
- 
-
-
 }

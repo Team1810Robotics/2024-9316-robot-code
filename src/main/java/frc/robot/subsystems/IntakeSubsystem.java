@@ -9,7 +9,7 @@ import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSubsystem extends SubsystemBase {
 
-    //Class for spike
+    //Class for garf spike
     private Relay leftHorzontialIntakeMotors;
     private Relay rightHorzontialIntakeMotors;
     private Relay verticalIntakeMotors;

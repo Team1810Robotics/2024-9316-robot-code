@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Center1_1"
+            "pathName": null
           }
         },
         {
@@ -26,6 +26,6 @@
       ]
     }
   },
-  "folder": "Rings",
+  "folder": null,
   "choreoAuto": false
 }
