@@ -55,7 +55,7 @@ public class RobotContainer {
   private Field2d field = new Field2d();
 
   public RobotContainer() {
-
+    // im gay :)
     driveSubsystem.setDefaultCommand(
       new TankDrive(
         () -> -leftJoystick.getY(), 
@@ -73,11 +73,14 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    xboxController.y().onTrue(new Climb(climbSubsystem, true));
-    xboxController.a().onTrue(new Climb(climbSubsystem, false));
+    xboxController.y().whileTrue(new Climb(climbSubsystem, true));
+    xboxController.a().whileTrue(new Climb(climbSubsystem, false));
+    
     xboxController.rightBumper().onTrue(shoot().withTimeout(2.4));
     
-    xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true, true));
+    xboxController.x()
+      .whileTrue(new Intake(intakeSubsystem, true, true, true))
+      .whileTrue(new Shooter(-1.0, shooterSubsystem));
     xboxController.b().onTrue(new Intake(intakeSubsystem, false, true, false));
 
     xboxController.rightTrigger().whileTrue(new Churro(churroSubsystem, true));

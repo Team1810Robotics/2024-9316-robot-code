@@ -41,6 +41,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
         if (isNote) {
             runHorizontalIntake();
+        } else {
+            stopHorizontalIntake();
         }
 
         
@@ -52,6 +54,8 @@ public class IntakeSubsystem extends SubsystemBase {
         
         if (isLeftNote || isRightNote) {
             runVerticalIntake();
+        } else {
+            stopVerticalIntake();
         }
     }
 
@@ -70,10 +74,17 @@ public class IntakeSubsystem extends SubsystemBase {
         rightHorzontialIntakeMotors.set(Relay.Value.kReverse);
     }
 
-    public void stop() {
+    public void stopHorizontalIntake() {
         leftHorzontialIntakeMotors.stopMotor();
         rightHorzontialIntakeMotors.stopMotor();
+    }
+    public void stopVerticalIntake() {
         verticalIntakeMotors.stopMotor();
+    }
+
+    public void stop() {
+        stopHorizontalIntake();
+        stopVerticalIntake();
     }
 
     public boolean getExternalNoteDetector() {
