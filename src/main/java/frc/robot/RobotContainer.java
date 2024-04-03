@@ -6,14 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.auto.ScoreOffline;
 import frc.robot.commands.auto.TwoCenter;
 
 
@@ -28,6 +26,7 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimbSubsystem.ClimbModes;
 import frc.robot.commands.Climb;
 import frc.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -54,13 +53,8 @@ public class RobotContainer {
   public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
 
-  private Field2d field = new Field2d();
 
-  public enum ClimbModes {
-    UP,
-    DOWN,
-    HOLD
-  }
+
 
   public RobotContainer() {
     // im gay :)
@@ -112,30 +106,40 @@ public class RobotContainer {
     teleopTab.addBoolean("Right IR", () -> !intakeSubsystem.getRightVerticalIntakeSensor());
 
 
-    //stuff for fun BECAUSE WE HERE AT PROGRAMMING LIKE FUN (drivers will probably want it gone but i'll keep it around for now)
-    teleopTab.add("Command Scheduler", CommandScheduler.getInstance());
-    teleopTab.add(field);
     teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
 
-    autoChooser.addOption("Two Center", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
+    autoChooser.setDefaultOption("No Auto", new InstantCommand());
+    autoChooser.addOption("Score", shoot());
+    autoChooser.addOption("Offline", offline());
+    autoChooser.addOption("Delayed Offline", delayedOffline());
+    autoChooser.addOption("Two Note", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
+    autoChooser.addOption("Score Offline", new ScoreOffline(driveSubsystem, intakeSubsystem, shooterSubsystem));
     autoTab.add("Auto Chooser", autoChooser);
   }
 
 
   private Command shoot() {
     return (new Shooter(1, shooterSubsystem)).withTimeout(1.5)
-              .alongWith(new WaitCommand(1)
+              .alongWith(new WaitCommand(.8)
                 .andThen(new Intake(intakeSubsystem, false, true, true)));
   }
 
-
-
-
-
-  public void setNamedCommands() {
-    NamedCommands.registerCommand("Shoot", shoot());
-    NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false, false));
+  private Command offline() {
+    return driveSubsystem.drive(-.5, -.5).withTimeout(2);
   }
+
+  private Command delayedOffline() {
+    return new WaitCommand(10).andThen(driveSubsystem.drive(-.5, -.5).withTimeout(3));
+  }
+
+
+
+
+
+  // public void setNamedCommands() {
+  //   NamedCommands.registerCommand("Shoot", shoot());
+  //   NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false, false));
+  // }
 
  
   public Command getAutonomousCommand() {

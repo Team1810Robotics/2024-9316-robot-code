@@ -15,6 +15,12 @@ public class ClimbSubsystem extends SubsystemBase{
     private DigitalInput climbSensorA;
     private DigitalInput climbSensorB;
 
+    public enum ClimbModes {
+        UP,
+        DOWN,
+        HOLD
+    }
+
 
     public ClimbSubsystem() {
         climbMotor = new VictorSPX(ClimbConstants.CLIMB_MOTOR);
@@ -34,7 +40,7 @@ public class ClimbSubsystem extends SubsystemBase{
         climbMotor.set(VictorSPXControlMode.PercentOutput, -.3);
     }
 
-    
+    //needs a bit of tuning
     public void climbHold() {
         climbMotor.set(VictorSPXControlMode.PercentOutput, -.25);
     }
