@@ -19,7 +19,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 
@@ -50,17 +50,16 @@ public class DriveSubsystem extends SubsystemBase {
 
 
 
-
-        
+        //pathplanner, unused
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
 
+        //pathplanner, unused
         odometry = new DifferentialDriveOdometry(getRoations(), getLeftDistance(), getRightDistance());
+        //pathplanner, unused
         kinematics = new DifferentialDriveKinematics(DriveConstants.TRACKWIDTH);
         
-        Shuffleboard.getTab("Autonomous").addDouble("Gyro Yaw", () -> pigeon.getYaw());
-        Shuffleboard.getTab("Autonomous").addDouble("leftEncoder", () -> frontLeftMotor.getEncoder().getPosition());
-        Shuffleboard.getTab("Autonomous").addDouble("rightEncoder", () -> frontRightMotor.getEncoder().getPosition());
 
+        //pathplanner, unused
         AutoBuilder.configureRamsete(
             this::getPose, 
             this::resetPose, 
@@ -80,6 +79,11 @@ public class DriveSubsystem extends SubsystemBase {
 
     }
 
+    //for auto
+    public Command drive(double leftSpeed, double rightSpeed) {
+        return run(() -> drive.tankDrive(leftSpeed, rightSpeed));
+    }
+
 
     public void teleopDrive(double leftSpeed, double rightSpeed) {
         leftSpeed = MathUtil.applyDeadband(leftSpeed, DriveConstants.DEADBAND);
@@ -91,6 +95,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     }
 
+    //pathplanner, unused
     public void autoDrive(ChassisSpeeds chassisSpeeds) {
         double forwardSpeed = chassisSpeeds.vxMetersPerSecond;
         double roationSpeed = chassisSpeeds.omegaRadiansPerSecond;
@@ -100,14 +105,17 @@ public class DriveSubsystem extends SubsystemBase {
         drive.arcadeDrive(speeds.left, speeds.right);
     }
 
+    //pathplanner, unused
     private Pose2d getPose() {
         return odometry.getPoseMeters();
     }
 
+    //pathplanner, unused
     private DifferentialDriveWheelPositions getWheelPositions() {
         return new DifferentialDriveWheelPositions(getLeftDistance(), getRightDistance());
     }
 
+    //pathplanner, unused
     private void resetPose(Pose2d pose) {
         odometry.resetPosition(getRoations(), getWheelPositions(), pose);
     }
@@ -117,20 +125,24 @@ public class DriveSubsystem extends SubsystemBase {
         return Rotation2d.fromDegrees(pigeon.getYaw());
     }
 
+    //pathplanner, unused
     public ChassisSpeeds getSpeeds() {
         var speeds = new DifferentialDriveWheelSpeeds(getLeftDistance(), getRightDistance());
 
         return kinematics.toChassisSpeeds(speeds);
     }
 
+    //pathplanner, unused
     public double getLeftDistance() {
         return frontLeftMotor.getEncoder().getPosition();
     }
 
+    //pathplanner, unused
     public double getRightDistance() {
         return frontRightMotor.getEncoder().getPosition();
     }
 
+    //pathplanner, unused
     public void zeroGyro() {
         pigeon.setYaw(0);
     }
@@ -180,8 +192,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     }
 
-    @Override
-    public void periodic() {
-        odometry.update(getRoations(), getWheelPositions());
-    }
+    //pathplanner, unused
+    // @Override
+    // public void periodic() {
+    //     odometry.update(getRoations(), getWheelPositions());
+    // }
 }

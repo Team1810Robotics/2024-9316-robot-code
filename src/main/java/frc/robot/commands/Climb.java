@@ -1,12 +1,11 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.ClimbSubsystem;
 
 public class Climb extends Command {
   
     private ClimbSubsystem climbSubsystem;
-    private RobotContainer.ClimbModes mode;
+    private ClimbSubsystem.ClimbModes mode;
 
 
 
@@ -14,7 +13,7 @@ public class Climb extends Command {
      * 
      * @param mode mode for the climber
      */
-    public Climb(ClimbSubsystem climbSubsystem, RobotContainer.ClimbModes mode) {
+    public Climb(ClimbSubsystem climbSubsystem, ClimbSubsystem.ClimbModes mode) {
         this.climbSubsystem = climbSubsystem;
         this.mode = mode;
 
@@ -27,7 +26,6 @@ public class Climb extends Command {
             case UP:
                climbSubsystem.climbUp(); 
                 break;
-    
             case DOWN:
                 climbSubsystem.climbDown();
                 break;
@@ -41,7 +39,7 @@ public class Climb extends Command {
     // Or, if the climber is moving up and sensor b gets tripped, it will stop running
     @Override
     public boolean isFinished() {
-        if ((climbSubsystem.getclimbSensorA() && mode == RobotContainer.ClimbModes.DOWN) || (climbSubsystem.getclimbSensorB() && mode ==  RobotContainer.ClimbModes.UP)) {
+        if ((climbSubsystem.getclimbSensorA() && mode == ClimbSubsystem.ClimbModes.DOWN) || (climbSubsystem.getclimbSensorB() && mode ==  ClimbSubsystem.ClimbModes.UP)) {
             return true;
         } else {
             return false;

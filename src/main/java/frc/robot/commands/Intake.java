@@ -15,7 +15,7 @@ public class Intake extends Command {
     /**
      * 
      * @param isReversed sets whether or not the intake is reversed
-     * @param ignoreNoteInt runs intake regardless of what the intenral sensor reads
+     * @param ignoreNoteInt runs intake regardless of what the internal sensor reads
      * @param ignoreNoteExt runs intake regardless of what external sensor reads
      */
     public Intake(IntakeSubsystem intakeSubsystem, boolean isReversed, boolean ignoreNoteExt, boolean ignoreNoteInt) {
