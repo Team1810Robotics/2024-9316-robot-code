@@ -4,13 +4,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.commands.Intake;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.auto.ScoreOffline;
 import frc.robot.commands.auto.TwoCenter;
@@ -19,7 +19,6 @@ import frc.robot.commands.auto.TwoCenter;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.commands.Churro;
-import frc.robot.commands.Intake;
 import frc.robot.commands.Shooter;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ChurroSubsystem;
@@ -28,6 +27,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.GearShiftSubsystem;
 
 public class RobotContainer {
@@ -50,7 +50,6 @@ public class RobotContainer {
 
   public ShuffleboardTab teleopTab = Shuffleboard.getTab("Teleoperated");
   public ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
-
 
 
 
@@ -130,7 +129,7 @@ public class RobotContainer {
   private Command scoreDelayedOffline() {
     return shoot().andThen(new WaitCommand(7)).andThen(driveSubsystem.drive(-.5, -.5).withTimeout(2));
   }
-  
+
   // public void setNamedCommands() {
   //   NamedCommands.registerCommand("Shoot", shoot());
   //   NamedCommands.registerCommand("Intake", new Intake(intakeSubsystem, false, false, false));
