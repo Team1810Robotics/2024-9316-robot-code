@@ -66,6 +66,7 @@ public class Constants {
 
     public class ClimbConstants {
         public static final int CLIMB_MOTOR = 6;
+        public static final int CLIMB_LOCK = 3;
         public static final int CLIMB_SENSOR_A = 4;
         public static final int CLIMB_SENSOR_B = 5;
 

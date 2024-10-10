@@ -25,7 +25,7 @@ public class ScoreOffline extends SequentialCommandGroup {
 
     private Command shoot() {
     return (new Shooter(1, shooterSubsystem)).withTimeout(1.5)
-              .alongWith(new WaitCommand(.8)
+              .alongWith(new WaitCommand(1)
                 .andThen(new Intake(intakeSubsystem, false, true, true)));
   }
 }

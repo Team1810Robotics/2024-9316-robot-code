@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,9 +27,6 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.ClimbSubsystem.ClimbModes;
-import frc.robot.commands.Climb;
-import frc.robot.subsystems.ClimbSubsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.GearShiftSubsystem;
 
@@ -40,7 +38,6 @@ public class RobotContainer {
   @SuppressWarnings("unused")
   private final GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
   private final ChurroSubsystem churroSubsystem = new ChurroSubsystem();
-  private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   public final LightingSubsystem lightingSubsystem = new LightingSubsystem();
   
   private CommandJoystick leftJoystick = new CommandJoystick(OperatorConstants.LEFT_JOYSTICK_PORT);
@@ -75,17 +72,14 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-
-    xboxController.y().whileTrue(new Climb(climbSubsystem, ClimbModes.UP));
-    xboxController.a().whileTrue(new Climb(climbSubsystem, ClimbModes.DOWN));
-    xboxController.leftBumper().and(xboxController.a()).whileTrue(new Climb(climbSubsystem, ClimbModes.HOLD));
     
     xboxController.rightBumper().onTrue(shoot().withTimeout(2.4));
     
+
     xboxController.x()
       .whileTrue(new Intake(intakeSubsystem, true, true, true))
       .whileTrue(new Shooter(-1.0, shooterSubsystem));
-    xboxController.b().onTrue(new Intake(intakeSubsystem, false, true, false));
+    xboxController.b().whileTrue(new Intake(intakeSubsystem, false, false, false));
 
     xboxController.rightTrigger().whileTrue(new Churro(churroSubsystem, true));
     xboxController.leftTrigger().whileTrue(new Churro(churroSubsystem, false));
@@ -108,20 +102,20 @@ public class RobotContainer {
 
 
     teleopTab.addDouble("Match Time", () -> DriverStation.getMatchTime());
+    teleopTab.add(CommandScheduler.getInstance());
 
     autoChooser.setDefaultOption("No Auto", new InstantCommand());
-    autoChooser.addOption("Score", shoot());
+    autoChooser.addOption("One Note, no offline", shoot());
     autoChooser.addOption("Offline", offline());
-    autoChooser.addOption("Delayed Offline", delayedOffline());
     autoChooser.addOption("Two Note", new TwoCenter(driveSubsystem, shooterSubsystem, intakeSubsystem));
-    autoChooser.addOption("Score Offline", new ScoreOffline(driveSubsystem, intakeSubsystem, shooterSubsystem));
+    autoChooser.addOption("One Note, Offline", new ScoreOffline(driveSubsystem, intakeSubsystem, shooterSubsystem));
     autoTab.add("Auto Chooser", autoChooser);
   }
 
 
   private Command shoot() {
-    return (new Shooter(1, shooterSubsystem)).withTimeout(1.5)
-              .alongWith(new WaitCommand(.8)
+    return (new Shooter(1, shooterSubsystem)).withTimeout(2)
+              .alongWith(new WaitCommand(1.5)
                 .andThen(new Intake(intakeSubsystem, false, true, true)));
   }
 
@@ -129,9 +123,17 @@ public class RobotContainer {
     return driveSubsystem.drive(-.5, -.5).withTimeout(2);
   }
 
+  @SuppressWarnings("unused")
   private Command delayedOffline() {
     return new WaitCommand(10).andThen(driveSubsystem.drive(-.5, -.5).withTimeout(3));
   }
+
+  @SuppressWarnings("unused")
+  private Command scoreDelayedOffline() {
+    return shoot().andThen(new WaitCommand(7)).andThen(driveSubsystem.drive(-.5, -.5).withTimeout(2));
+  }
+
+
 
 
 

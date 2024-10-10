@@ -6,18 +6,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelPositions;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,7 +24,7 @@ public class DriveSubsystem extends SubsystemBase {
     private CANSparkMax frontRightMotor;
 
     private PigeonIMU pigeon;
-    private DifferentialDriveOdometry odometry;
+    // private DifferentialDriveOdometry odometry;
 
     private DifferentialDriveKinematics kinematics;
     private DifferentialDrive drive;
@@ -50,30 +43,31 @@ public class DriveSubsystem extends SubsystemBase {
 
 
 
+
         //pathplanner, unused
         pigeon = new PigeonIMU(DriveConstants.PIGEON);
 
         //pathplanner, unused
-        odometry = new DifferentialDriveOdometry(getRoations(), getLeftDistance(), getRightDistance());
+        // odometry = new DifferentialDriveOdometry(getRoations(), getLeftDistance(), getRightDistance());
         //pathplanner, unused
         kinematics = new DifferentialDriveKinematics(DriveConstants.TRACKWIDTH);
         
 
         //pathplanner, unused
-        AutoBuilder.configureRamsete(
-            this::getPose, 
-            this::resetPose, 
-            this::getSpeeds, 
-            this::autoDrive, 
-            new ReplanningConfig(), 
-            () -> {
-                var alliance = DriverStation.getAlliance();
-                if (alliance.isPresent()) {
-                    return alliance.get() == DriverStation.Alliance.Red;
-                }
-                return false;
-            }, 
-            this);
+        // AutoBuilder.configureRamsete(
+        //     this::getPose, 
+        //     this::resetPose, 
+        //     this::getSpeeds, 
+        //     this::autoDrive, 
+        //     new ReplanningConfig(), 
+        //     () -> {
+        //         var alliance = DriverStation.getAlliance();
+        //         if (alliance.isPresent()) {
+        //             return alliance.get() == DriverStation.Alliance.Red;
+        //         }
+        //         return false;
+        //     }, 
+        //     this);
 
         
 
@@ -106,24 +100,24 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     //pathplanner, unused
-    private Pose2d getPose() {
-        return odometry.getPoseMeters();
-    }
+    // private Pose2d getPose() {
+    //     return odometry.getPoseMeters();
+    // }
 
     //pathplanner, unused
-    private DifferentialDriveWheelPositions getWheelPositions() {
-        return new DifferentialDriveWheelPositions(getLeftDistance(), getRightDistance());
-    }
+    // private DifferentialDriveWheelPositions getWheelPositions() {
+    //     return new DifferentialDriveWheelPositions(getLeftDistance(), getRightDistance());
+    // }
 
     //pathplanner, unused
-    private void resetPose(Pose2d pose) {
-        odometry.resetPosition(getRoations(), getWheelPositions(), pose);
-    }
+    // private void resetPose(Pose2d pose) {
+    //     odometry.resetPosition(getRoations(), getWheelPositions(), pose);
+    // }
 
     //I Know.
-    private Rotation2d getRoations() {
-        return Rotation2d.fromDegrees(pigeon.getYaw());
-    }
+    // private Rotation2d getRoations() {
+    //     return Rotation2d.fromDegrees(pigeon.getYaw());
+    // }
 
     //pathplanner, unused
     public ChassisSpeeds getSpeeds() {
@@ -162,10 +156,10 @@ public class DriveSubsystem extends SubsystemBase {
         backLeftMotor.follow(frontLeftMotor);
         backRightMotor.follow(frontRightMotor);
 
-        backLeftMotor.setIdleMode(IdleMode.kCoast);
-        frontLeftMotor.setIdleMode(IdleMode.kCoast);
-        backRightMotor.setIdleMode(IdleMode.kCoast);
-        frontRightMotor.setIdleMode(IdleMode.kCoast);
+        backLeftMotor.setIdleMode(IdleMode.kBrake);
+        frontLeftMotor.setIdleMode(IdleMode.kBrake);
+        backRightMotor.setIdleMode(IdleMode.kBrake);
+        frontRightMotor.setIdleMode(IdleMode.kBrake);
         
         backLeftMotor.setSmartCurrentLimit(80);
         frontRightMotor.setSmartCurrentLimit(80);

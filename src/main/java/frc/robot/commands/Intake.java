@@ -29,7 +29,6 @@ public class Intake extends Command {
 
     @Override
     public void execute() {
-        
         if (isReversed) {
             intakeSubsystem.reverseIntake();
         } else if (ignoreNoteExt) {
