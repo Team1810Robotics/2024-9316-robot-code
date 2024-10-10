@@ -4,13 +4,7 @@
 
 package frc.robot;
 
-import java.util.List;
-
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonTrackedTarget;
-import org.photonvision.targeting.TargetCorner;
-
-import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,11 +14,12 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  PhotonCamera camera = new PhotonCamera("photonvision");
-
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    m_robotContainer.lightingSubsystem.lightsOff();
+
+    CameraServer.startAutomaticCapture();
   }
 
   @Override
@@ -33,7 +28,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+     m_robotContainer.lightingSubsystem.lightsOff();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -48,12 +45,12 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    m_robotContainer.lightingSubsystem.lightsRainbow();
   }
 
   @Override
-  public void autonomousPeriodic() {
-    
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void autonomousExit() {}
@@ -63,22 +60,15 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
   }
 
   @Override
   public void teleopPeriodic() {
-    var result = camera.getLatestResult();    
-    boolean hasTargets = result.hasTargets();
-    PhotonTrackedTarget target = result.getBestTarget();
-    if(hasTargets == true)
-    {
-      double yaw = target.getYaw();
-      double pitch = target.getPitch();
-      double area = target.getArea();
-      double skew = target.getSkew();
-      int targetID = target.getFiducialId();
-      //Transform2d pose = target.getCameraToTarget();
-      //List<TargetCorner> corners = target.getCorners();
+    if (!m_robotContainer.intakeSubsystem.getInternalNoteDetector()) {
+      m_robotContainer.lightingSubsystem.lightsGreen();
+    } else {
+      m_robotContainer.lightingSubsystem.allianceLights();
     }
   }
 

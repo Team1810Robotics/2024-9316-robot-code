@@ -1,27 +1,39 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Victor;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ChurroConstants;
 
 public class ChurroSubsystem extends SubsystemBase {
     
-    private Victor ampLinearActuator;
+    private VictorSPX leftChurroMotor;
+    private VictorSPX rightChurroMotor;
+
+
 
     public ChurroSubsystem() {
-       ampLinearActuator = new  Victor(ChurroConstants.AMP_BAR);
+       leftChurroMotor = new VictorSPX(ChurroConstants.LEFT_CHURRO);
+       rightChurroMotor = new VictorSPX(ChurroConstants.RIGHT_CHURRO);
     }
 
+
     public void churroUp() {
-        ampLinearActuator.set(.5);
+        leftChurroMotor.set(VictorSPXControlMode.PercentOutput, .75);
+        rightChurroMotor.set(VictorSPXControlMode.PercentOutput, .75);
     }
 
     public void churroDown() {
-        ampLinearActuator.set(-.5);
+        leftChurroMotor.set(VictorSPXControlMode.PercentOutput, -.75);
+        rightChurroMotor.set(VictorSPXControlMode.PercentOutput, -.75);
     }
 
     public void churroStop() {
-        ampLinearActuator.stopMotor();
+        leftChurroMotor.set(VictorSPXControlMode.Disabled, 0);
+        rightChurroMotor.set(VictorSPXControlMode.Disabled, 0);
+
     }
 
 }
