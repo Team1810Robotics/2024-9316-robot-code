@@ -4,13 +4,16 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.commands.GearShift;
+import frc.robot.commands.Intake;
+import frc.robot.commands.ShootAmp;
+import frc.robot.commands.ShootSpeaker;
 import frc.robot.commands.TankDrive;
 import frc.robot.commands.auto.ScoreOffline;
 import frc.robot.commands.auto.TwoCenter;
@@ -28,6 +31,8 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LightingSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.GearShiftSubsystem;
 
 public class RobotContainer {
@@ -39,9 +44,16 @@ public class RobotContainer {
   private final GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
   private final ChurroSubsystem churroSubsystem = new ChurroSubsystem();
   public final LightingSubsystem lightingSubsystem = new LightingSubsystem();
+
+  private DriveSubsystem driveSubsystem = new DriveSubsystem();
+  private GearShiftSubsystem gearShiftSubsystem = new GearShiftSubsystem();
+  private IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private ChurroSubsystem churroSubsystem = new ChurroSubsystem();
   
   private CommandJoystick leftJoystick = new CommandJoystick(OperatorConstants.LEFT_JOYSTICK_PORT);
   private CommandJoystick rightJoystick = new CommandJoystick(OperatorConstants.RIGHT_JOYSTICK_PORT);
+
 
   private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
 
@@ -53,9 +65,13 @@ public class RobotContainer {
 
 
 
+  private JoystickButton leftJoystickButton_11 = new JoystickButton(leftJoystick, 11);
+
+  private CommandXboxController xboxController = new CommandXboxController(OperatorConstants.XBOX_CONTROLLER_PORT);
+  private SendableChooser<Command> autoChooser = new SendableChooser<>();
+
 
   public RobotContainer() {
-    // im gay :)
     driveSubsystem.setDefaultCommand(
       new TankDrive(
         () -> -leftJoystick.getY(), 
@@ -86,10 +102,13 @@ public class RobotContainer {
 
 
 
-    //Pretty sure we're not actually going to use this, just keeping it so on the off chance we do use it Gary doesn't kill us
     // leftJoystick.button(11).whileTrue(new GearShift(gearShiftSubsystem, true))
     //                       .whileFalse(new GearShift(gearShiftSubsystem, false));
 
+
+    xboxController.x().whileTrue(new Intake(intakeSubsystem, true, true));
+    xboxController.b().onTrue(new Intake(intakeSubsystem, false, false));
+    
 
   }
 
@@ -133,6 +152,11 @@ public class RobotContainer {
     return shoot().andThen(new WaitCommand(7)).andThen(driveSubsystem.drive(-.5, -.5).withTimeout(2));
   }
 
+
+  public Command getAutonomousCommand() {
+    return autoChooser.getSelected();
+  }
+ 
 
 
 
