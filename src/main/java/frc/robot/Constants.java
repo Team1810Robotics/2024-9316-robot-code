@@ -4,8 +4,9 @@ import edu.wpi.first.math.util.Units;
 
 public class Constants {
     public class OperatorConstants {
-        public static final int LEFT_JOYSTICK_PORT = 0;
-        public static final int RIGHT_JOYSTICK_PORT = 1;
+        //this is backwards, phsycially, left should be set to 0 and right to 1
+        public static final int LEFT_JOYSTICK_PORT = 1;
+        public static final int RIGHT_JOYSTICK_PORT = 0;
         public static final int XBOX_CONTROLLER_PORT = 2;
     }
     public class DriveConstants {
